@@ -1,0 +1,7 @@
+{
+  "name": "vlink",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
