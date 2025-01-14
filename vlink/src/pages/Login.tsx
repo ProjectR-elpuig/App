@@ -1,57 +1,63 @@
-import React, { useState } from 'react';
-import { IonContent, IonPage, IonInput, IonButton, IonLabel, IonItem, IonHeader, IonToolbar, IonTitle, IonToast } from '@ionic/react';
-import './Login.css'; // Estilos personalizados si los necesitas
+import {
+  IonContent,
+  IonPage,
+  IonInput,
+  IonButton,
+  IonText,
+  IonImg,
+} from '@ionic/react';
+import './Login.css';
 
-const Login: React.FC<{ onLogin: () => void }> = ({ onLogin }) => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [showToast, setShowToast] = useState(false);
-  const [message, setMessage] = useState('');
-
-  const handleLogin = () => {
-    // Validación simple (puedes reemplazar con lógica real)
-    console.log('Login realizado: ' + username + " " + password);
-    if (username === 'adm' && password === 'adm') {
-      setMessage('¡Inicio de sesión exitoso!');
-      setShowToast(true);
-      onLogin(); // Llamar al callback cuando el login es exitoso
-    } else {
-      // alert('Credenciales inválidas');
-      setMessage('Usuario o contraseña incorrecto.');
-      setShowToast(true);
-    }
-  };
-
+const Login: React.FC = () => {
   return (
     <IonPage>
-      <IonContent className='loginContainer' >
-        <IonItem>
-          <IonLabel position="floating">Usuario</IonLabel>
-          <IonInput
-            type="text"
-            value={username}
-            onIonChange={(e) => setUsername(e.detail.value!)}
-          />
-        </IonItem>
-        <IonItem>
-          <IonLabel position="floating">Contraseña</IonLabel>
-          <IonInput
-            type="password"
-            value={password}
-            onIonChange={(e) => setPassword(e.detail.value!)}
-          />
-        </IonItem>
-        <IonButton expand="full" onClick={handleLogin} className="ion-margin-top">
-          Iniciar Sesión
-        </IonButton>
+      <IonContent className="ion-padding">
+        <div className="login-container">
+          <img src="/logo.png" alt="V-Link Logo" className="logo" />
+          <h1 className="welcome-text">Welcome to V-LINK</h1>
+          
+          <div className="login-box">
+            <h2>Login With</h2>
+            
+            <div className="oauth-buttons">
+              <IonButton className="cfx-button" expand="block">
+                <img src="/cfx-logo.png" alt="CFX"/>
+              </IonButton>
+              
+              <IonButton className="discord-button" expand="block">
+                <img src="/discord-logo.png" alt="Discord" />
+              </IonButton>
+            </div>
 
-        {/* Notificacion */}
-        <IonToast
-          isOpen={showToast}
-          message={message}
-          duration={2000}
-          onDidDismiss={() => setShowToast(false)}
-        />
+            <div className="divider">
+              <span>OR</span>
+            </div>
+
+            <h3>Login</h3>
+            
+            <form className="login-form">
+              <IonInput
+                type="text"
+                placeholder="username"
+                className="custom-input"
+              />
+              <h3>Password</h3>
+              <IonInput
+                type="password"
+                placeholder="password"
+                className="custom-input"
+              />
+              
+              <IonButton expand="block" className="login-button">
+                Login
+              </IonButton>
+            </form>
+
+            <p className="create-account">
+              Join discord to create account!
+            </p>
+          </div>
+        </div>
       </IonContent>
     </IonPage>
   );

@@ -1,45 +1,101 @@
-/* Login.css */
-.loginContainer {
-  /* display: flex;
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
-  align-items: center; */
-  /* flex-direction: column; */
-  text-align: center;
-  position: absolute;
-  left: 25%;
-  right: 0;
-  top: 50%;
-  transform: translateY(-10%);
-  max-width: 50%;
-  border: radius 2px solid aqua;
+  min-height: 100%;
+  background: #1F52B5;
+  padding: 20px;
 }
 
-ion-button {
+.logo {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 20px;
+}
+
+.welcome-text {
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+
+.login-box {
+  background: #4c75c4;
+  border-radius: 16px;
+  padding: 20px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.oauth-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.cfx-button {
+  --background: #291B26;
+  --border-radius: 0px; /* Elimina el borde redondeado globalmente */
+  border: 1px solid #F40552;
+  width: 50%;
+  flex: 1;
+  box-shadow: 4px 4px 8px rgba(244, 5, 82, 0.4);
+}
+
+.discord-button {
+  --background: #8096e9;
+  border-radius: 8px;
+  flex: 1;
+  /* --background: url('./public/discord-logo.png') no-repeat; */
+  
+}
+
+.divider {
+  text-align: center;
+  margin: 20px 0;
+  color: white;
+  position: relative;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 45%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.divider::before {
+  left: 0;
+}
+
+.divider::after {
+  right: 0;
+}
+
+.custom-input {
+  --background: rgba(255, 255, 255, 0.1);
+  --color: white;
+  --placeholder-color: rgba(255, 255, 255, 0.5);
+  --padding-start: 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+}
+
+.login-button {
+  --background: white;
+  --color: #2962ff;
   margin-top: 20px;
 }
 
-
-.container {
+.create-account {
   text-align: center;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.container strong {
-  font-size: 20px;
-  line-height: 26px;
-}
-
-.container p {
-  font-size: 16px;
-  line-height: 22px;
-  color: #8c8c8c;
-  margin: 0;
-}
-
-.container a {
-  text-decoration: none;
+  color: white;
+  margin-top: 20px;
+  font-size: 14px;
 }
