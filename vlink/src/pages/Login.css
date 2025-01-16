@@ -6,19 +6,24 @@
   min-height: 100%;
   background: #1F52B5;
   padding: 20px;
+  font-family: 'Jersey25', sans-serif;
+  /* font-family: Jersey 25; */
+
 }
 
 .logo {
   width: 80px;
   height: 80px;
-  margin-bottom: 20px;
 }
 
 .welcome-text {
   color: white;
   font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 30px;
+  text-align: center;
+  font-size: 40px;
+  width: 207px;
+  height: 96px;
+  box-sizing: border-box;
 }
 
 .login-box {
@@ -27,6 +32,7 @@
   padding: 20px;
   width: 100%;
   max-width: 400px;
+  text-align: center;
 }
 
 .oauth-buttons {
@@ -85,12 +91,16 @@
   --padding-start: 10px;
   margin-bottom: 10px;
   border-radius: 8px;
+  text-align: left;
 }
 
 .login-button {
   --background: white;
   --color: #2962ff;
   margin-top: 20px;
+  --box-shadow: none;
+  
+  /* font-family: 'Jersey25', sans-serif; */
 }
 
 .create-account {

@@ -53,6 +53,7 @@ const App: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const handleLogin = () => {
+    console.log('handleLogin he llegado',  true);
     setIsAuthenticated(true); // Cambia el estado al iniciar sesión
   };
 
@@ -63,7 +64,8 @@ const App: React.FC = () => {
           <Route exact path="/">
             <Login onLogin={handleLogin} />
           </Route>
-        ) : (
+        ) : 
+        (
           <IonTabs>
             <IonRouterOutlet>
               <Route exact path="/tab1">
@@ -94,7 +96,8 @@ const App: React.FC = () => {
               </IonTabButton>
             </IonTabBar>
           </IonTabs>
-        )}
+        )
+        }
       </IonReactRouter>
     </IonApp>
   );
