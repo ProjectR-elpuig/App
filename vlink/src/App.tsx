@@ -12,6 +12,8 @@ import {
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { ellipse, square, triangle } from 'ionicons/icons';
+import './App.css';
+
 import Tab1 from './pages/Tab1';
 import Tab2 from './pages/Tab2';
 import Tab3 from './pages/Tab3';
@@ -60,7 +62,7 @@ const App: React.FC = () => {
   return (
     <IonApp>
       <IonReactRouter>
-        {!isAuthenticated ? (
+        {isAuthenticated ? (
           <Route exact path="/">
             <Login onLogin={handleLogin} />
           </Route>
@@ -77,22 +79,37 @@ const App: React.FC = () => {
               <Route path="/tab3">
                 <Tab3 />
               </Route>
+              <Route path="/tab4">
+                <Tab3 />
+              </Route>
+              <Route path="/tab5">
+                <Tab3 />
+              </Route>
               <Route exact path="/">
                 <Redirect to="/tab1" />
               </Route>
             </IonRouterOutlet>
-            <IonTabBar slot="bottom">
+
+            <IonTabBar slot="bottom" className='custom-tab-bar'>
               <IonTabButton tab="tab1" href="/tab1">
-                <IonIcon aria-hidden="true" icon={triangle} />
-                <IonLabel>Tab 1</IonLabel>
+                <IonLabel>Contacts</IonLabel>
+                <IonIcon aria-hidden="true" src='/tab/icons/people-sel.svg' />
               </IonTabButton>
               <IonTabButton tab="tab2" href="/tab2">
-                <IonIcon aria-hidden="true" icon={ellipse} />
-                <IonLabel>Tab 2</IonLabel>
+                <IonLabel>Chats</IonLabel>
+                <IonIcon aria-hidden="true" src='/tab/icons/chat.svg' />
               </IonTabButton>
               <IonTabButton tab="tab3" href="/tab3">
-                <IonIcon aria-hidden="true" icon={square} />
-                <IonLabel>Tab 3</IonLabel>
+                <IonLabel>Events</IonLabel>
+                <IonIcon aria-hidden="true" src='/tab/icons/calendar.svg' />
+              </IonTabButton>
+              <IonTabButton tab="tab4" href="/tab4">
+                <IonLabel>History</IonLabel>
+                <IonIcon aria-hidden="true" src='/tab/icons/history.svg' />
+              </IonTabButton>
+              <IonTabButton tab="tab5" href="/tab5">
+                <IonLabel>Settings</IonLabel>
+                <IonIcon aria-hidden="true" src='/tab/icons/settings.svg' />
               </IonTabButton>
             </IonTabBar>
           </IonTabs>

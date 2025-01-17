@@ -1,0 +1,23 @@
+.custom-tab-bar {
+    --background: #C2A9EF;
+    --color: white;
+
+}
+
+.custom-tab-bar > ion-tab-button.tab-selected, ion-tab-button.tab-focused {
+    /* color: blue; */
+    --color-selected: blue;
+    font-weight: bolder;
+}
+
+
+
+/* Mostrar el label encima del Icon */
+
+ion-tab-button {
+    flex-direction: column-reverse;
+}
+
+ion-tab-button > ion-icon, ion-label {
+    margin: 0px;
+}
