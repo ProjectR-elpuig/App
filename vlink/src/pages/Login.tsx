@@ -47,7 +47,7 @@ const Login: React.FC<{ onLogin: () => void }> = ({ onLogin }) => {
               </IonButton>
               
               <IonButton onClick={authDiscord} className="discord-button" expand="block">
-                <img src="/imgs/discord-logo.png" alt="Discord" />
+                <img className='discord-image' src="/imgs/discord-logo2.png" alt="Discord" />
               </IonButton>
             </div>
 

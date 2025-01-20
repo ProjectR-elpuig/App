@@ -1,0 +1,24 @@
+.settings-button {
+    display: flex;
+    align-items: center;
+    background-color: #1c1c1e;
+    padding: 10px 20px;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.settings-button:hover {
+    background-color: #333333;
+}
+
+.button-icon {
+    font-size: 20px;
+    margin-right: 10px;
+}
+
+.button-text {
+    font-size: 16px;
+    font-weight: 500;
+}

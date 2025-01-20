@@ -62,7 +62,7 @@ const App: React.FC = () => {
   return (
     <IonApp>
       <IonReactRouter>
-        {isAuthenticated ? (
+        {!isAuthenticated ? (
           <Route exact path="/">
             <Login onLogin={handleLogin} />
           </Route>

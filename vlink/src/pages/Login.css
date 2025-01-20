@@ -49,6 +49,12 @@
   width: 50%;
   flex: 1;
   box-shadow: 4px 4px 8px rgba(244, 5, 82, 0.4);
+  transition: background-color 0.1 ease;
+}
+
+.cfx-button:hover {
+  --background: #F40552;
+  color: white;
 }
 
 .discord-button {
