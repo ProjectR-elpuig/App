@@ -8,29 +8,34 @@ import {
   IonImg,
 } from '@ionic/react';
 import './Login.css';
+import { login, register } from '../services/authService'; // Importa el servicio de autenticación
 
-const Login: React.FC<{ onLogin: () => void }> = ({ onLogin }) => {
+const Login: React.FC<{ onLogin: (token: string) => void }> = ({ onLogin }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState<string | null>(null); // Para mostrar errores
 
-  const handleLogin = () => {
-    onLogin();
-    // console.log('login he llegado', username, password);
-    // if (username === 'adm' && password === 'adm') {
-    //   onLogin(); // Llamar a la función del padre para actualizar el estado
-    // } else {
-    //   alert('Usuario o contraseña incorrectos');
-    // }
+  const handleLogin = async () => {
+    setError(null); // Reinicia el mensaje de error
+    try {
+      const data = await login(username, password); // Llama al servicio de login
+      localStorage.setItem('token', data.token); // Guarda el token en el almacenamiento local
+      onLogin(data.token); // Notifica al componente padre que el usuario ha iniciado sesión
+    } catch (err: any) {
+      setError(err.response?.data?.error || 'Error al iniciar sesión.');
+    }
   };
 
   const authCfx = () => {
-    onLogin();
+    // Aquí puedes implementar la autenticación con CFX
+    onLogin('');
   };
 
   const authDiscord = () => {
-    onLogin();
+    // Aquí puedes implementar la autenticación con Discord
+    onLogin('');
   };
-  
+
   return (
     <IonPage>
       <IonContent>
@@ -43,11 +48,11 @@ const Login: React.FC<{ onLogin: () => void }> = ({ onLogin }) => {
             
             <div className="oauth-buttons">
               <IonButton onClick={authCfx} className="cfx-button" expand="block">
-                <img src="/imgs/cfx-logo.png" alt="CFX"/>
+                <img src="/imgs/cfx-logo.png" alt="CFX" />
               </IonButton>
               
               <IonButton onClick={authDiscord} className="discord-button" expand="block">
-                <img className='discord-image' src="/imgs/discord-logo2.png" alt="Discord" />
+                <img src="/imgs/discord-logo2.png" alt="Discord" />
               </IonButton>
             </div>
 
@@ -55,13 +60,12 @@ const Login: React.FC<{ onLogin: () => void }> = ({ onLogin }) => {
               <span>OR</span>
             </div>
 
-            
-            <form className="login-form">
+            <form className="login-form" onSubmit={(e) => e.preventDefault()}>
               <h3>Login</h3>
               <IonInput
                 type="text"
                 value={username}
-                placeholder="username"
+                placeholder="Username"
                 className="custom-input"
                 onIonChange={(e) => setUsername(e.detail.value!)}
               />
@@ -69,7 +73,7 @@ const Login: React.FC<{ onLogin: () => void }> = ({ onLogin }) => {
               <IonInput
                 type="password"
                 value={password}
-                placeholder="password"
+                placeholder="Password"
                 className="custom-input"
                 onIonChange={(e) => setPassword(e.detail.value!)}
               />
@@ -78,6 +82,8 @@ const Login: React.FC<{ onLogin: () => void }> = ({ onLogin }) => {
                 Login
               </IonButton>
             </form>
+
+            {error && <IonText color="danger" className="error-text">{error}</IonText>}
 
             <p className="create-account">
               Join discord to create account!
