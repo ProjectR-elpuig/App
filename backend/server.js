@@ -8,11 +8,11 @@ const cors = require('cors'); // Importa el paquete CORS
 const app = express();
 
 // Configuración de CORS
-app.use(cors({
-  origin: 'http://localhost:8100', // Origen permitido (tu aplicación Ionic)
-  methods: ['GET', 'POST'],       // Métodos HTTP permitidos
-  allowedHeaders: ['Content-Type', 'Authorization'], // Encabezados permitidos
-}));
+// app.use(cors({
+//   origin: 'http://localhost:8100', // Origen permitido (tu aplicación Ionic)
+//   methods: ['GET', 'POST'],       // Métodos HTTP permitidos
+//   allowedHeaders: ['Content-Type', 'Authorization'], // Encabezados permitidos
+// }));
 
 // Middleware para parsear JSON
 app.use(express.json());
