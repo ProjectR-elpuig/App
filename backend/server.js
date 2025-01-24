@@ -14,6 +14,8 @@ const app = express();
 //   allowedHeaders: ['Content-Type', 'Authorization'], // Encabezados permitidos
 // }));
 
+app.use(cors());
+
 // Middleware para parsear JSON
 app.use(express.json());
 
