@@ -14,7 +14,7 @@
 
 /* Mostrar el label encima del Icon */
 
-ion-tab-button {
+.reverseTab {
     flex-direction: column-reverse;
 }
 

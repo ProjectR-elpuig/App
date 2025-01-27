@@ -91,24 +91,24 @@ const App: React.FC = () => {
             </IonRouterOutlet>
 
             <IonTabBar slot="bottom" className='custom-tab-bar'>
-              <IonTabButton tab="tab1" href="/tab1">
+              <IonTabButton className='reverseTab' tab="tab1" href="/tab1">
                 <IonLabel>Contacts</IonLabel>
                 <IonIcon aria-hidden="true" src='/tab/icons/people-sel.svg' />
               </IonTabButton>
-              <IonTabButton tab="tab2" href="/tab2">
+              <IonTabButton className='reverseTab' tab="tab2" href="/tab2">
                 <IonLabel>Chats</IonLabel>
                 <IonIcon aria-hidden="true" src='/tab/icons/chat.svg' />
               </IonTabButton>
-              <IonTabButton tab="tab3" href="/tab3">
+              <IonTabButton className='reverseTab' tab="tab3" href="/tab3">
                 <IonLabel>Events</IonLabel>
                 <IonIcon aria-hidden="true" src='/tab/icons/calendar.svg' />
               </IonTabButton>
-              <IonTabButton tab="tab4" href="/tab4">
+              <IonTabButton className='reverseTab' tab="tab4" href="/tab4">
                 <IonLabel>History</IonLabel>
                 <IonIcon aria-hidden="true" src='/tab/icons/history.svg' />
               </IonTabButton>
-              <IonTabButton tab="tab5" href="/tab5">
-                <IonLabel>Settings</IonLabel>
+              <IonTabButton className='reverseTab' tab="tab5" href="/tab5">
+                <IonLabel>Settings</IonLabel  >
                 <IonIcon aria-hidden="true" src='/tab/icons/settings.svg' />
               </IonTabButton>
             </IonTabBar>
