@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000'; // Cambia por la URL de tu backend
+const API_URL = 'http://143.47.38.69:5000'; // Cambia por la URL de tu backend
 
 export interface LoginResponse {
   token: string;
