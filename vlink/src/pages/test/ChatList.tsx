@@ -25,61 +25,17 @@ import {
 import "./ChatList.css"
 
 const contacts = [
-  {
-    name: "Haylie Baptista",
-    image:
-      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Practica_App_movil-2gZWKvgrjeDHP5Y6nrY1RRXIK95Qqj.png",
-  },
-  {
-    name: "Talan Bergson",
-    image:
-      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Practica_App_movil-2gZWKvgrjeDHP5Y6nrY1RRXIK95Qqj.png",
-  },
-  {
-    name: "Emerson Geidt",
-    image:
-      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Practica_App_movil-2gZWKvgrjeDHP5Y6nrY1RRXIK95Qqj.png",
-  },
-  {
-    name: "Lindsey Kenter",
-    image:
-      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Practica_App_movil-2gZWKvgrjeDHP5Y6nrY1RRXIK95Qqj.png",
-  },
-  {
-    name: "Maria Schleifer",
-    image:
-      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Practica_App_movil-2gZWKvgrjeDHP5Y6nrY1RRXIK95Qqj.png",
-  },
-  {
-    name: "Jakob Passaquindici Arcand",
-    image:
-      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Practica_App_movil-2gZWKvgrjeDHP5Y6nrY1RRXIK95Qqj.png",
-  },
-  {
-    name: "Aspen Rhiel Madsen",
-    image:
-      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Practica_App_movil-2gZWKvgrjeDHP5Y6nrY1RRXIK95Qqj.png",
-  },
-  {
-    name: "Marley Ekstrom Bothman",
-    image:
-      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Practica_App_movil-2gZWKvgrjeDHP5Y6nrY1RRXIK95Qqj.png",
-  },
-  {
-    name: "Justin Workman",
-    image:
-      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Practica_App_movil-2gZWKvgrjeDHP5Y6nrY1RRXIK95Qqj.png",
-  },
-  {
-    name: "Alfonso Korsgaard",
-    image:
-      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Practica_App_movil-2gZWKvgrjeDHP5Y6nrY1RRXIK95Qqj.png",
-  },
-  {
-    name: "Tatiana Lipshutz",
-    image:
-      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Practica_App_movil-2gZWKvgrjeDHP5Y6nrY1RRXIK95Qqj.png",
-  },
+  { name: "Haylie Baptista" },
+  { name: "Talan Bergson" },
+  { name: "Emerson Geidt" },
+  { name: "Lindsey Kenter" },
+  { name: "Maria Schleifer" },
+  { name: "Jakob Passaquindici Arcand" },
+  { name: "Aspen Rhiel Madsen" },
+  { name: "Marley Ekstrom Bothman" },
+  { name: "Justin Workman" },
+  { name: "Alfonso Korsgaard" },
+  { name: "Tatiana Lipshutz" },
 ]
 
 const ChatList: React.FC = () => {
@@ -102,10 +58,10 @@ const ChatList: React.FC = () => {
         <IonList>
           {contacts.map((contact, i) => (
             <IonItem key={i} className="chat-item">
-              <IonAvatar slot="start">
-                <img src={contact.image || "/placeholder.svg"} alt={contact.name} />
+              <IonAvatar slot="start" className="avatar">
+                <img src={`https://randomuser.me/api/portraits/men/${i}.jpg`} alt={contact.name} />
               </IonAvatar>
-              <IonLabel>
+              <IonLabel className="textUser">
                 <h2>{contact.name}</h2>
                 <p>Last message</p>
               </IonLabel>

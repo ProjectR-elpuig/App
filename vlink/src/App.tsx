@@ -11,11 +11,11 @@ import {
   setupIonicReact
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { ellipse, square, triangle } from 'ionicons/icons';
+// import { ellipse, square, triangle } from 'ionicons/icons';
 import './App.css';
 
 import Tab1 from './pages/Tab1';
-import Tab2 from './pages/Tab2';
+// import Tab2 from './pages/Tab2';
 import Tab3 from './pages/Tab3';
 import Login from './pages/Login';
 import ChatList from './pages/test/ChatList';
