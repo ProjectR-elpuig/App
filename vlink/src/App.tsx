@@ -18,6 +18,7 @@ import Tab1 from './pages/Tab1';
 import Tab2 from './pages/Tab2';
 import Tab3 from './pages/Tab3';
 import Login from './pages/Login';
+import ChatList from './pages/test/ChatList';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -52,7 +53,7 @@ import './theme/variables.css';
 setupIonicReact();
 
 const App: React.FC = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
 
   const handleLogin = () => {
     console.log('handleLogin he llegado',  true);
@@ -74,7 +75,7 @@ const App: React.FC = () => {
                 <Tab1 />
               </Route>
               <Route exact path="/tab2">
-                <Tab2 />
+                <ChatList />
               </Route>
               <Route path="/tab3">
                 <Tab3 />
