@@ -8,7 +8,7 @@ import {
   IonImg,
 } from '@ionic/react';
 import './Login.css';
-import { login, register } from '../services/authService'; // Importa el servicio de autenticación
+import { login } from '../../services/authService'; // Importa el servicio de autenticación
 
 const Login: React.FC<{ onLogin: (token: string) => void }> = ({ onLogin }) => {
   const [username, setUsername] = useState('');
