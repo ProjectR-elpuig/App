@@ -35,7 +35,7 @@ app.use(passport.session());
 
 // Pool de conexión a MariaDB
 const pool = mariadb.createPool({
-    host: '185.221.20.35', // Cambia si usas un host diferente
+    host: '185.221.20.53', // Cambia si usas un host diferente
     user: 'vlink',         // Cambia al usuario configurado
     password: 'xijojoPo42W8kiloPOvA5OjIvopuXo', // Cambia a tu contraseña
     database: 'vlink',     // Nombre de la base de datos
