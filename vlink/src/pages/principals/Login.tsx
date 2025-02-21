@@ -16,14 +16,16 @@ const Login: React.FC<{ onLogin: (token: string) => void }> = ({ onLogin }) => {
   const [error, setError] = useState<string | null>(null); // Para mostrar errores
 
   const handleLogin = async () => {
-    setError(null); // Reinicia el mensaje de error
-    try {
-      const data = await login(username, password); // Llama al servicio de login
-      localStorage.setItem('token', data.token); // Guarda el token en el almacenamiento local
-      onLogin(data.token); // Notifica al componente padre que el usuario ha iniciado sesión
-    } catch (err: any) {
-      setError(err.response?.data?.error || 'Error al iniciar sesión.');
-    }
+    // setError(null); // Reinicia el mensaje de error
+    // try {
+    //   const data = await login(username, password); // Llama al servicio de login
+    //   localStorage.setItem('token', data.token); // Guarda el token en el almacenamiento local
+    //   onLogin(data.token); // Notifica al componente padre que el usuario ha iniciado sesión
+    // } catch (err: any) {
+    //   setError(err.response?.data?.error || 'Error al iniciar sesión.');
+    // }
+
+    onLogin(''); // Elimina esta línea cuando implementes la autenticación
   };
 
   const authCfx = () => {
