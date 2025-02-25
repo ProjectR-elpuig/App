@@ -1,79 +1,24 @@
-/* Status bar styles */
-.statusbar {
-  background: black;
-  color: white;
-  padding: 8px 16px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-family: "Geist Mono", monospace;
-}
-
-/* Header styles */
-.appheader {
-  --background: var(--ion-color-primary);
-}
-
-.logocontainer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  width: 100%;
-  padding: 10px 0;
-}
-
-.logocontainer h1 {
-  color: white;
-  font-family: "Geist Mono", monospace;
-  font-size: 24px;
-  margin: 0;
-}
-
-.infinitylogo {
-  background: white;
-  border-radius: 8px;
-  padding: 4px;
-  width: 32px;
-  height: 32px;
-}
-
-/* Search bar styles */
-.customsearchbar {
-  --background: white;
-  --color: black;
-  --placeholder-color: #929292;
-  --icon-color: #929292;
-  --border-radius: 8px;
-  padding: 0 16px;
-  font-family: "Geist Mono", monospace;
-}
-
-/* Contact list styles */
-.contactitem {
+/* Chat list */
+.chatItems {
   --background: transparent;
-  --color: white;
+  --border-color: transparent;
   --padding-start: 16px;
   --padding-end: 16px;
-  --padding-top: 8px;
-  --padding-bottom: 8px;
-  font-family: "Geist Mono", monospace;
+  h2 {
+    font-size: 1.2rem;
+  }
+  p {
+    font-size: 1rem;
+  }
 }
 
-.contactitem:hover {
-  --background: rgba(113, 145, 207, 0.2);
+.chatItems:hover {
+  --background: rgba(255, 255, 255, 0.1);
 }
 
-/* Content background */
-ion-content {
-  --background: var(--ion-color-primary);
+.textUser h2 {
+  color: white !important;
+  font-weight: 500;
+  font-size: 1.3rem;
+  font-family: 'Jersey10', sans-serif;
 }
-
-ion-list {
-  background: transparent;
-}
-
-ion-item {
-  --background: transparent;
-}
-
