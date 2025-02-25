@@ -39,13 +39,17 @@ const ContactDetail: React.FC = () => {
         return `${randomNumber.slice(0, 3)} ${randomNumber.slice(3, 5)} ${randomNumber.slice(5, 7)} ${randomNumber.slice(7, 9)}`;
     };
 
+    const onBack = (): void => {
+        history.push("/contactos");
+    }
+
     return (
         <IonPage>
         {/* Header */}
         <IonHeader className="ion-no-border">
             <IonToolbar className={styles.toolbar}>
             <IonButtons slot="start">
-                <IonButton className={styles.iconButton}>
+                <IonButton onClick={onBack} className={styles.iconButton}>
                 <IonIcon icon={arrowBack} />
                 </IonButton>
             </IonButtons>
