@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Redirect, Route, useHistory  } from 'react-router-dom';
+import { Redirect, Route, useHistory, useLocation  } from 'react-router-dom';
 import {
   IonApp,
   IonIcon,
@@ -16,12 +16,15 @@ import { IonReactRouter } from '@ionic/react-router';
 import './App.css';
 
 import SplashScreen from "./pages/test/SplashScreen";
-import Tab1 from './pages/Tab1';
+// import Tab1 from './pages/Tab1';
 // import Tab2 from './pages/Tab2';
-import Tab3 from './pages/Tab3';
+// import Tab3 from './pages/Tab3';
 import Login from './pages/principals/Login';
 import ChatList from './pages/test/ChatList';
-import ContactsPage from './pages/test/ContactsPage';
+
+// Importaciones de las paginas de Contactos
+import ContactsPage from './pages/contactos/principal/ContactsPage';
+import ContactDetail from './pages/contactos/ContactDetail';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -56,28 +59,19 @@ import './theme/variables.css';
 setupIonicReact();
 
 const App: React.FC = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
   const [showSplash, setShowSplash] = useState(true);
   const history = useHistory();
   const router = useIonRouter();
 
   const handleLogin = () => {
-    console.log('handleLogin he llegado',  true);
-    setIsAuthenticated(true); // Cambia el estado al iniciar sesión
-    // history.push('/tab1'); // Redirigir a la pantalla principal
-    router.push('/tab3');
+    console.log('handleLogin he llegado', true);
+    setIsAuthenticated(true);
   };
 
   useEffect(() => {
     setTimeout(() => setShowSplash(false), 3000);
   }, []);
-
-  // Redirigir a "/"" si el usuario no está autenticado
-  // useEffect(() => {
-  //   if (!isAuthenticated) {
-  //     history.push("/");
-  //   }
-  // }, [isAuthenticated, history]);
 
   return (
     <IonApp>
@@ -85,62 +79,73 @@ const App: React.FC = () => {
         <SplashScreen />
       ) : (
         <IonReactRouter>
-          {!isAuthenticated ? (
-            <Route exact path="/">
-              <Login onLogin={handleLogin} />
-            </Route>
-          ) : 
-          (
-            <IonTabs>
-              <IonRouterOutlet>
-                <Route exact path="/tab1">
-                  <ContactsPage />
-                </Route>
-                <Route exact path="/tab2">
-                  <ChatList />
-                </Route>
-                <Route path="/tab3">
-                  <Tab3 />
-                </Route>
-                <Route path="/tab4">
-                  <Tab3 />
-                </Route>
-                <Route path="/tab5">
-                  <Tab3 />
-                </Route>
-                <Route exact path="/">
-                  <Redirect to="/tab1" />
-                </Route>
-              </IonRouterOutlet>
-
-              <IonTabBar slot="bottom" className='custom-tab-bar'>
-                <IonTabButton className='reverseTab' tab="tab1" href="/tab1">
-                  <IonLabel>Contacts</IonLabel>
-                  <IonIcon aria-hidden="true" src='/tab/icons/people-sel.svg' />
-                </IonTabButton>
-                <IonTabButton className='reverseTab' tab="tab2" href="/tab2">
-                  <IonLabel>Chats</IonLabel>
-                  <IonIcon aria-hidden="true" src='/tab/icons/chat.svg' />
-                </IonTabButton>
-                <IonTabButton className='reverseTab' tab="tab3" href="/tab3">
-                  <IonLabel>Events</IonLabel>
-                  <IonIcon aria-hidden="true" src='/tab/icons/calendar.svg' />
-                </IonTabButton>
-                <IonTabButton className='reverseTab' tab="tab4" href="/tab4">
-                  <IonLabel>History</IonLabel>
-                  <IonIcon aria-hidden="true" src='/tab/icons/history.svg' />
-                </IonTabButton>
-                <IonTabButton className='reverseTab' tab="tab5" href="/tab5">
-                  <IonLabel>Settings</IonLabel  >
-                  <IonIcon aria-hidden="true" src='/tab/icons/settings.svg' />
-                </IonTabButton>
-              </IonTabBar>
-            </IonTabs>
-          )
-          }
+          <MainApp isAuthenticated={isAuthenticated} onLogin={handleLogin} />
         </IonReactRouter>
       )}
     </IonApp>
+  );
+};
+
+const MainApp: React.FC<{ isAuthenticated: boolean; onLogin: () => void }> = ({ isAuthenticated, onLogin }) => {
+  const location = useLocation(); // ✅ Ahora dentro de IonReactRouter
+
+  return !isAuthenticated ? (
+    <Route exact path="/">
+      <Login onLogin={onLogin} />
+    </Route>
+  ) : (
+    <IonTabs>
+      <IonRouterOutlet>
+        {/* CONTACTOS */}
+        <Route exact path="/contactos">
+          <ContactsPage />
+        </Route>
+        <Route exact path="/contactos/agregar">
+          <ContactsPage />
+        </Route>
+        <Route exact path="/contactos/:id">
+          <ContactDetail />
+        </Route>
+
+        {/* CHATS */}
+        <Route exact path="/chats">
+          <ChatList />
+        </Route>
+
+        {/* EVENTOS */}
+        <Route path="/tab3">
+          <h1>HOLA</h1>
+        </Route>
+        <Route path="/tab4"></Route>
+        <Route path="/tab5"></Route>
+        <Route exact path="/">
+          <Redirect to="/contactos" />
+        </Route>
+      </IonRouterOutlet>
+
+      <IonTabBar slot="bottom" className="custom-tab-bar">
+        <IonTabButton className="reverseTab" tab="contactos" href="/contactos">
+          <IonLabel>Contacts</IonLabel>
+          <IonIcon aria-hidden="true" src={location.pathname.startsWith("/contactos") ? "/tab/icons/people-sel.svg" : "/tab/icons/people.svg"} />
+        </IonTabButton>
+        <IonTabButton className="reverseTab" tab="chats" href="/chats">
+          <IonLabel>Chats</IonLabel>
+          <IonIcon aria-hidden="true" src={location.pathname.startsWith("/chats") ? "/tab/icons/chat-sel.svg" : "/tab/icons/chat.svg"} />
+        </IonTabButton>
+        <IonTabButton className="reverseTab" tab="tab3" href="/tab3">
+          <IonLabel>Events</IonLabel>
+          <IonIcon aria-hidden="true" src={location.pathname.startsWith("/tab3") ? "/tab/icons/calendar-sel.svg" : "/tab/icons/calendar.svg"} />
+        </IonTabButton>
+        <IonTabButton className="reverseTab" tab="tab4" href="/tab4">
+          <IonLabel>History</IonLabel>
+          <IonIcon aria-hidden="true" src={location.pathname.startsWith("/tab4") ? "/tab/icons/history-sel.svg" : "/tab/icons/history.svg"} />
+        </IonTabButton>
+        <IonTabButton className="reverseTab" tab="tab5" href="/tab5">
+          <IonLabel>Settings</IonLabel>
+          <IonIcon aria-hidden="true" src={location.pathname.startsWith("/tab5") ? "/tab/icons/settings-sel.svg" : "/tab/icons/settings.svg"} />
+        </IonTabButton>
+      </IonTabBar>
+    </IonTabs>
   );
 };
 
