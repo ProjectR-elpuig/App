@@ -6,13 +6,13 @@ import styles from "./splashscreen.module.css"; // Importa el module.css
 
 const SplashScreen: React.FC = () => {
   // const history = useHistory();
-  const router = useIonRouter();
+  // const router = useIonRouter();
   const [showText, setShowText] = useState(false);
 
   useEffect(() => {
     setTimeout(() => setShowText(true), 3000); // Muestra el texto después de la animación del logo
-    setTimeout(() => router.push("/"), 5000); // Redirige al login después de la animación
-  }, [router]);
+    // setTimeout(() => router.push("/"), 5000); // Redirige al login después de la animación
+  }, []);
 
   return (
     <motion.div
