@@ -30,11 +30,11 @@ const contacts = [
 const ContactDetail: React.FC = () => {
     const { id } = useParams<{ id: string }>(); // Obtiene el ID de la URL
     const history = useHistory();
-  
+
     const generatePhoneNumber = (): string => {
         // Genera un número aleatorio de 9 dígitos como string
         const randomNumber = Math.floor(100000000 + Math.random() * 900000000).toString();
-      
+
         // Formatea el número como "123 45 67 89"
         return `${randomNumber.slice(0, 3)} ${randomNumber.slice(3, 5)} ${randomNumber.slice(5, 7)} ${randomNumber.slice(7, 9)}`;
     };
@@ -44,73 +44,77 @@ const ContactDetail: React.FC = () => {
     }
 
     const onEdit = (): void => {
-        history.push(`/contactos/${id}/edit`);
+        history.push(`/contactos/perfil/${id}/edit`);
     }
 
     return (
         <IonPage>
-        {/* Header */}
-        <IonHeader className="ion-no-border">
-            <IonToolbar className={styles.toolbar}>
-            <IonButtons slot="start">
-                <IonButton onClick={onBack} className={styles.iconButton}>
-                <IonIcon icon={arrowBack} />
-                </IonButton>
-            </IonButtons>
-            <IonButtons slot="end">
-                <IonButton onClick={onEdit} className={styles.iconButton}>
-                <IonIcon icon={pencil} />
-                </IonButton>
-            </IonButtons>
-            </IonToolbar>
-        </IonHeader>
+            {/* Header */}
+            <IonHeader className="ion-no-border">
+                <IonToolbar className={styles.toolbar}>
+                    <IonButtons slot="start">
+                        <IonButton onClick={onBack} className={styles.iconButton}>
+                            <IonIcon icon={arrowBack} />
+                        </IonButton>
+                    </IonButtons>
+                    <IonButtons slot="end">
+                        <IonButton onClick={onEdit} className={styles.iconButton}>
+                            <IonIcon icon={pencil} />
+                        </IonButton>
+                    </IonButtons>
+                </IonToolbar>
+            </IonHeader>
 
-        <IonContent className={styles.content}>
-            <div className={styles.profileContainer}>
-            {/* Profile Image */}
-            <div className={styles.profileImage}>
-                <img src={`https://randomuser.me/api/portraits/${id-1 % 2 == 0 ? "" : "wo"}men/${id}.jpg`} alt="Profile" />
-            </div>
+            <IonContent className={styles.content}>
+                <div className={styles.profileContainer}>
+                    {/* Profile Image */}
+                    <div className={styles.profileImage}>
+                        <img src={
+                            contacts[id] ?
+                            `https://randomuser.me/api/portraits/${id - 1 % 2 == 0 ? "" : "wo"}men/${id}.jpg` :
+                            "https://i.gyazo.com/17f37bb6fd035c2055614479d36c7de2.jpg"} alt="Profile" />
+                            id
+                    </div>
 
-            {/* Name */}
-            <h1 className={styles.name}>{contacts[id].name}</h1>
+                    {/* Name */}
+                    <h1 className={styles.name}>{contacts[id] ? contacts[id].name : "hola"}</h1>
 
-            {/* Message Button */}
-            <button className={styles.messageButton}>
-                <IonIcon icon={chatbubbleEllipses} />
-                <span>Mensaje</span>
-            </button>
+                    {/* Message Button */}
+                    <button className={styles.messageButton}>
+                        <IonIcon icon={chatbubbleEllipses} />
+                        <span>Mensaje</span>
+                    </button>
 
-            {/* Contact Information */}
-            <div className={styles.infoSection}>
-                <h2 className={styles.infoTitle}>Contact Information</h2>
-                <div className={styles.phoneNumber}>
-                <IonIcon icon={call} />
-                <span>{generatePhoneNumber()}</span>
+                    {/* Contact Information */}
+                    <div className={styles.infoSection}>
+                        <h2 className={styles.infoTitle}>Contact Information</h2>
+                        <div className={styles.phoneNumber}>
+                            <IonIcon icon={call} />
+                            <span>{generatePhoneNumber()}</span>
+                        </div>
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className={styles.actionButtons}>
+                        <button className={styles.blockButton}>
+                            <IonIcon icon={ban} />
+                            <span>Block contact</span>
+                        </button>
+                        <button className={styles.deleteButton}>
+                            <IonIcon icon={trash} />
+                            <span>Delete contact</span>
+                        </button>
+                    </div>
                 </div>
-            </div>
 
-            {/* Action Buttons */}
-            <div className={styles.actionButtons}>
-                <button className={styles.blockButton}>
-                <IonIcon icon={ban} />
-                <span>Block contact</span>
-                </button>
-                <button className={styles.deleteButton}>
-                <IonIcon icon={trash} />
-                <span>Delete contact</span>
-                </button>
-            </div>
-            </div>
-
-            {/* Footer Logo */}
-            <div className={styles.footer}>
-            <div className={styles.logo}>
-                <span>V-LINK</span>
-                <img src="/imgs/LogoTopBar.png" alt="V-Link Logo" className="topbarlogo" />
-            </div>
-            </div>
-        </IonContent>
+                {/* Footer Logo */}
+                <div className={styles.footer}>
+                    <div className={styles.logo}>
+                        <span>V-LINK</span>
+                        <img src="/imgs/LogoTopBar.png" alt="V-Link Logo" className="topbarlogo" />
+                    </div>
+                </div>
+            </IonContent>
         </IonPage>
     )
 }

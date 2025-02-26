@@ -119,7 +119,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  font-family: "Geist Mono", monospace;
+  font-family: 'Jersey10', sans-serif;
   cursor: pointer;
   transition: background-color 0.2s;
 }
@@ -146,7 +146,7 @@
   align-items: center;
   gap: 8px;
   color: white;
-  font-family: "Geist Mono", monospace;
+  font-family: 'Jersey10', sans-serif;
   font-size: 18px;
 }
 

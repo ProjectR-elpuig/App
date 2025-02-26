@@ -9,11 +9,16 @@ import {
   IonItem,
   IonAvatar,
   IonLabel,
+  IonFab,
+  IonFabButton,
   IonButtons,
   IonButton,
   IonIcon,
   IonPage,
 } from "@ionic/react"
+import {
+  add
+} from "ionicons/icons"
 import { useHistory } from 'react-router-dom';
 import { menuOutline, wifiOutline } from "ionicons/icons"
 import { useState } from "react"
@@ -50,12 +55,16 @@ const ContactsPage: React.FC = () => {
   const history = useHistory();
 
   const handleRedirect = (id: number) => {
-    history.push(`/contactos/${id}`);
+    history.push(`/contactos/perfil/${id}`);
   };
 
   const filteredContacts = contacts.filter(contact =>
     contact.name.toLowerCase().includes(searchText.toLowerCase())
   );
+
+  const handleAddContact = () => {
+    history.push("/contactos/agregar")
+  }
 
   return (
       <IonPage>
@@ -90,6 +99,12 @@ const ContactsPage: React.FC = () => {
               </IonItem>
             ))}
           </IonList>
+          {/* Floating Action Button */}
+          <IonFab vertical="bottom" horizontal="end" slot="fixed" className="fab">
+            <IonFabButton onClick={handleAddContact} className="fab-button">
+              <IonIcon icon={add} />
+            </IonFabButton>
+          </IonFab>
         </IonContent>
       </IonPage>
     )
