@@ -70,7 +70,7 @@ const App: React.FC = () => {
   };
 
   useEffect(() => {
-    setTimeout(() => setShowSplash(false), 3000);
+    setTimeout(() => setShowSplash(false), 100);
   }, []);
 
   return (

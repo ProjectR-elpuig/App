@@ -8,8 +8,8 @@
 }
 
 .custom-tab-bar > ion-tab-button.tab-selected, ion-tab-button.tab-focused {
-    --color-selected: blue;
-    font-size: 0.85rem;
+    --color-selected: rgb(255, 255, 255);
+    font-size: 0.9rem;
 }
 
 
