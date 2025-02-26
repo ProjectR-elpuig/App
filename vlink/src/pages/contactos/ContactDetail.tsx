@@ -43,6 +43,10 @@ const ContactDetail: React.FC = () => {
         history.push("/contactos");
     }
 
+    const onEdit = (): void => {
+        history.push(`/contactos/${id}/edit`);
+    }
+
     return (
         <IonPage>
         {/* Header */}
@@ -54,7 +58,7 @@ const ContactDetail: React.FC = () => {
                 </IonButton>
             </IonButtons>
             <IonButtons slot="end">
-                <IonButton className={styles.iconButton}>
+                <IonButton onClick={onEdit} className={styles.iconButton}>
                 <IonIcon icon={pencil} />
                 </IonButton>
             </IonButtons>
@@ -69,7 +73,7 @@ const ContactDetail: React.FC = () => {
             </div>
 
             {/* Name */}
-            <h1 className={styles.name}>{contacts[id-1].name}</h1>
+            <h1 className={styles.name}>{contacts[id].name}</h1>
 
             {/* Message Button */}
             <button className={styles.messageButton}>

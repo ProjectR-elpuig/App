@@ -1,0 +1,151 @@
+/* Page styles */
+.page {
+  background: #1f52b5;
+}
+
+/* Status bar */
+.statusBar {
+  background: black;
+  color: white;
+  padding: 8px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: "Geist Mono", monospace;
+}
+
+/* Header styles */
+.toolbar {
+  --background: #1f52b5 !important;
+  padding: 0;
+}
+
+.backButton {
+  --color: white !important;
+  font-size: 24px;
+  margin-left: 8px;
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 1vh;
+}
+
+.logoContainer h1 {
+  color: white;
+  font-family: 'Jersey25', sans-serif;
+  font-size: 24px;
+  margin: 0;
+}
+
+.infinityLogo {
+  background: white;
+  border-radius: 8px;
+  padding: 4px;
+  width: 32px;
+  height: 32px;
+}
+
+/* Content styles */
+.content {
+  --background: #1f52b5 !important;
+  --padding-start: 16px;
+  --padding-end: 16px;
+}
+
+/* Profile photo */
+.profilePhotoContainer {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0 40px;
+}
+
+.profilePhoto {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.profilePhoto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photoEditButton {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.5);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+/* Form fields */
+.formFields {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.input {
+  --background: white !important;
+  --color: #000000 !important;
+  --placeholder-color: #929292 !important;
+  --padding-start: 16px !important;
+  --padding-end: 16px !important;
+  --border-radius: 8px !important;
+  font-family: "Geist Mono", monospace !important;
+}
+
+/* Buttons */
+.buttonContainer {
+  margin-bottom: 20px;
+}
+
+.confirmButton {
+  --background: white !important;
+  --color: black !important;
+  --border-radius: 8px !important;
+  --box-shadow: none !important;
+  font-family: "Geist Mono", monospace !important;
+  font-weight: bold !important;
+  margin: 0 !important;
+  height: 50px !important;
+}
+
+.cancelButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #cc5656;
+  padding: 16px;
+  font-family: "Geist Mono", monospace;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* Override Ionic default styles */
+:global(.ion-page) {
+  background: #1f52b5;
+}
+
+:global(.header-md::after) {
+  display: none;
+}
+

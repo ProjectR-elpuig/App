@@ -25,6 +25,7 @@ import ChatList from './pages/test/ChatList';
 // Importaciones de las paginas de Contactos
 import ContactsPage from './pages/contactos/principal/ContactsPage';
 import ContactDetail from './pages/contactos/ContactDetail';
+import AddContactPage from './pages/contactos/AddOrEditContact';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -87,7 +88,14 @@ const App: React.FC = () => {
 };
 
 const MainApp: React.FC<{ isAuthenticated: boolean; onLogin: () => void }> = ({ isAuthenticated, onLogin }) => {
-  const location = useLocation(); // ✅ Ahora dentro de IonReactRouter
+  const location = useLocation(); 
+
+  // Definir rutas donde NO se debe mostrar la barra de navegación
+  const hiddenTabBarRoutes = ["/", "/login", "/contactos/agregar", "/contactos/:id", "/chats"];
+
+  const shouldHideTabBar = hiddenTabBarRoutes.some((route) =>
+    new RegExp(`^${route.replace(/:[^\s/]+/g, ".*")}$`).test(location.pathname)
+  );
 
   return !isAuthenticated ? (
     <Route exact path="/">
@@ -96,23 +104,26 @@ const MainApp: React.FC<{ isAuthenticated: boolean; onLogin: () => void }> = ({ 
   ) : (
     <IonTabs>
       <IonRouterOutlet>
-        {/* CONTACTOS */}
+        {/* Contactos */}
         <Route exact path="/contactos">
           <ContactsPage />
         </Route>
         <Route exact path="/contactos/agregar">
-          <ContactsPage />
+          <AddContactPage />
         </Route>
         <Route exact path="/contactos/:id">
           <ContactDetail />
         </Route>
+        <Route exact path="/contactos/:id/edit">
+          <AddContactPage />
+        </Route>
 
-        {/* CHATS */}
+        {/* Chats */}
         <Route exact path="/chats">
           <ChatList />
         </Route>
 
-        {/* EVENTOS */}
+        {/* History */}
         <Route path="/tab3">
           <h1>HOLA</h1>
         </Route>
@@ -123,30 +134,34 @@ const MainApp: React.FC<{ isAuthenticated: boolean; onLogin: () => void }> = ({ 
         </Route>
       </IonRouterOutlet>
 
-      <IonTabBar slot="bottom" className="custom-tab-bar">
-        <IonTabButton className="reverseTab" tab="contactos" href="/contactos">
-          <IonLabel>Contacts</IonLabel>
-          <IonIcon aria-hidden="true" src={location.pathname.startsWith("/contactos") ? "/tab/icons/people-sel.svg" : "/tab/icons/people.svg"} />
-        </IonTabButton>
-        <IonTabButton className="reverseTab" tab="chats" href="/chats">
-          <IonLabel>Chats</IonLabel>
-          <IonIcon aria-hidden="true" src={location.pathname.startsWith("/chats") ? "/tab/icons/chat-sel.svg" : "/tab/icons/chat.svg"} />
-        </IonTabButton>
-        <IonTabButton className="reverseTab" tab="tab3" href="/tab3">
-          <IonLabel>Events</IonLabel>
-          <IonIcon aria-hidden="true" src={location.pathname.startsWith("/tab3") ? "/tab/icons/calendar-sel.svg" : "/tab/icons/calendar.svg"} />
-        </IonTabButton>
-        <IonTabButton className="reverseTab" tab="tab4" href="/tab4">
-          <IonLabel>History</IonLabel>
-          <IonIcon aria-hidden="true" src={location.pathname.startsWith("/tab4") ? "/tab/icons/history-sel.svg" : "/tab/icons/history.svg"} />
-        </IonTabButton>
-        <IonTabButton className="reverseTab" tab="tab5" href="/tab5">
-          <IonLabel>Settings</IonLabel>
-          <IonIcon aria-hidden="true" src={location.pathname.startsWith("/tab5") ? "/tab/icons/settings-sel.svg" : "/tab/icons/settings.svg"} />
-        </IonTabButton>
-      </IonTabBar>
+      {/* Solo muestra la barra si no está en una ruta oculta */}
+      {!shouldHideTabBar && (
+        <IonTabBar slot="bottom" className="custom-tab-bar">
+          <IonTabButton tab="contactos" href="/contactos">
+            <IonLabel>Contacts</IonLabel>
+            <IonIcon aria-hidden="true" src={location.pathname.startsWith("/contactos") ? "/tab/icons/people-sel.svg" : "/tab/icons/people.svg"} />
+          </IonTabButton>
+          <IonTabButton tab="chats" href="/chats">
+            <IonLabel>Chats</IonLabel>
+            <IonIcon aria-hidden="true" src={location.pathname.startsWith("/chats") ? "/tab/icons/chat-sel.svg" : "/tab/icons/chat.svg"} />
+          </IonTabButton>
+          <IonTabButton tab="tab3" href="/tab3">
+            <IonLabel>Events</IonLabel>
+            <IonIcon aria-hidden="true" src={location.pathname.startsWith("/tab3") ? "/tab/icons/calendar-sel.svg" : "/tab/icons/calendar.svg"} />
+          </IonTabButton>
+          <IonTabButton tab="tab4" href="/tab4">
+            <IonLabel>History</IonLabel>
+            <IonIcon aria-hidden="true" src={location.pathname.startsWith("/tab4") ? "/tab/icons/history-sel.svg" : "/tab/icons/history.svg"} />
+          </IonTabButton>
+          <IonTabButton tab="tab5" href="/tab5">
+            <IonLabel>Settings</IonLabel>
+            <IonIcon aria-hidden="true" src={location.pathname.startsWith("/tab5") ? "/tab/icons/settings-sel.svg" : "/tab/icons/settings.svg"} />
+          </IonTabButton>
+        </IonTabBar>
+      )}
     </IonTabs>
   );
 };
+
 
 export default App;
