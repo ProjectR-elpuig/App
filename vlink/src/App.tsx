@@ -20,7 +20,7 @@ import SplashScreen from "./pages/test/SplashScreen";
 // import Tab2 from './pages/Tab2';
 // import Tab3 from './pages/Tab3';
 import Login from './pages/principals/Login';
-import ChatList from './pages/test/ChatList';
+import ChatList from './pages/chats/ChatList';
 
 // Importaciones de las paginas de Contactos
 import ContactsPage from './pages/contactos/principal/ContactsPage';
@@ -91,7 +91,7 @@ const MainApp: React.FC<{ isAuthenticated: boolean; onLogin: () => void }> = ({ 
   const location = useLocation(); 
 
   // Definir rutas donde NO se debe mostrar la barra de navegación
-  const hiddenTabBarRoutes = ["/", "/login", "/contactos/agregar", "/contactos/:id", "/chats"];
+  const hiddenTabBarRoutes = ["/", "/login", "/contactos/agregar", "/contactos/perfil/:id"];
 
   const shouldHideTabBar = hiddenTabBarRoutes.some((route) =>
     new RegExp(`^${route.replace(/:[^\s/]+/g, ".*")}$`).test(location.pathname)
@@ -111,11 +111,11 @@ const MainApp: React.FC<{ isAuthenticated: boolean; onLogin: () => void }> = ({ 
         <Route exact path="/contactos/agregar">
           <AddContactPage />
         </Route>
-        <Route exact path="/contactos/:id">
-          <ContactDetail />
-        </Route>
-        <Route exact path="/contactos/:id/edit">
+        <Route exact path="/contactos/perfil/:id/edit">
           <AddContactPage />
+        </Route>
+        <Route exact path="/contactos/perfil/:id">
+          <ContactDetail />
         </Route>
 
         {/* Chats */}
