@@ -12,7 +12,12 @@ import {
   IonTabButton,
   IonIcon,
   IonFooter,
+  IonFab,
+  IonFabButton
 } from "@ionic/react"
+import {
+  add
+} from "ionicons/icons"
 import {
   peopleOutline,
   chatbubbleOutline,
@@ -22,6 +27,7 @@ import {
   infiniteOutline,
   wifiOutline,
 } from "ionicons/icons"
+import { useHistory } from 'react-router-dom';
 import "./ChatList.css"
 
 const contacts = [
@@ -48,6 +54,10 @@ const contacts = [
 ];
 
 const ChatList: React.FC = () => {
+  const history = useHistory();
+  const handleAddContact = () => {
+    history.push("/chats/")
+  }
   return (
     <IonPage>
       <IonHeader className="ion-no-border">
@@ -68,7 +78,7 @@ const ChatList: React.FC = () => {
           {contacts.map((contact, i) => (
             <IonItem key={i} className="chat-item">
               <IonAvatar slot="start" className="avatar">
-                <img src={`https://randomuser.me/api/portraits/${i % 2 == 0 ? "" : "wo"}men/${i}.jpg`} alt={contact.name} />
+                <img src={`https://randomuser.me/api/portraits/${i % 2 == 0 ? "men" : "women"}/${i}.jpg`} alt={contact.name} />
               </IonAvatar>
               <IonLabel className="textUser">
                 <h2>{contact.name}</h2>
@@ -77,6 +87,12 @@ const ChatList: React.FC = () => {
             </IonItem>
           ))}
         </IonList>
+        {/* Floating Action Button */}
+        <IonFab vertical="bottom" horizontal="end" slot="fixed" className="fab">
+          <IonFabButton onClick={handleAddContact} className="fab-button">
+            <IonIcon icon={add} />
+          </IonFabButton>
+        </IonFab>
       </IonContent>
     </IonPage>
   )
