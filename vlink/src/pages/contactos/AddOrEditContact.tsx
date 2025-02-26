@@ -43,7 +43,7 @@ const AddOrEditContact: React.FC<AddOrEditContactProps> = ({ contact, onSave, on
     const [imageSrc, setImageSrc] = useState(
         id
         ? `https://randomuser.me/api/portraits/${(id - 1) % 2 === 0 ? "" : "wo"}men/${id}.jpg`
-        : "URL_DE_LA_IMAGEN_POR_DEFECTO"
+        : "https://i.gyazo.com/17f37bb6fd035c2055614479d36c7de2.jpg"
     );
 
     const handleChange = (field: keyof Contact, value: string) => {
@@ -144,7 +144,11 @@ const AddOrEditContact: React.FC<AddOrEditContactProps> = ({ contact, onSave, on
                 {/* Confirm Button */}
                 <div className={styles.buttonContainer}>
                     <IonButton expand="block" className={styles.confirmButton} onClick={handleSave}>
-                        Crear Contacto
+                        {
+                            id
+                            ? "Editar Contacto"
+                            : "Crear Contacto"
+                        }
                     </IonButton>
 
                     <div className={styles.cancelButton} onClick={handleCancel}>
