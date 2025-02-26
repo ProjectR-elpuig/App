@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Redirect, Route, useHistory, useLocation  } from 'react-router-dom';
+import { Redirect, Route, useHistory, useLocation } from 'react-router-dom';
 import {
   IonApp,
   IonIcon,
@@ -88,7 +88,7 @@ const App: React.FC = () => {
 };
 
 const MainApp: React.FC<{ isAuthenticated: boolean; onLogin: () => void }> = ({ isAuthenticated, onLogin }) => {
-  const location = useLocation(); 
+  const location = useLocation();
 
   // Definir rutas donde NO se debe mostrar la barra de navegación
   const hiddenTabBarRoutes = ["/", "/login", "/contactos/agregar", "/contactos/perfil/:id"];
@@ -120,6 +120,15 @@ const MainApp: React.FC<{ isAuthenticated: boolean; onLogin: () => void }> = ({ 
 
         {/* Chats */}
         <Route exact path="/chats">
+          <ChatList />
+        </Route>
+        <Route exact path="/chats/agregar">
+          <ChatList />
+        </Route>
+        <Route exact path="/chats/chat/:id">
+          <ChatList />
+        </Route>
+        <Route exact path="/chats/chat/:id/perfil">
           <ChatList />
         </Route>
 

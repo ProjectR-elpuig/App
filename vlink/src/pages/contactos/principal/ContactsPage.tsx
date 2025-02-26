@@ -20,7 +20,6 @@ import {
   add
 } from "ionicons/icons"
 import { useHistory } from 'react-router-dom';
-import { menuOutline, wifiOutline } from "ionicons/icons"
 import { useState } from "react"
 // import "./ContactsPage.css"
 import styles from './contactpage.module.css';
@@ -64,50 +63,50 @@ const ContactsPage: React.FC = () => {
 
   const handleAddContact = () => {
     history.push("/contactos/agregar")
-  }
+  };
 
   return (
-      <IonPage>
-        <IonHeader className="ion-no-border">
-          <IonToolbar color="primary" className="header-toolbar">
-            <div className="logo-container">
-              <h1>V-LINK</h1>
-              <img src="/imgs/LogoTopBar.png" alt="V-Link Logo" className="topbarlogo" />
-            </div>
-          </IonToolbar>
-        </IonHeader>
-  
-        <IonContent fullscreen>
-          <div className="search-container">
-            <IonSearchbar placeholder="Buscar..." className="custom-searchbar" animated={true} value={searchText} onIonInput={(e) => setSearchText(e.detail.value!)} />
+    <IonPage>
+      <IonHeader className="ion-no-border">
+        <IonToolbar color="primary" className="header-toolbar">
+          <div className="logo-container">
+            <h1>V-LINK</h1>
+            <img src="/imgs/LogoTopBar.png" alt="V-Link Logo" className="topbarlogo" />
           </div>
-  
-          <IonList>
-            {filteredContacts.map((contact, i) => (
-              <IonItem
-                key={contact.id}
-                className={styles.chatItems}
-                button // Hace que el IonItem sea clickeable
-                onClick={() => handleRedirect(contact.id)}
-              >
-                <IonAvatar slot="start" className="avatar">
-                  <img src={`https://randomuser.me/api/portraits/${contact.id-1 % 2 == 0 ? "" : "wo"}men/${contact.id}.jpg`} alt={contact.name} />
-                </IonAvatar>
-                <IonLabel className={styles.textUser}>
-                  <h2>{contact.name}</h2>
-                </IonLabel>
-              </IonItem>
-            ))}
-          </IonList>
-          {/* Floating Action Button */}
-          <IonFab vertical="bottom" horizontal="end" slot="fixed" className="fab">
-            <IonFabButton onClick={handleAddContact} className="fab-button">
-              <IonIcon icon={add} />
-            </IonFabButton>
-          </IonFab>
-        </IonContent>
-      </IonPage>
-    )
+        </IonToolbar>
+      </IonHeader>
+
+      <IonContent fullscreen>
+        <div className="search-container">
+          <IonSearchbar placeholder="Buscar..." className="custom-searchbar" animated={true} value={searchText} onIonInput={(e) => setSearchText(e.detail.value!)} />
+        </div>
+
+        <IonList>
+          {filteredContacts.map((contact, i) => (
+            <IonItem
+              key={contact.id}
+              className={styles.chatItems}
+              button // Hace que el IonItem sea clickeable
+              onClick={() => handleRedirect(contact.id)}
+            >
+              <IonAvatar slot="start" className="avatar">
+                <img src={`https://randomuser.me/api/portraits/${contact.id - 1 % 2 == 0 ? "" : "wo"}men/${contact.id}.jpg`} alt={contact.name} />
+              </IonAvatar>
+              <IonLabel className={styles.textUser}>
+                <h2>{contact.name}</h2>
+              </IonLabel>
+            </IonItem>
+          ))}
+        </IonList>
+        {/* Floating Action Button */}
+        <IonFab vertical="bottom" horizontal="end" slot="fixed" className="fab">
+          <IonFabButton onClick={handleAddContact} className="fab-button">
+            <IonIcon icon={add} />
+          </IonFabButton>
+        </IonFab>
+      </IonContent>
+    </IonPage>
+  )
 }
 
 export default ContactsPage

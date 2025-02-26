@@ -52,9 +52,10 @@
 
 .custom-searchbar {
   --background: white;
-  --border-radius: 9999px;
-  --placeholder-color: #666;
-  --icon-color: #666;
+  --placeholder-color: black;
+  --icon-color: black;
+  --color: black;
+  font-family: 'Jersey25', sans-serif;
 }
 
 /* Chat list */
