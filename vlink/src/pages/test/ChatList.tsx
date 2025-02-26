@@ -68,7 +68,7 @@ const ChatList: React.FC = () => {
           {contacts.map((contact, i) => (
             <IonItem key={i} className="chat-item">
               <IonAvatar slot="start" className="avatar">
-                <img src={`https://randomuser.me/api/portraits/men/${i}.jpg`} alt={contact.name} />
+                <img src={`https://randomuser.me/api/portraits/${i % 2 == 0 ? "" : "wo"}men/${i}.jpg`} alt={contact.name} />
               </IonAvatar>
               <IonLabel className="textUser">
                 <h2>{contact.name}</h2>

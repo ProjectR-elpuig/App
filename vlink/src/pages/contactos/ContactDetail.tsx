@@ -65,11 +65,11 @@ const ContactDetail: React.FC = () => {
             <div className={styles.profileContainer}>
             {/* Profile Image */}
             <div className={styles.profileImage}>
-                <img src={`https://randomuser.me/api/portraits/${id % 2 == 0 ? "" : "wo"}men/${id}.jpg`} alt="Profile" />
+                <img src={`https://randomuser.me/api/portraits/${id-1 % 2 == 0 ? "" : "wo"}men/${id}.jpg`} alt="Profile" />
             </div>
 
             {/* Name */}
-            <h1 className={styles.name}>{contacts[id].name}</h1>
+            <h1 className={styles.name}>{contacts[id-1].name}</h1>
 
             {/* Message Button */}
             <button className={styles.messageButton}>
