@@ -62,17 +62,11 @@
   font-family: 'Jersey10', sans-serif;
 }
 
-.itemLabel {
-  color: white;
-  font-size: 16px;
-  font-family: 'Jersey10', sans-serif;
-}
-
-.settingsItem ion-label {
+.settingsItem p {
   color: white;
   margin: 0;
-  font-size: 16px;
-  font-family: 'A', sans-serif;
+  font-size: 1.2rem;
+  font-family: 'Jersey10', sans-serif;
 }
 
 .itemIcon {
@@ -84,7 +78,7 @@
 .valueLabel {
   color: rgba(255, 255, 255, 0.6);
   font-size: 14px;
-  font-family: "Geist Mono", monospace;
+  font-family: 'Jersey10', sans-serif;
 }
 
 /* Toggle customization */
@@ -104,9 +98,9 @@
 .logoutButton {
   --color: #cc5656;
   --color-activated: #cc5656;
-  font-family: "Geist Mono", monospace;
+  font-family: 'Jersey10', sans-serif;
   text-transform: none;
-  font-size: 16px;
+  font-size: 1.3rem;
   letter-spacing: 0;
 }
 

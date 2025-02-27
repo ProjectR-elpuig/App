@@ -52,22 +52,22 @@ const SettingsPage: React.FC = () => {
           </IonItem>
 
           {/* Dark Mode */}
-          <IonItem className={styles.settingsItem}>
+          <IonItem button className={styles.settingsItem}>
             <IonIcon icon={watchOutline} slot="start" className={styles.itemIcon} />
-            <IonLabel className={styles.itemLabel}>Blocked contact list</IonLabel>
+            <p className={styles.itemLabel}>Blocked contact list</p>
             {/* <IonToggle slot="end" className={styles.toggle} /> */}
           </IonItem>
 
           {/* Help */}
           <IonItem button className={styles.settingsItem}>
             <IonIcon icon={helpCircleOutline} slot="start" className={styles.itemIcon} />
-            <IonLabel className={styles.itemLabel}>Help system</IonLabel>
+            <p className={styles.itemLabel}>Help system</p>
           </IonItem>
 
           {/* Privacy */}
           <IonItem button className={styles.settingsItem}>
             <IonIcon icon={lockClosedOutline} slot="start" className={styles.itemIcon} />
-            <IonLabel className={styles.itemLabel}>Change password</IonLabel>
+            <p className={styles.itemLabel}>Change password</p>
           </IonItem>
 
 
