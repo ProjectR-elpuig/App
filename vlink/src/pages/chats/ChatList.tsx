@@ -20,7 +20,7 @@ import {
 } from "ionicons/icons"
 import { useState } from "react"
 import { useHistory } from 'react-router-dom';
-import "./ChatList.css"
+import styles from "./ChatList.module.css"
 
 const contacts = [
   { id: 1, name: "Haylie Baptista", lastMsg: "¿Nos vemos mañana?" },
@@ -47,7 +47,7 @@ const contacts = [
 
 const ChatList: React.FC = () => {
   const history = useHistory();
-    const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState("");
 
   const handleCreateChat = () => {
     history.push("/chats/addchat")
@@ -60,26 +60,26 @@ const ChatList: React.FC = () => {
   return (
     <IonPage>
       <IonHeader className="ion-no-border">
-        <IonToolbar color="primary" className="header-toolbar">
-          <div className="logo-container">
+        <IonToolbar color="primary" className={styles.headerToolbar}>
+          <div className={styles.logoContainer}>
             <h1>V-LINK</h1>
-            <img src="/imgs/LogoTopBar.png" alt="V-Link Logo" className="topbarlogo" />
+            <img src="/imgs/LogoTopBar.png" alt="V-Link Logo" className={styles.topbarLogo} />
           </div>
         </IonToolbar>
       </IonHeader>
 
       <IonContent fullscreen>
-        <div className="search-container">
-          <IonSearchbar placeholder="Buscar..." className="custom-searchbar" animated={true} value={searchText} onIonInput={(e) => setSearchText(e.detail.value!)} />
+        <div className={styles.searchContainer}>
+          <IonSearchbar placeholder="Buscar..." className={styles.customSearchbar} animated={true} value={searchText} onIonInput={(e) => setSearchText(e.detail.value!)} />
         </div>
 
         <IonList>
           {filteredContacts.map((contact, i) => (
-            <IonItem key={i} className="chat-item">
-              <IonAvatar slot="start" className="avatar">
-                <img src={`https://randomuser.me/api/portraits/${i % 2 == 0 ? "men" : "women"}/${i}.jpg`} alt={contact.name} />
+            <IonItem key={i} className={styles.chatItem}>
+              <IonAvatar slot="start" className={styles.avatar}>
+                <img src={`https://randomuser.me/api/portraits/${i % 2 === 0 ? "men" : "women"}/${i}.jpg`} alt={contact.name} />
               </IonAvatar>
-              <IonLabel className="textUser">
+              <IonLabel className={styles.textUser}>
                 <h2>{contact.name}</h2>
                 <p>{contact.lastMsg ? contact.lastMsg : "Last message"}</p>
               </IonLabel>
@@ -88,9 +88,9 @@ const ChatList: React.FC = () => {
         </IonList>
         
         {/* Floating Action Button */}
-        <IonFab vertical="bottom" horizontal="end" slot="fixed" className="fab">
-          <IonFabButton onClick={handleCreateChat} className="fab-button">
-            <IonIcon icon={add} />
+        <IonFab vertical="bottom" horizontal="end" slot="fixed">
+          <IonFabButton onClick={handleCreateChat} className={styles.fabButton}>
+            <IonIcon icon={add} className={styles.fabIcon} />
           </IonFabButton>
         </IonFab>
       </IonContent>

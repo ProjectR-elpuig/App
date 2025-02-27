@@ -19,7 +19,7 @@ import {
 import {
   add,
   chatbox,
-  personAdd
+  personAddSharp
 } from "ionicons/icons"
 import { useHistory } from 'react-router-dom';
 import { useState } from "react"
@@ -70,17 +70,17 @@ const ContactsPage: React.FC = () => {
   return (
     <IonPage>
       <IonHeader className="ion-no-border">
-        <IonToolbar color="primary" className="header-toolbar">
-          <div className="logo-container">
+        <IonToolbar color="primary" className={styles.headerToolbar}>
+          <div className={styles.logoContainer}>
             <h1>V-LINK</h1>
-            <img src="/imgs/LogoTopBar.png" alt="V-Link Logo" className="topbarlogo" />
+            <img src="/imgs/LogoTopBar.png" alt="V-Link Logo" className={styles.topbarLogo} />
           </div>
         </IonToolbar>
       </IonHeader>
 
       <IonContent fullscreen>
-        <div className="search-container">
-          <IonSearchbar placeholder="Buscar..." className="custom-searchbar" animated={true} value={searchText} onIonInput={(e) => setSearchText(e.detail.value!)} />
+      <div className={styles.searchContainer}>
+          <IonSearchbar placeholder="Buscar..." className={styles.customSearchbar} animated={true} value={searchText} onIonInput={(e) => setSearchText(e.detail.value!)} />
         </div>
 
         <IonList>
@@ -102,8 +102,8 @@ const ContactsPage: React.FC = () => {
         </IonList>
         {/* Floating Action Button */}
         <IonFab vertical="bottom" horizontal="end" slot="fixed" className="fab">
-          <IonFabButton onClick={handleAddContact} className="fab-button">
-            <IonIcon icon={personAdd} />
+          <IonFabButton onClick={handleAddContact} className={`fab-button ${styles.fabButton}`}>
+            <IonIcon className={styles.fabIcon} icon={personAddSharp} />
           </IonFabButton>
         </IonFab>
       </IonContent>

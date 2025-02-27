@@ -16,9 +16,53 @@
   --background: rgba(255, 255, 255, 0.1);
 }
 
+.headerToolbar {
+  --background: var(--ion-color-primary);
+  --border-style: none;
+  font-family: 'Jersey25', sans-serif;
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 8px;
+}
+
+.logoContainer h1 {
+  font-family: monospace;
+  font-size: 24px;
+  margin: 0;
+  letter-spacing: 2px;
+  font-family: 'Jersey25', sans-serif;
+}
+
+.searchContainer {
+  padding: 0 16px;
+  margin-bottom: 16px;
+}
+
+.customSearchbar {
+  --background: white;
+  --placeholder-color: black;
+  --icon-color: black;
+  --color: black;
+  font-family: 'Jersey25', sans-serif;
+}
+
 .textUser h2 {
   color: white !important;
   font-weight: 500;
   font-size: 1.3rem;
   font-family: 'Jersey10', sans-serif;
+}
+
+.fabIcon {
+  color: white;
+}
+
+.fabButton {
+  --background: #929292 !important;
+  color: white !important;
 }

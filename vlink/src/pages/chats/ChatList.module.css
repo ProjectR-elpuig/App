@@ -1,4 +1,3 @@
-/* Custom styles to match the design */
 :root {
   --ion-color-primary: #1f52b5;
   --ion-color-primary-contrast: #ffffff;
@@ -6,14 +5,13 @@
   --ion-text-color: #ffffff;
 }
 
-/* Header styles */
-.header-toolbar {
+.headerToolbar {
   --background: var(--ion-color-primary);
   --border-style: none;
   font-family: 'Jersey25', sans-serif;
 }
 
-.logo-container {
+.logoContainer {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -21,7 +19,7 @@
   gap: 8px;
 }
 
-.logo-container h1 {
+.logoContainer h1 {
   font-family: monospace;
   font-size: 24px;
   margin: 0;
@@ -29,7 +27,7 @@
   font-family: 'Jersey25', sans-serif;
 }
 
-.infinity-icon {
+.infinityIcon {
   background: white;
   border-radius: 12px;
   padding: 4px;
@@ -40,17 +38,16 @@
   justify-content: center;
 }
 
-.infinity-icon ion-icon {
+.infinityIcon ion-icon {
   color: var(--ion-color-primary);
 }
 
-/* Search bar */
-.search-container {
+.searchContainer {
   padding: 0 16px;
   margin-bottom: 16px;
 }
 
-.custom-searchbar {
+.customSearchbar {
   --background: white;
   --placeholder-color: black;
   --icon-color: black;
@@ -58,23 +55,24 @@
   font-family: 'Jersey25', sans-serif;
 }
 
-/* Chat list */
-.chat-item {
+.chatItem {
   --background: transparent;
   --border-color: transparent;
   --padding-start: 16px;
   --padding-end: 16px;
   --padding-top: 8px;
   --padding-bottom: 8px;
-  h2 {
-    font-size: 1.2rem;
-  }
-  p {
-    font-size: 1rem;
-  }
 }
 
-.chat-item:hover {
+.chatItem h2 {
+  font-size: 1.2rem;
+}
+
+.chatItem p {
+  font-size: 1rem;
+}
+
+.chatItem:hover {
   --background: rgba(255, 255, 255, 0.1);
 }
 
@@ -93,7 +91,16 @@
   font-family: 'Jersey10', sans-serif;
 }
 
-.topbarlogo {
+.topbarLogo {
   width: 40px;
   height: 40px;
+}
+
+.fabIcon {
+  color: white;
+}
+
+.fabButton {
+  --background: #929292 !important;
+  color: white !important;
 }
