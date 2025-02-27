@@ -16,7 +16,7 @@ import {
   IonFabButton
 } from "@ionic/react"
 import {
-  add
+  chatboxOutline
 } from "ionicons/icons"
 import { useState } from "react"
 import { useHistory } from 'react-router-dom';
@@ -90,7 +90,7 @@ const ChatList: React.FC = () => {
         {/* Floating Action Button */}
         <IonFab vertical="bottom" horizontal="end" slot="fixed">
           <IonFabButton onClick={handleCreateChat} className={styles.fabButton}>
-            <IonIcon icon={add} className={styles.fabIcon} />
+            <IonIcon icon={chatboxOutline} className={styles.fabIcon} />
           </IonFabButton>
         </IonFab>
       </IonContent>
