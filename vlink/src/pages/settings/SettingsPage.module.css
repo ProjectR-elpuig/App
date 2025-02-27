@@ -1,0 +1,129 @@
+/* Page styles */
+.page {
+  background: #1f52b5;
+}
+
+.headerToolbar {
+  --background: var(--ion-color-primary);
+  --border-style: none;
+  font-family: 'Jersey25', sans-serif;
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 8px;
+}
+
+.logoContainer h1 {
+  font-family: monospace;
+  font-size: 24px;
+  margin: 0;
+  color: white;
+  letter-spacing: 2px;
+  font-family: 'Jersey25', sans-serif;
+}
+
+.separator {
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.3);
+  margin: 0;
+}
+
+.titleContainer {
+  background: #1f52b5;
+  padding: 10px 0;
+  text-align: center;
+}
+
+.title {
+  color: white;
+  font-family: 'Jersey10', sans-serif;
+  font-size: 2rem;
+  margin: 0;
+}
+
+/* Content styles */
+.content {
+  --background: #1f52b5 !important;
+}
+
+.settingsList {
+  background: transparent;
+  padding: 16px;
+}
+
+.settingsItem {
+  --background: #040404;
+  --border-radius: 1rem;
+  margin-bottom: 0.5rem;
+  font-family: 'Jersey10', sans-serif;
+}
+
+.itemLabel {
+  color: white;
+  font-size: 16px;
+  font-family: 'Jersey10', sans-serif;
+}
+
+.settingsItem ion-label {
+  color: white;
+  margin: 0;
+  font-size: 16px;
+  font-family: 'A', sans-serif;
+}
+
+.itemIcon {
+  color: white;
+  font-size: 20px;
+  margin-right: 12px;
+}
+
+.valueLabel {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 14px;
+  font-family: "Geist Mono", monospace;
+}
+
+/* Toggle customization */
+.toggle {
+  --background: rgba(255, 255, 255, 0.2);
+  --background-checked: #c2a9ef;
+  --handle-background: white;
+  --handle-background-checked: white;
+}
+
+/* Logout button styles */
+.logoutContainer {
+  padding: 16px;
+  margin-top: 24px;
+}
+
+.logoutButton {
+  --color: #cc5656;
+  --color-activated: #cc5656;
+  font-family: "Geist Mono", monospace;
+  text-transform: none;
+  font-size: 16px;
+  letter-spacing: 0;
+}
+
+.logoutButton ion-icon {
+  margin-right: 8px;
+}
+
+/* Override Ionic default styles */
+:global(.ion-page) {
+  background: #1f52b5;
+}
+
+:global(.header-md::after) {
+  display: none;
+}
+
+:global(ion-item.settingsItem ion-label) {
+  margin: 0;
+}
+
