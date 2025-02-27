@@ -17,7 +17,9 @@ import {
   IonPage,
 } from "@ionic/react"
 import {
-  add
+  add,
+  chatbox,
+  personAdd
 } from "ionicons/icons"
 import { useHistory } from 'react-router-dom';
 import { useState } from "react"
@@ -101,7 +103,7 @@ const ContactsPage: React.FC = () => {
         {/* Floating Action Button */}
         <IonFab vertical="bottom" horizontal="end" slot="fixed" className="fab">
           <IonFabButton onClick={handleAddContact} className="fab-button">
-            <IonIcon icon={add} />
+            <IonIcon icon={personAdd} />
           </IonFabButton>
         </IonFab>
       </IonContent>
