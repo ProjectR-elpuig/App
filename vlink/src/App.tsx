@@ -15,17 +15,24 @@ import { IonReactRouter } from '@ionic/react-router';
 // import { ellipse, square, triangle } from 'ionicons/icons';
 import './App.css';
 
+// Paginas principales
 import SplashScreen from "./pages/test/SplashScreen";
-// import Tab1 from './pages/Tab1';
-// import Tab2 from './pages/Tab2';
-// import Tab3 from './pages/Tab3';
 import Login from './pages/principals/Login';
-import ChatList from './pages/chats/ChatList';
 
-// Importaciones de las paginas de Contactos
+// Paginas de TABS
+// CONTACTOS
 import ContactsPage from './pages/contactos/principal/ContactsPage';
 import ContactDetail from './pages/contactos/ContactDetail';
 import AddContactPage from './pages/contactos/AddOrEditContact';
+
+// CHATS
+import ChatList from './pages/chats/ChatList';
+
+// HISTORIAL
+import HistoryPage from './pages/history/HistoryPage';
+
+// SETTINGS
+import SettingsPage from './pages/settings/SettingsPage';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -132,12 +139,22 @@ const MainApp: React.FC<{ isAuthenticated: boolean; onLogin: () => void }> = ({ 
           <ChatList />
         </Route>
 
-        {/* History */}
+        {/* Eventos */}
         <Route path="/tab3">
-          <h1>HOLA</h1>
+
         </Route>
-        <Route path="/tab4"></Route>
-        <Route path="/tab5"></Route>
+
+        {/* History */}
+        <Route path="/historial">
+          <HistoryPage />
+        </Route>
+
+        {/* Settings */}
+        <Route path="/settings">
+          <SettingsPage />
+        </Route>
+
+        {/* DEFAULT */}
         <Route exact path="/">
           <Redirect to="/contactos" />
         </Route>
@@ -158,13 +175,13 @@ const MainApp: React.FC<{ isAuthenticated: boolean; onLogin: () => void }> = ({ 
             <IonLabel>Events</IonLabel>
             <IonIcon aria-hidden="true" src={location.pathname.startsWith("/tab3") ? "/tab/icons/calendar-sel.svg" : "/tab/icons/calendar.svg"} />
           </IonTabButton>
-          <IonTabButton tab="tab4" href="/tab4">
+          <IonTabButton tab="historial" href="/historial">
             <IonLabel>History</IonLabel>
-            <IonIcon aria-hidden="true" src={location.pathname.startsWith("/tab4") ? "/tab/icons/history-sel.svg" : "/tab/icons/history.svg"} />
+            <IonIcon aria-hidden="true" src={location.pathname.startsWith("/historial") ? "/tab/icons/history-sel.svg" : "/tab/icons/history.svg"} />
           </IonTabButton>
-          <IonTabButton tab="tab5" href="/tab5">
+          <IonTabButton tab="settings" href="/settings">
             <IonLabel>Settings</IonLabel>
-            <IonIcon aria-hidden="true" src={location.pathname.startsWith("/tab5") ? "/tab/icons/settings-sel.svg" : "/tab/icons/settings.svg"} />
+            <IonIcon aria-hidden="true" src={location.pathname.startsWith("/settings") ? "/tab/icons/settings-sel.svg" : "/tab/icons/settings.svg"} />
           </IonTabButton>
         </IonTabBar>
       )}
