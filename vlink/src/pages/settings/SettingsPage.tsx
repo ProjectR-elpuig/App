@@ -36,8 +36,6 @@ const SettingsPage: React.FC = () => {
         </IonToolbar>
       </IonHeader>
 
-      <div className={styles.separator}></div>
-
       <div className={styles.titleContainer}>
         <h2 className={styles.title}>Settings</h2>
       </div>

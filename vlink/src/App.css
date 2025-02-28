@@ -12,7 +12,28 @@
     font-size: 0.9rem;
 }
 
+.headerToolbar {
+  --background: var(--ion-color-primary);
+  --border-style: none;
+  font-family: 'Jersey25', sans-serif;
+}
 
+.logoContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 8px;
+}
+
+.logoContainer h1 {
+  font-family: monospace;
+  font-size: 24px;
+  margin: 0;
+  color: white;
+  letter-spacing: 2px;
+  font-family: 'Jersey25', sans-serif;
+}
 
 /* Mostrar el label encima del I5on */
 

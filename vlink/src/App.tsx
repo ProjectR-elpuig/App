@@ -9,14 +9,16 @@ import {
   IonTabButton,
   IonTabs,
   setupIonicReact,
-  useIonRouter
+  useIonRouter,
+  IonHeader,
+  IonToolbar
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 // import { ellipse, square, triangle } from 'ionicons/icons';
 import './App.css';
 
 // Paginas principales
-import SplashScreen from "./pages/test/SplashScreen";
+import SplashScreen from "./pages/slash/SplashScreen";
 import Login from './pages/principals/Login';
 
 // Paginas de TABS
@@ -110,6 +112,16 @@ const MainApp: React.FC<{ isAuthenticated: boolean; onLogin: () => void }> = ({ 
     </Route>
   ) : (
     <IonTabs>
+      {/* <IonHeader className="ion-no-border">
+        <IonToolbar color="primary" className="headerToolbar">
+          <div className="logoContainer">
+            <h1>V-LINK</h1>
+            <img src="/imgs/LogoTopBar.png" alt="V-Link Logo" className="topbarLogo" />
+          </div>
+        </IonToolbar>
+      </IonHeader> */}
+
+
       <IonRouterOutlet>
         {/* Contactos */}
         <Route exact path="/contactos">
