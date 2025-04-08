@@ -1,11 +1,11 @@
 /* For information on how to create your own theme, please see:
 http://ionicframework.com/docs/theming/ */
-/* :root {
-    --ion-font-family: 'OpenSans', sans-serif;
-} */
+:root {
+    --font-inter: "Inter", sans-serif;
+}
 
 
-@font-face {
+/* @font-face {
     font-family: 'Jersey10';
     src: url('../assets/fonts/Jersey10-Regular.ttf');
     font-weight: normal;
@@ -24,7 +24,7 @@ http://ionicframework.com/docs/theming/ */
     src: url('../assets/fonts/Jersey25-Regular.ttf');
     font-weight: normal;
     font-style: italic;
-}
+} */
 
 /* .jersey-25-regular {
     font-family: "Jersey 25", serif;
