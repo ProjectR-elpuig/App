@@ -29,12 +29,27 @@ import AddContactPage from './pages/contactos/AddOrEditContact';
 
 // CHATS
 import ChatList from './pages/chats/ChatList';
+import ChatContact from './pages/chats/ChatContact';
+
+// EVENTOS
+import EventosMain from './pages/events/EventosMain';
+import EventosAdd from './pages/events/EventosAdd';
 
 // HISTORIAL
 import HistoryPage from './pages/history/HistoryPage';
 
 // SETTINGS
 import SettingsPage from './pages/settings/SettingsPage';
+import BlockedContactsPage from './pages/settings/BlockedContactsPage';
+import SettingsHelpPage from './pages/settings/SettingsHelpPage';
+import ChangePasswordPage from './pages/settings/ChangePasswordPage';
+
+// Librerias
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+import { Keyboard, Mousewheel } from "swiper/modules";
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -69,18 +84,18 @@ import './theme/variables.css';
 setupIonicReact();
 
 const App: React.FC = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showSplash, setShowSplash] = useState(true);
   const history = useHistory();
   const router = useIonRouter();
 
   const handleLogin = () => {
-    console.log('handleLogin he llegado', true);
+    // console.log('handleLogin he llegado', true);
     setIsAuthenticated(true);
   };
 
   useEffect(() => {
-    setTimeout(() => setShowSplash(false), 100);
+    setTimeout(() => setShowSplash(false), 3000);
   }, []);
 
   return (
@@ -89,18 +104,26 @@ const App: React.FC = () => {
         <SplashScreen />
       ) : (
         <IonReactRouter>
-          <MainApp isAuthenticated={isAuthenticated} onLogin={handleLogin} />
+          <MainApp isAuthenticated={isAuthenticated} onLogin={handleLogin} setIsAuthenticated={setIsAuthenticated} />
         </IonReactRouter>
       )}
     </IonApp>
   );
 };
 
-const MainApp: React.FC<{ isAuthenticated: boolean; onLogin: () => void }> = ({ isAuthenticated, onLogin }) => {
+const MainApp: React.FC<{ isAuthenticated: boolean; onLogin: () => void; setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>> }> = ({ isAuthenticated, onLogin, setIsAuthenticated }) => {
   const location = useLocation();
 
   // Definir rutas donde NO se debe mostrar la barra de navegación
-  const hiddenTabBarRoutes = ["/", "/login", "/contactos/agregar", "/contactos/perfil/:id"];
+  const hiddenTabBarRoutes = [
+    "/",
+    "/login",
+    "/contactos/agregar",
+    "/contactos/perfil/:id",
+    "/settings/blockedcontacts",
+    "/settings/changepassword",
+    "/chats/chatcontact"
+  ];
 
   const shouldHideTabBar = hiddenTabBarRoutes.some((route) =>
     new RegExp(`^${route.replace(/:[^\s/]+/g, ".*")}$`).test(location.pathname)
@@ -112,16 +135,6 @@ const MainApp: React.FC<{ isAuthenticated: boolean; onLogin: () => void }> = ({ 
     </Route>
   ) : (
     <IonTabs>
-      {/* <IonHeader className="ion-no-border">
-        <IonToolbar color="primary" className="headerToolbar">
-          <div className="logoContainer">
-            <h1>V-LINK</h1>
-            <img src="/imgs/LogoTopBar.png" alt="V-Link Logo" className="topbarLogo" />
-          </div>
-        </IonToolbar>
-      </IonHeader> */}
-
-
       <IonRouterOutlet>
         {/* Contactos */}
         <Route exact path="/contactos">
@@ -141,6 +154,9 @@ const MainApp: React.FC<{ isAuthenticated: boolean; onLogin: () => void }> = ({ 
         <Route exact path="/chats">
           <ChatList />
         </Route>
+        <Route exact path="/chats/chatcontact">
+          <ChatContact />
+        </Route>
         <Route exact path="/chats/agregar">
           <ChatList />
         </Route>
@@ -152,8 +168,11 @@ const MainApp: React.FC<{ isAuthenticated: boolean; onLogin: () => void }> = ({ 
         </Route>
 
         {/* Eventos */}
-        <Route path="/tab3">
-
+        <Route path="/eventos">
+          <EventosMain />
+        </Route>
+        <Route path="/eventos/add">
+          <EventosAdd />
         </Route>
 
         {/* History */}
@@ -163,13 +182,43 @@ const MainApp: React.FC<{ isAuthenticated: boolean; onLogin: () => void }> = ({ 
 
         {/* Settings */}
         <Route path="/settings">
-          <SettingsPage />
+          <SettingsPage isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />
+        </Route>
+        <Route path="/settings/blockedcontacts">
+          <BlockedContactsPage />
+        </Route>
+        <Route path="/settings/help">
+          <SettingsHelpPage />
+        </Route>
+        <Route path="/settings/changepassword">
+          <ChangePasswordPage />
         </Route>
 
         {/* DEFAULT */}
         <Route exact path="/">
           <Redirect to="/contactos" />
         </Route>
+
+        <Swiper
+          modules={[Keyboard, Mousewheel]}
+          spaceBetween={50}
+          slidesPerView={1}
+          keyboard={{ enabled: true }}
+          mousewheel={{ forceToAxis: true }}
+        >
+          <SwiperSlide>
+            <ContactsPage />
+          </SwiperSlide>
+          <SwiperSlide>
+            <ChatList />
+          </SwiperSlide>
+          <SwiperSlide>
+            <HistoryPage />
+          </SwiperSlide>
+          <SwiperSlide>
+            <SettingsPage isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />
+          </SwiperSlide>
+        </Swiper>
       </IonRouterOutlet>
 
       {/* Solo muestra la barra si no está en una ruta oculta */}
@@ -183,9 +232,9 @@ const MainApp: React.FC<{ isAuthenticated: boolean; onLogin: () => void }> = ({ 
             <IonLabel>Chats</IonLabel>
             <IonIcon aria-hidden="true" src={location.pathname.startsWith("/chats") ? "/tab/icons/chat-sel.svg" : "/tab/icons/chat.svg"} />
           </IonTabButton>
-          <IonTabButton tab="tab3" href="/tab3">
+          <IonTabButton tab="eventos" href="/eventos">
             <IonLabel>Events</IonLabel>
-            <IonIcon aria-hidden="true" src={location.pathname.startsWith("/tab3") ? "/tab/icons/calendar-sel.svg" : "/tab/icons/calendar.svg"} />
+            <IonIcon aria-hidden="true" src={location.pathname.startsWith("/eventos") ? "/tab/icons/calendar-sel.svg" : "/tab/icons/calendar.svg"} />
           </IonTabButton>
           <IonTabButton tab="historial" href="/historial">
             <IonLabel>History</IonLabel>

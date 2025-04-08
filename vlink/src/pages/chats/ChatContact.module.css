@@ -1,0 +1,179 @@
+.headerToolbar {
+  --background: var(--ion-color-primary);
+  --border-style: none;
+  font-family: 'Jersey25', sans-serif;
+}
+
+.page {
+  background: #1f52b5;
+}
+
+.backButton {
+  --color: white !important;
+  font-size: 24px;
+  margin-left: 8px;
+}
+
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 1vh;
+}
+
+.logoContainer h1 {
+  color: white;
+  font-family: 'Jersey25', sans-serif;
+  font-size: 24px;
+  margin: 0;
+}
+
+/* Header styles */
+.chatHeader {
+  --background: #c2a9ef;
+  --color: white;
+  --border-color: transparent;
+}
+
+.backButton {
+  font-size: 24px;
+  color: white;
+}
+
+.contactInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.contactName {
+  color: white;
+  font-family: 'Jersey25', sans-serif;
+  font-size: 24px;
+  margin: 0;
+}
+
+.contactAvatar {
+  width: 40px;
+  height: 40px;
+  margin-right: 8px;
+}
+
+/* Chat content */
+.chatContent {
+  --background: var(--ion-color-primary);
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --padding-top: 16px;
+  --padding-bottom: 16px;
+}
+
+.messagesContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.messageWrapper {
+  display: flex;
+  max-width: 80%;
+}
+
+.sent {
+  align-self: flex-start;
+}
+
+.received {
+  align-self: flex-end;
+}
+
+.messageBubble {
+  padding: 12px 16px;
+  border-radius: 18px;
+  position: relative;
+}
+
+.sent .messageBubble {
+  background-color: #c2a9ef;
+  border-bottom-left-radius: 4px;
+}
+
+.received .messageBubble {
+  background-color: #ddadff;
+  border-bottom-right-radius: 4px;
+}
+
+.messageText {
+  margin: 0;
+  color: black;
+  font-family: 'Jersey25', sans-serif;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.imageContainer {
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.messageImage {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Footer styles */
+.chatFooter {
+  --background: var(--ion-color-primary);
+  padding: 8px 16px;
+}
+
+.inputContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: white;
+  border-radius: 24px;
+  padding: 4px 8px;
+}
+
+.cameraButton,
+.emojiButton,
+.sendButton {
+  background: none;
+  border: none;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.cameraButton {
+  color: #7191cf;
+}
+
+.emojiButton {
+  color: #c2a9ef;
+}
+
+.sendButton {
+  color: #1f52b5;
+}
+
+.messageInput {
+  flex: 1;
+  --background: transparent;
+  --color: black;
+  --placeholder-color: #929292;
+  --padding-start: 8px;
+  --padding-end: 8px;
+  font-family: 'Jersey25', sans-serif;
+}
+

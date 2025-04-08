@@ -1,0 +1,126 @@
+.headerToolbar {
+  --background: var(--ion-color-primary);
+  --border-style: none;
+  font-family: 'Jersey25', sans-serif;
+}
+
+.page {
+  background: #1f52b5;
+}
+
+.backButton {
+  --color: white !important;
+  font-size: 24px;
+  margin-left: 8px;
+}
+
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 1vh;
+}
+
+.logoContainer h1 {
+  color: white;
+  font-family: 'Jersey25', sans-serif;
+  font-size: 24px;
+  margin: 0;
+}
+
+/* Separator */
+.separator {
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.2);
+  margin: 0 16px;
+}
+
+/* Page title */
+.pageTitle {
+  text-align: center;
+  padding: 16px;
+}
+
+.pageTitle h2 {
+  color: white;
+  font-family: 'Jersey25', sans-serif;
+  font-size: 24px;
+  margin: 0;
+}
+
+/* Form styles */
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 0 16px;
+  gap: 16px;
+}
+
+.titleInput {
+  --background: white;
+  --color: black;
+  --placeholder-color: #929292;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --padding-top: 12px;
+  --padding-bottom: 12px;
+  --border-radius: 4px;
+  font-family: 'Jersey25', sans-serif;
+}
+
+.descriptionInput {
+  --background: white;
+  --color: black;
+  --placeholder-color: #929292;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --padding-top: 12px;
+  --padding-bottom: 12px;
+  --border-radius: 4px;
+  font-family: 'Jersey25', sans-serif;
+}
+
+.optionButton {
+  background-color: white;
+  color: black;
+  border: none;
+  border-radius: 4px;
+  padding: 16px;
+  font-family: 'Jersey25', sans-serif;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.optionIcon {
+  margin-right: 8px;
+  font-size: 20px;
+}
+
+.createButton {
+  background-color: white;
+  color: black;
+  border: none;
+  border-radius: 4px;
+  padding: 16px;
+  font-family: 'Jersey25', sans-serif;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 16px;
+  position: fixed;
+  bottom: 16px;
+  left: 16px;
+  right: 16px;
+}
+
+/* Content background */
+:global(ion-content) {
+  --background: var(--ion-color-primary);
+}

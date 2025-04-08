@@ -57,6 +57,10 @@ const ChatList: React.FC = () => {
     contact.name.toLowerCase().includes(searchText.toLowerCase())
   );
 
+  const handleChat = () => { 
+    history.push("/chats/chatcontact")
+  }
+
   return (
     <IonPage>
       <IonHeader className="ion-no-border">
@@ -75,7 +79,7 @@ const ChatList: React.FC = () => {
 
         <IonList>
           {filteredContacts.map((contact, i) => (
-            <IonItem key={i} className={styles.chatItem}>
+            <IonItem onClick={handleChat} key={i} className={styles.chatItem}>
               <IonAvatar slot="start" className={styles.avatar}>
                 <img src={`https://randomuser.me/api/portraits/${i % 2 === 0 ? "men" : "women"}/${i}.jpg`} alt={contact.name} />
               </IonAvatar>

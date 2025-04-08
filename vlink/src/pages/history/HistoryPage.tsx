@@ -179,7 +179,8 @@ const HistoryPage: React.FC = () => {
                   </div>
                 </IonLabel>
               </IonItem>
-            )}
+            )
+          }
           )}
         </IonList>
       </IonContent>

@@ -1,0 +1,107 @@
+.headerToolbar {
+  --background: var(--ion-color-primary);
+  --border-style: none;
+  font-family: 'Jersey25', sans-serif;
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 8px;
+}
+
+.logoContainer h1 {
+  font-family: monospace;
+  font-size: 24px;
+  margin: 0;
+  color: white;
+  letter-spacing: 2px;
+  font-family: 'Jersey25', sans-serif;
+}
+
+.backButton {
+  font-size: 24px;
+  color: white;
+}
+
+/* Page title */
+.pageTitle {
+  text-align: center;
+  padding: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.pageTitle h2 {
+  color: white;
+  font-family: 'Jersey25', sans-serif;
+  font-size: 20px;
+  margin: 0;
+}
+
+/* Help content */
+.helpContent {
+  padding: 16px;
+  color: white;
+  font-family: 'Jersey25', sans-serif;
+}
+
+.helpSection {
+  margin-bottom: 24px;
+}
+
+.helpSection h3 {
+  font-size: 18px;
+  margin: 0 0 8px 0;
+}
+
+.helpSection ul {
+  list-style-type: none;
+  padding-left: 16px;
+  margin: 0;
+}
+
+.helpSection li {
+  position: relative;
+  padding-left: 16px;
+  margin-bottom: 8px;
+}
+
+.helpSection li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+}
+
+.iconButton {
+  --color: white;
+  font-size: 24px;
+}
+
+/* Footer */
+.helpFooter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 16px;
+  margin-top: 24px;
+  color: white;
+  font-family: 'Jersey25', sans-serif;
+  text-align: center;
+}
+
+.footerLogo {
+  background: white;
+  border-radius: 8px;
+  padding: 4px;
+  width: 40px;
+  height: 40px;
+  margin-top: 8px;
+}
+
+/* Content background */
+:global(ion-content) {
+  --background: var(--ion-color-primary);
+}
+

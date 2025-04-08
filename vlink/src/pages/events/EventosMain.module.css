@@ -1,0 +1,172 @@
+.headerToolbar {
+  --background: var(--ion-color-primary);
+  --border-style: none;
+  font-family: 'Jersey25', sans-serif;
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 8px;
+}
+
+.logoContainer h1 {
+  font-family: monospace;
+  font-size: 24px;
+  margin: 0;
+  color: white;
+  letter-spacing: 2px;
+  font-family: 'Jersey25', sans-serif;
+}
+
+/* Header styles */
+.appHeader {
+  --background: var(--ion-color-primary);
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 0;
+}
+
+.logoContainer h1 {
+  color: white;
+  font-family: 'Jersey25', sans-serif;
+  font-size: 24px;
+  margin: 0;
+}
+
+.infinityLogo {
+  background: white;
+  border-radius: 8px;
+  padding: 4px;
+  width: 32px;
+  height: 32px;
+}
+
+/* Separator */
+.separator {
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.2);
+  margin: 0 16px;
+}
+
+/* Date styles */
+.dateContainer {
+  padding: 16px;
+}
+
+.dateText {
+  color: white;
+  font-family: 'Jersey25', sans-serif;
+  font-size: 24px;
+  margin: 0;
+}
+
+/* Event Card */
+.eventCardContainer {
+  padding: 0 16px;
+  margin-bottom: 16px;
+}
+
+.eventImage {
+  width: 100%;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+/* Event Title */
+.eventTitleContainer {
+  padding: 16px;
+  text-align: center;
+}
+
+.eventTitle {
+  color: white;
+  font-family: 'Jersey25', sans-serif;
+  font-size: 24px;
+  margin: 0;
+}
+
+/* Event Description */
+.eventDescription {
+  padding: 0 16px 80px;
+  color: white;
+  font-family: 'Jersey25', sans-serif;
+  line-height: 1.6;
+}
+
+.eventDescription p {
+  margin: 0;
+}
+
+/* Floating Action Button */
+.fab {
+  margin-bottom: 56px; /* To account for the tab bar */
+}
+
+.fabIcon {
+  color: white;
+}
+
+.fabButton {
+  --background: #929292 !important;
+  color: white !important;
+}
+
+.modalContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: white;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.react-calendar {
+  width: 100%;
+  max-width: 350px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
+.react-calendar {
+  background-color: #1e1e1e !important; /* Fondo oscuro */
+  color: white !important; /* Texto en blanco */
+  border-radius: 12px;
+  border: 1px solid #444; /* Borde sutil */
+}
+
+.react-calendar__tile {
+  background: #2b2b2b !important; /* Fondo oscuro para los días */
+  color: white !important;
+}
+
+.react-calendar__tile--active {
+  background: #007bff !important; /* Color del día seleccionado */
+  color: white !important;
+}
+
+.react-calendar__tile:hover {
+  background: #444 !important;
+}
+
+
+
+:global(ion-fab-button) {
+  --background: #c2a9ef;
+  --color: white;
+}
+
+/* Content background */
+:global(ion-content) {
+  --background: var(--ion-color-primary);
+}
+
