@@ -232,14 +232,14 @@ const MainApp: React.FC<{ isAuthenticated: boolean; onLogin: () => void; setIsAu
             <IonLabel>Chats</IonLabel>
             <IonIcon aria-hidden="true" src={location.pathname.startsWith("/chats") ? "/tab/icons/chat-sel.svg" : "/tab/icons/chat.svg"} />
           </IonTabButton>
-          <IonTabButton tab="eventos" href="/eventos">
+          {/* <IonTabButton tab="eventos" href="/eventos">
             <IonLabel>Events</IonLabel>
             <IonIcon aria-hidden="true" src={location.pathname.startsWith("/eventos") ? "/tab/icons/calendar-sel.svg" : "/tab/icons/calendar.svg"} />
           </IonTabButton>
           <IonTabButton tab="historial" href="/historial">
             <IonLabel>History</IonLabel>
             <IonIcon aria-hidden="true" src={location.pathname.startsWith("/historial") ? "/tab/icons/history-sel.svg" : "/tab/icons/history.svg"} />
-          </IonTabButton>
+          </IonTabButton> */}
           <IonTabButton tab="settings" href="/settings">
             <IonLabel>Settings</IonLabel>
             <IonIcon aria-hidden="true" src={location.pathname.startsWith("/settings") ? "/tab/icons/settings-sel.svg" : "/tab/icons/settings.svg"} />
