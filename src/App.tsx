@@ -14,7 +14,6 @@ import {
   IonToolbar
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-// import { ellipse, square, triangle } from 'ionicons/icons';
 import './App.css';
 
 // Paginas principales
@@ -86,8 +85,6 @@ setupIonicReact();
 const App: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showSplash, setShowSplash] = useState(true);
-  const history = useHistory();
-  const router = useIonRouter();
 
   const handleLogin = () => {
     // console.log('handleLogin he llegado', true);
@@ -168,17 +165,17 @@ const MainApp: React.FC<{ isAuthenticated: boolean; onLogin: () => void; setIsAu
         </Route>
 
         {/* Eventos */}
-        <Route path="/eventos">
+        {/* <Route path="/eventos">
           <EventosMain />
         </Route>
         <Route path="/eventos/add">
           <EventosAdd />
-        </Route>
+        </Route> */}
 
         {/* History */}
-        <Route path="/historial">
+        {/* <Route path="/historial">
           <HistoryPage />
-        </Route>
+        </Route> */}
 
         {/* Settings */}
         <Route path="/settings">
