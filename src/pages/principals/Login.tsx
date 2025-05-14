@@ -47,7 +47,8 @@ const Login: React.FC<{ onLogin: (token: string) => void }> = ({ onLogin }) => {
           <h1 className="welcome-text">Welcome to V-LINK</h1>
           
           <div className="login-box">
-            <h2>Login With</h2>
+            {/* Login con Discord & CFX */}
+            {/* <h2>Login With</h2>
             
             <div className="oauth-buttons">
               <IonButton onClick={authCfx} className="cfx-button" expand="block">
@@ -61,7 +62,7 @@ const Login: React.FC<{ onLogin: (token: string) => void }> = ({ onLogin }) => {
 
             <div className="divider">
               <span>OR</span>
-            </div>
+            </div> */}
 
             <form className="login-form" onSubmit={(e) => e.preventDefault()}>
               <h3>Login</h3>
