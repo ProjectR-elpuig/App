@@ -19,9 +19,9 @@
     font-size: 24px;
     text-align: center;
     font-size: 40px;
-    width: 207px;
-    height: 96px;
-    box-sizing: border-box;
+    width: 20rem;
+    height: 5rem;
+    box-sizing: border;
 }
 
 .register-box {
