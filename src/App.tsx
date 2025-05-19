@@ -1,5 +1,3 @@
-"use client"
-
 import type React from "react"
 import { useState } from "react"
 import { Redirect, Route, useLocation } from "react-router-dom"
@@ -17,6 +15,9 @@ import { IonReactRouter } from "@ionic/react-router"
 import "./App.css"
 import Login from "./pages/principals/Login"
 import Register from "./pages/register/register"
+
+// Auth
+import { AuthProvider } from './context/AuthContext';
 
 // Paginas de TABS
 // CONTACTOS
@@ -77,14 +78,8 @@ import "./theme/variables.css"
 setupIonicReact()
 
 const App: React.FC = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
   // Comentado temporalmente el estado del SplashScreen
   // const [showSplash, setShowSplash] = useState(true)
-
-  const handleLogin = () => {
-    // console.log('handleLogin he llegado', true);
-    setIsAuthenticated(true)
-  }
 
   // Comentado temporalmente el efecto del SplashScreen
   /*
@@ -95,30 +90,22 @@ const App: React.FC = () => {
 
   return (
     <IonApp>
-      {/* Comentado temporalmente el SplashScreen
-      {showSplash ? (
-        <SplashScreen />
-      ) : (
-        <IonReactRouter>
-          <MainApp isAuthenticated={isAuthenticated} onLogin={handleLogin} setIsAuthenticated={setIsAuthenticated} />
-        </IonReactRouter>
-      )}
-      */}
-
-      {/* Renderizamos directamente el MainApp sin el SplashScreen */}
-      <IonReactRouter>
-        <MainApp isAuthenticated={isAuthenticated} onLogin={handleLogin} setIsAuthenticated={setIsAuthenticated} />
-      </IonReactRouter>
+      <AuthProvider>
+        {/* {showSplash ? (
+          <SplashScreen />
+        ) : ( */}
+          <IonReactRouter>
+            <MainApp />
+          </IonReactRouter>
+        {/* )} */}
+      </AuthProvider>
     </IonApp>
-  )
+  );
 }
 
-const MainApp: React.FC<{
-  isAuthenticated: boolean
-  onLogin: () => void
-  setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>
-}> = ({ isAuthenticated, onLogin, setIsAuthenticated }) => {
-  const location = useLocation()
+const MainApp: React.FC = () => {
+  const location = useLocation();
+  const { isAuthenticated, user } = useAuth();
 
   // Definir rutas donde NO se debe mostrar la barra de navegación
   const hiddenTabBarRoutes = [
@@ -137,14 +124,9 @@ const MainApp: React.FC<{
   )
 
   return !isAuthenticated ? (
-    <IonRouterOutlet>
-      <Route exact path="/">
-        <Login onLogin={onLogin} />
-      </Route>
-      <Route exact path="/register">
-        <Register onRegisterComplete={() => (window.location.href = "/")} />
-      </Route>
-    </IonRouterOutlet>
+    <Route exact path="/">
+      <Login />
+    </Route>
   ) : (
     <IonTabs>
       <IonRouterOutlet>
@@ -223,9 +205,6 @@ const MainApp: React.FC<{
           </SwiperSlide>
           <SwiperSlide>
             <ChatList />
-          </SwiperSlide>
-          <SwiperSlide>
-            <HistoryPage />
           </SwiperSlide>
           <SwiperSlide>
             <SettingsPage isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />

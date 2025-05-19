@@ -1,39 +1,35 @@
-"use client"
-
 import type React from "react"
 import { useState } from "react"
 import { IonContent, IonPage, IonInput, IonButton, IonText, IonRouterLink } from "@ionic/react"
 import "./Login.css"
-import { login } from "../../services/authService" // Importa el servicio de autenticación
+import { login } from '../../services/authService'; // Importa el servicio de autenticación
+import { useAuth } from '../../context/AuthContext';
 
-const Login: React.FC<{ onLogin: (token: string) => void }> = ({ onLogin }) => {
+const Login: React.FC = () => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState<string | null>(null) // Para mostrar errores
+  const { login } = useAuth();
 
   const handleLogin = async () => {
-    setError(null) // Reinicia el mensaje de error
+    setError(null);
     try {
-      console.log("Esto recibo de la interfaz:", { username, password })
-      const data = await login(username, password) // Llama al servicio de login
-      localStorage.setItem("token", data.token) // Guarda el token en el almacenamiento local
-      onLogin(data.token) // Notifica al componente padre que el usuario ha iniciado sesión
+      const data = await login(username, password); // Llama al servicio de login
+      await login(username, data.token); // Usa el contexto para guardar los datos
     } catch (err: any) {
-      setError(err.response?.data?.error || err.message || "Error al iniciar sesión, usuario o contraseña incorrectos.")
+      setError(err.response?.data?.error || err.message || 'Error al iniciar sesión');
     }
+  };
 
-    onLogin("") // Elimina esta línea cuando implementes la autenticación
-  }
+  // const authCfx = () => {
+  //   // Aquí puedes implementar la autenticación con CFX
+  //   onLogin("")
+  // }
 
-  const authCfx = () => {
-    // Aquí puedes implementar la autenticación con CFX
-    onLogin("")
-  }
-
-  const authDiscord = () => {
-    // Aquí puedes implementar la autenticación con Discord
-    onLogin("")
-  }
+  // const authDiscord = () => {
+  //   // Aquí puedes implementar la autenticación con Discord
+  //   onLogin("")
+  // }
 
   return (
     <IonPage>
