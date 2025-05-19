@@ -1,5 +1,4 @@
-import type React from "react"
-
+import React, { useEffect, useState } from "react";
 import {
   IonContent,
   IonHeader,
@@ -11,61 +10,78 @@ import {
   IonLabel,
   IonFab,
   IonFabButton,
-  IonButtons,
-  IonButton,
   IonIcon,
   IonPage,
-} from "@ionic/react"
-import {
-  add,
-  chatbox,
-  personAddSharp
-} from "ionicons/icons"
+  IonLoading,
+} from "@ionic/react";
+import { personAddSharp } from "ionicons/icons";
 import { useHistory } from 'react-router-dom';
-import { useState } from "react"
-// import "./ContactsPage.css"
+import axios from 'axios';
 import styles from './contactpage.module.css';
+import { useAuth } from '../../../context/AuthContext'; // Importa el contexto de autenticación
 
-
-const contacts = [
-  { id: 1, name: "Haylie Baptista", lastMsg: "¿Nos vemos mañana?" },
-  { id: 2, name: "Talan Bergson", lastMsg: "¡Gracias por tu ayuda!" },
-  { id: 3, name: "Emerson Geidt", lastMsg: "Te llamo más tarde." },
-  { id: 4, name: "Lindsey Kenter", lastMsg: "No puedo ahora, luego hablamos." },
-  { id: 5, name: "Maria Schleifer", lastMsg: "¿Cómo va todo?" },
-  { id: 6, name: "Jakob Passaquindici Arcand", lastMsg: "Estoy en camino." },
-  { id: 7, name: "Aspen Rhiel Madsen", lastMsg: "¿Qué planes para el fin de semana?" },
-  { id: 8, name: "Marley Ekstrom Bothman", lastMsg: "Todo bien, ¿y tú?" },
-  { id: 9, name: "Justin Workman", lastMsg: "Necesito que me confirmes, porfa." },
-  { id: 10, name: "Alfonso Korsgaard", lastMsg: "Luego te cuento los detalles." },
-  { id: 11, name: "Tatiana Lipshutz", lastMsg: "¿Quedamos para comer?" },
-  { id: 12, name: "Carlos Mendoza", lastMsg: "¡Ya está listo!" },
-  { id: 13, name: "Samantha Lee", lastMsg: "¿Me envías el archivo?" },
-  { id: 14, name: "Miguel Torres", lastMsg: "Hoy no puedo, lo siento." },
-  { id: 15, name: "Valeria Soto", lastMsg: "¡Qué emoción verte pronto!" },
-  { id: 16, name: "Pedro Díaz", lastMsg: "Reunión a las 3 p.m., ¿te va bien?" },
-  { id: 17, name: "Lucía Fernández", lastMsg: "Nos vemos en el parque." },
-  { id: 18, name: "Mateo Gómez", lastMsg: "Avísame cuando llegues." },
-  { id: 19, name: "Sofía Romero", lastMsg: "No te preocupes, todo bien." },
-  { id: 20, name: "Javier Ramírez", lastMsg: "¿Dónde nos encontramos?" }
-];
+interface Contact {
+  contactid: number;
+  name: string;
+  phoneNumber?: string;
+  img?: string;
+}
 
 const ContactsPage: React.FC = () => {
-  const [searchText, setSearchText] = useState("")
-
+  const [searchText, setSearchText] = useState("");
+  const [contacts, setContacts] = useState<Contact[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const { user } = useAuth(); // Obtiene el usuario del contexto
   const history = useHistory();
+
+  useEffect(() => {
+    const fetchContacts = async () => {
+      try {
+        if (!user?.token) {
+          setError('No autenticado');
+          return;
+        }
+
+        const response = await axios.get(
+          `http://localhost:8080/api/contacts/citizen/${user?.citizenid}`,
+          {
+            headers: {
+              Authorization: `Bearer ${user.token}`
+            }
+          }
+        );
+
+        const formattedContacts = response.data.map((contact: any) => ({
+          contactid: contact.contactid,
+          name: contact.name,
+          phoneNumber: contact.contacto?.phoneNumber,
+          img: contact.contacto?.img
+        }));
+
+        setContacts(formattedContacts);
+        console.log("Contactos formateados:", formattedContacts);
+      } catch (err: any) {
+        setError(err.response?.data?.message || 'Error al obtener contactos');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchContacts();
+  }, [user?.token]); // Se ejecuta cuando cambia el token
 
   const handleRedirect = (id: number) => {
     history.push(`/contactos/perfil/${id}`);
   };
 
+  const handleAddContact = () => {
+    history.push("/contactos/agregar");
+  };
+
   const filteredContacts = contacts.filter(contact =>
     contact.name.toLowerCase().includes(searchText.toLowerCase())
   );
-
-  const handleAddContact = () => {
-    history.push("/contactos/agregar")
-  };
 
   return (
     <IonPage>
@@ -79,28 +95,48 @@ const ContactsPage: React.FC = () => {
       </IonHeader>
 
       <IonContent fullscreen>
-      <div className={styles.searchContainer}>
-          <IonSearchbar placeholder="Buscar..." className={styles.customSearchbar} animated={true} value={searchText} onIonInput={(e) => setSearchText(e.detail.value!)} />
+        <IonLoading isOpen={loading} message="Cargando contactos..." />
+
+        {error && (
+          <div className={styles.errorContainer}>
+            <p className={styles.errorText}>{error}</p>
+          </div>
+        )}
+
+        <div className={styles.searchContainer}>
+          <IonSearchbar
+            placeholder="Buscar..."
+            className={styles.customSearchbar}
+            animated={true}
+            value={searchText}
+            onIonInput={(e) => setSearchText(e.detail.value!)}
+          />
         </div>
 
         <IonList>
-          {filteredContacts.map((contact, i) => (
+          {filteredContacts.map((contact) => (
             <IonItem
-              key={contact.id}
+              key={contact.contactid}
               className={styles.chatItems}
-              button // Hace que el IonItem sea clickeable
-              onClick={() => handleRedirect(contact.id)}
+              button
+              onClick={() => handleRedirect(contact.contactid)}
             >
               <IonAvatar slot="start" className="avatar">
-                <img src={`https://randomuser.me/api/portraits/${contact.id - 1 % 2 == 0 ? "" : "wo"}men/${contact.id}.jpg`} alt={contact.name} />
+                <img
+                  src={`data:image/jpeg;base64,${contact.img}`}
+                  alt={contact.name}
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = 'https://i.gyazo.com/17f37bb6fd035c2055614479d36c7de2.jpg';
+                  }}
+                />
               </IonAvatar>
               <IonLabel className={styles.textUser}>
-                <h2>{contact.name}</h2>
+                <h2>{contact.name} | {contact.phoneNumber}</h2>
               </IonLabel>
             </IonItem>
           ))}
         </IonList>
-        {/* Floating Action Button */}
+
         <IonFab vertical="bottom" horizontal="end" slot="fixed" className="fab">
           <IonFabButton onClick={handleAddContact} className={`fab-button ${styles.fabButton}`}>
             <IonIcon className={styles.fabIcon} icon={personAddSharp} />
@@ -108,8 +144,7 @@ const ContactsPage: React.FC = () => {
         </IonFab>
       </IonContent>
     </IonPage>
-  )
-}
+  );
+};
 
-export default ContactsPage
-
+export default ContactsPage;
