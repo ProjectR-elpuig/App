@@ -18,6 +18,7 @@ import Register from "./pages/register/register"
 
 // Auth
 import { AuthProvider } from './context/AuthContext';
+import { useAuth } from './context/AuthContext';
 
 // Paginas de TABS
 // CONTACTOS
@@ -94,9 +95,9 @@ const App: React.FC = () => {
         {/* {showSplash ? (
           <SplashScreen />
         ) : ( */}
-          <IonReactRouter>
-            <MainApp />
-          </IonReactRouter>
+        <IonReactRouter>
+          <MainApp />
+        </IonReactRouter>
         {/* )} */}
       </AuthProvider>
     </IonApp>
@@ -106,6 +107,7 @@ const App: React.FC = () => {
 const MainApp: React.FC = () => {
   const location = useLocation();
   const { isAuthenticated, user } = useAuth();
+  const [isRegister, setIsRegister] = useState(false);
 
   // Definir rutas donde NO se debe mostrar la barra de navegación
   const hiddenTabBarRoutes = [
@@ -123,9 +125,17 @@ const MainApp: React.FC = () => {
     new RegExp(`^${route.replace(/:[^\s/]+/g, ".*")}$`).test(location.pathname),
   )
 
+  console.log("isAuthenticated", isAuthenticated)
+
   return !isAuthenticated ? (
     <Route exact path="/">
-      <Login />
+      {
+        !isRegister ? (
+          <Login changeToRegister={() => setIsRegister(true)} />
+        ) : (
+          <Register changeToLogin={() => setIsRegister(false)} />
+        )
+      }
     </Route>
   ) : (
     <IonTabs>
@@ -176,7 +186,7 @@ const MainApp: React.FC = () => {
 
         {/* Settings */}
         <Route path="/settings">
-          <SettingsPage isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />
+          <SettingsPage />
         </Route>
         <Route path="/settings/blockedcontacts">
           <BlockedContactsPage />
@@ -207,7 +217,7 @@ const MainApp: React.FC = () => {
             <ChatList />
           </SwiperSlide>
           <SwiperSlide>
-            <SettingsPage isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />
+            <SettingsPage />
           </SwiperSlide>
         </Swiper>
       </IonRouterOutlet>

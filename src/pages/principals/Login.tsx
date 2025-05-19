@@ -5,7 +5,7 @@ import "./Login.css"
 import { login } from '../../services/authService'; // Importa el servicio de autenticación
 import { useAuth } from '../../context/AuthContext';
 
-const Login: React.FC = () => {
+const Login:  React.FC<{ changeToRegister: () => void }> = ({ changeToRegister }) => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState<string | null>(null) // Para mostrar errores
@@ -86,12 +86,10 @@ const Login: React.FC = () => {
             )}
 
             <div className="account-actions">
-              <p className="create-account">Join discord to create account!</p>
-              <IonRouterLink routerLink="/register">
-                <IonButton expand="block" className="register-button">
-                  REGISTER
-                </IonButton>
-              </IonRouterLink>
+              <p className="create-account">¿Aún no tienes cuenta? <a onClick={changeToRegister}>Crear cuenta</a></p>
+              {/* <IonButton expand="block" className="register-button" onClick={changeToRegister}>
+                REGISTER
+              </IonButton> */}
             </div>
           </div>
         </div>

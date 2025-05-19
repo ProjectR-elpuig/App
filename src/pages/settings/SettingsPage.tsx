@@ -24,14 +24,12 @@ import {
   watchOutline
 } from "ionicons/icons"
 import styles from "./SettingsPage.module.css"
+import { useAuth } from '../../context/AuthContext';
 
-interface SettingsPageProps {
-  isAuthenticated: boolean;
-  setIsAuthenticated: (isAuthenticated: boolean) => void;
-}
 
-const SettingsPage: React.FC<SettingsPageProps> = ({ isAuthenticated, setIsAuthenticated }) => {
+const SettingsPage: React.FC = () => {
   const history = useHistory();
+  const { logout } = useAuth();
 
   const handleBlockedContacts = () => {
     history.push(`/settings/blockedcontacts`);
@@ -42,13 +40,13 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ isAuthenticated, setIsAuthe
   };
 
   const handleExit = () => {
-    setIsAuthenticated(false);
+    logout();
     history.push(`/`);
   };
 
   const handleChangePassword = () => {
-    setIsAuthenticated(false);
-    history.push(`/settings/changepassword`);
+    // setIsAuthenticated(false);
+    // history.push(`/settings/changepassword`);
   };
 
   return (

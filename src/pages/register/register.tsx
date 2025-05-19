@@ -1,5 +1,3 @@
-"use client"
-
 import type React from "react"
 import { useState } from "react"
 import { IonContent, IonPage, IonInput, IonButton, IonText } from "@ionic/react"
@@ -7,7 +5,7 @@ import { useHistory } from "react-router-dom"
 import "./register.css"
 import axios from "axios"
 
-const Register: React.FC<{ onRegisterComplete: () => void }> = ({ onRegisterComplete }) => {
+const Register: React.FC<{ changeToLogin: () => void }> = ({ changeToLogin }) => {
     const history = useHistory()
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
@@ -37,14 +35,15 @@ const Register: React.FC<{ onRegisterComplete: () => void }> = ({ onRegisterComp
 
             // Guardar el token y redirigir
             localStorage.setItem('token', response.data.token);
-            onRegisterComplete();
+            // onRegisterComplete();
+            changeToLogin();
         } catch (err: any) {
             setError(err.response?.data?.error || err.message || "Error al crear la cuenta");
         }
     };
 
     const goBack = () => {
-        history.goBack() // Navega hacia atrás en el historial
+        changeToLogin();
     }
 
     return (
@@ -96,7 +95,7 @@ const Register: React.FC<{ onRegisterComplete: () => void }> = ({ onRegisterComp
 
                         <p className="login-link">
                             ¿Ya tienes una cuenta?{" "}
-                            <a href="#" onClick={goBack}>
+                            <a onClick={goBack}>
                                 Iniciar sesión
                             </a>
                         </p>
