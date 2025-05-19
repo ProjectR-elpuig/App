@@ -1,5 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { Redirect, Route, useHistory, useLocation } from 'react-router-dom';
+"use client"
+
+import type React from "react"
+import { useState } from "react"
+import { Redirect, Route, useLocation } from "react-router-dom"
 import {
   IonApp,
   IonIcon,
@@ -9,62 +12,53 @@ import {
   IonTabButton,
   IonTabs,
   setupIonicReact,
-  useIonRouter,
-  IonHeader,
-  IonToolbar
-} from '@ionic/react';
-import { IonReactRouter } from '@ionic/react-router';
-import './App.css';
-
-// Paginas principales
-import SplashScreen from "./pages/slash/SplashScreen";
-import Login from './pages/principals/Login';
+} from "@ionic/react"
+import { IonReactRouter } from "@ionic/react-router"
+import "./App.css"
+import Login from "./pages/principals/Login"
+import Register from "./pages/register/register"
 
 // Paginas de TABS
 // CONTACTOS
-import ContactsPage from './pages/contactos/principal/ContactsPage';
-import ContactDetail from './pages/contactos/ContactDetail';
-import AddContactPage from './pages/contactos/AddOrEditContact';
+import ContactsPage from "./pages/contactos/principal/ContactsPage"
+import ContactDetail from "./pages/contactos/ContactDetail"
+import AddContactPage from "./pages/contactos/AddOrEditContact"
 
 // CHATS
-import ChatList from './pages/chats/ChatList';
-import ChatContact from './pages/chats/ChatContact';
-
-// EVENTOS
-import EventosMain from './pages/events/EventosMain';
-import EventosAdd from './pages/events/EventosAdd';
+import ChatList from "./pages/chats/ChatList"
+import ChatContact from "./pages/chats/ChatContact"
 
 // HISTORIAL
-import HistoryPage from './pages/history/HistoryPage';
+import HistoryPage from "./pages/history/HistoryPage"
 
 // SETTINGS
-import SettingsPage from './pages/settings/SettingsPage';
-import BlockedContactsPage from './pages/settings/BlockedContactsPage';
-import SettingsHelpPage from './pages/settings/SettingsHelpPage';
-import ChangePasswordPage from './pages/settings/ChangePasswordPage';
+import SettingsPage from "./pages/settings/SettingsPage"
+import BlockedContactsPage from "./pages/settings/BlockedContactsPage"
+import SettingsHelpPage from "./pages/settings/SettingsHelpPage"
+import ChangePasswordPage from "./pages/settings/ChangePasswordPage"
 
 // Librerias
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/pagination";
-import "swiper/css/navigation";
-import { Keyboard, Mousewheel } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react"
+import "swiper/css"
+import "swiper/css/pagination"
+import "swiper/css/navigation"
+import { Keyboard, Mousewheel } from "swiper/modules"
 
 /* Core CSS required for Ionic components to work properly */
-import '@ionic/react/css/core.css';
+import "@ionic/react/css/core.css"
 
 /* Basic CSS for apps built with Ionic */
-import '@ionic/react/css/normalize.css';
-import '@ionic/react/css/structure.css';
-import '@ionic/react/css/typography.css';
+import "@ionic/react/css/normalize.css"
+import "@ionic/react/css/structure.css"
+import "@ionic/react/css/typography.css"
 
 /* Optional CSS utils that can be commented out */
-import '@ionic/react/css/padding.css';
-import '@ionic/react/css/float-elements.css';
-import '@ionic/react/css/text-alignment.css';
-import '@ionic/react/css/text-transformation.css';
-import '@ionic/react/css/flex-utils.css';
-import '@ionic/react/css/display.css';
+import "@ionic/react/css/padding.css"
+import "@ionic/react/css/float-elements.css"
+import "@ionic/react/css/text-alignment.css"
+import "@ionic/react/css/text-transformation.css"
+import "@ionic/react/css/flex-utils.css"
+import "@ionic/react/css/display.css"
 
 /**
  * Ionic Dark Mode
@@ -75,28 +69,33 @@ import '@ionic/react/css/display.css';
 
 /* import '@ionic/react/css/palettes/dark.always.css'; */
 /* import '@ionic/react/css/palettes/dark.class.css'; */
-import '@ionic/react/css/palettes/dark.system.css';
+import "@ionic/react/css/palettes/dark.system.css"
 
 /* Theme variables */
-import './theme/variables.css';
+import "./theme/variables.css"
 
-setupIonicReact();
+setupIonicReact()
 
 const App: React.FC = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [showSplash, setShowSplash] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  // Comentado temporalmente el estado del SplashScreen
+  // const [showSplash, setShowSplash] = useState(true)
 
   const handleLogin = () => {
     // console.log('handleLogin he llegado', true);
-    setIsAuthenticated(true);
-  };
+    setIsAuthenticated(true)
+  }
 
+  // Comentado temporalmente el efecto del SplashScreen
+  /*
   useEffect(() => {
-    setTimeout(() => setShowSplash(false), 3000);
-  }, []);
+    setTimeout(() => setShowSplash(false), 3000)
+  }, [])
+  */
 
   return (
     <IonApp>
+      {/* Comentado temporalmente el SplashScreen
       {showSplash ? (
         <SplashScreen />
       ) : (
@@ -104,32 +103,48 @@ const App: React.FC = () => {
           <MainApp isAuthenticated={isAuthenticated} onLogin={handleLogin} setIsAuthenticated={setIsAuthenticated} />
         </IonReactRouter>
       )}
-    </IonApp>
-  );
-};
+      */}
 
-const MainApp: React.FC<{ isAuthenticated: boolean; onLogin: () => void; setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>> }> = ({ isAuthenticated, onLogin, setIsAuthenticated }) => {
-  const location = useLocation();
+      {/* Renderizamos directamente el MainApp sin el SplashScreen */}
+      <IonReactRouter>
+        <MainApp isAuthenticated={isAuthenticated} onLogin={handleLogin} setIsAuthenticated={setIsAuthenticated} />
+      </IonReactRouter>
+    </IonApp>
+  )
+}
+
+const MainApp: React.FC<{
+  isAuthenticated: boolean
+  onLogin: () => void
+  setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>
+}> = ({ isAuthenticated, onLogin, setIsAuthenticated }) => {
+  const location = useLocation()
 
   // Definir rutas donde NO se debe mostrar la barra de navegación
   const hiddenTabBarRoutes = [
     "/",
     "/login",
+    "/register",
     "/contactos/agregar",
     "/contactos/perfil/:id",
     "/settings/blockedcontacts",
     "/settings/changepassword",
-    "/chats/chatcontact"
-  ];
+    "/chats/chatcontact",
+  ]
 
   const shouldHideTabBar = hiddenTabBarRoutes.some((route) =>
-    new RegExp(`^${route.replace(/:[^\s/]+/g, ".*")}$`).test(location.pathname)
-  );
+    new RegExp(`^${route.replace(/:[^\s/]+/g, ".*")}$`).test(location.pathname),
+  )
 
   return !isAuthenticated ? (
-    <Route exact path="/">
-      <Login onLogin={onLogin} />
-    </Route>
+    <IonRouterOutlet>
+      <Route exact path="/">
+        <Login onLogin={onLogin} />
+      </Route>
+      <Route exact path="/register">
+        <Register onRegisterComplete={() => (window.location.href = "/")} />
+      </Route>
+    </IonRouterOutlet>
   ) : (
     <IonTabs>
       <IonRouterOutlet>
@@ -223,11 +238,17 @@ const MainApp: React.FC<{ isAuthenticated: boolean; onLogin: () => void; setIsAu
         <IonTabBar slot="bottom" className="custom-tab-bar">
           <IonTabButton tab="contactos" href="/contactos">
             <IonLabel>Contacts</IonLabel>
-            <IonIcon aria-hidden="true" src={location.pathname.startsWith("/contactos") ? "/tab/icons/people-sel.svg" : "/tab/icons/people.svg"} />
+            <IonIcon
+              aria-hidden="true"
+              src={location.pathname.startsWith("/contactos") ? "/tab/icons/people-sel.svg" : "/tab/icons/people.svg"}
+            />
           </IonTabButton>
           <IonTabButton tab="chats" href="/chats">
             <IonLabel>Chats</IonLabel>
-            <IonIcon aria-hidden="true" src={location.pathname.startsWith("/chats") ? "/tab/icons/chat-sel.svg" : "/tab/icons/chat.svg"} />
+            <IonIcon
+              aria-hidden="true"
+              src={location.pathname.startsWith("/chats") ? "/tab/icons/chat-sel.svg" : "/tab/icons/chat.svg"}
+            />
           </IonTabButton>
           {/* <IonTabButton tab="eventos" href="/eventos">
             <IonLabel>Events</IonLabel>
@@ -239,13 +260,17 @@ const MainApp: React.FC<{ isAuthenticated: boolean; onLogin: () => void; setIsAu
           </IonTabButton> */}
           <IonTabButton tab="settings" href="/settings">
             <IonLabel>Settings</IonLabel>
-            <IonIcon aria-hidden="true" src={location.pathname.startsWith("/settings") ? "/tab/icons/settings-sel.svg" : "/tab/icons/settings.svg"} />
+            <IonIcon
+              aria-hidden="true"
+              src={
+                location.pathname.startsWith("/settings") ? "/tab/icons/settings-sel.svg" : "/tab/icons/settings.svg"
+              }
+            />
           </IonTabButton>
         </IonTabBar>
       )}
     </IonTabs>
-  );
-};
+  )
+}
 
-
-export default App;
+export default App

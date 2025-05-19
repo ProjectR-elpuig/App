@@ -1,43 +1,39 @@
-import React, { useState } from 'react';
-import {
-  IonContent,
-  IonPage,
-  IonInput,
-  IonButton,
-  IonText,
-  IonImg,
-} from '@ionic/react';
-import './Login.css';
-import { login } from '../../services/authService'; // Importa el servicio de autenticación
+"use client"
+
+import type React from "react"
+import { useState } from "react"
+import { IonContent, IonPage, IonInput, IonButton, IonText, IonRouterLink } from "@ionic/react"
+import "./Login.css"
+import { login } from "../../services/authService" // Importa el servicio de autenticación
 
 const Login: React.FC<{ onLogin: (token: string) => void }> = ({ onLogin }) => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState<string | null>(null); // Para mostrar errores
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
+  const [error, setError] = useState<string | null>(null) // Para mostrar errores
 
   const handleLogin = async () => {
-    setError(null); // Reinicia el mensaje de error
+    setError(null) // Reinicia el mensaje de error
     try {
-    console.log('Esto recibo de la interfaz:', { username, password });
-      const data = await login(username, password); // Llama al servicio de login
-      localStorage.setItem('token', data.token); // Guarda el token en el almacenamiento local
-      onLogin(data.token); // Notifica al componente padre que el usuario ha iniciado sesión
+      console.log("Esto recibo de la interfaz:", { username, password })
+      const data = await login(username, password) // Llama al servicio de login
+      localStorage.setItem("token", data.token) // Guarda el token en el almacenamiento local
+      onLogin(data.token) // Notifica al componente padre que el usuario ha iniciado sesión
     } catch (err: any) {
-      setError(err.response?.data?.error || err.message || 'Error al iniciar sesión, usuario o contraseña incorrectos.');
+      setError(err.response?.data?.error || err.message || "Error al iniciar sesión, usuario o contraseña incorrectos.")
     }
 
-    onLogin(''); // Elimina esta línea cuando implementes la autenticación
-  };
+    onLogin("") // Elimina esta línea cuando implementes la autenticación
+  }
 
   const authCfx = () => {
     // Aquí puedes implementar la autenticación con CFX
-    onLogin('');
-  };
+    onLogin("")
+  }
 
   const authDiscord = () => {
     // Aquí puedes implementar la autenticación con Discord
-    onLogin('');
-  };
+    onLogin("")
+  }
 
   return (
     <IonPage>
@@ -45,7 +41,7 @@ const Login: React.FC<{ onLogin: (token: string) => void }> = ({ onLogin }) => {
         <div className="login-container jersey-25-regular">
           <img src="/imgs/logo.png" alt="V-Link Logo" className="logo" />
           <h1 className="welcome-text">Welcome to V-LINK</h1>
-          
+
           <div className="login-box">
             {/* Login con Discord & CFX */}
             {/* <h2>Login With</h2>
@@ -81,22 +77,31 @@ const Login: React.FC<{ onLogin: (token: string) => void }> = ({ onLogin }) => {
                 className="custom-input"
                 onIonChange={(e) => setPassword(e.detail.value!)}
               />
-              
+
               <IonButton onClick={handleLogin} expand="block" className="login-button">
                 Login
               </IonButton>
             </form>
 
-            {error && <IonText color="danger" className="error-text">{error}</IonText>}
+            {error && (
+              <IonText color="danger" className="error-text">
+                {error}
+              </IonText>
+            )}
 
-            <p className="create-account">
-              Join discord to create account!
-            </p>
+            <div className="account-actions">
+              <p className="create-account">Join discord to create account!</p>
+              <IonRouterLink routerLink="/register">
+                <IonButton expand="block" className="register-button">
+                  REGISTER
+                </IonButton>
+              </IonRouterLink>
+            </div>
           </div>
         </div>
       </IonContent>
     </IonPage>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login
