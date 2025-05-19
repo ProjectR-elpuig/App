@@ -26,7 +26,7 @@ const Login: React.FC<{ onLogin: (token: string) => void }> = ({ onLogin }) => {
       setError(err.response?.data?.error || err.message || 'Error al iniciar sesión, usuario o contraseña incorrectos.');
     }
 
-    // onLogin(''); // Elimina esta línea cuando implementes la autenticación
+    onLogin(''); // Elimina esta línea cuando implementes la autenticación
   };
 
   const authCfx = () => {
