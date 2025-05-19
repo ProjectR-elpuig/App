@@ -5,6 +5,7 @@ import { useState } from "react"
 import { IonContent, IonPage, IonInput, IonButton, IonText } from "@ionic/react"
 import { useHistory } from "react-router-dom"
 import "./register.css"
+import axios from "axios"
 
 const Register: React.FC<{ onRegisterComplete: () => void }> = ({ onRegisterComplete }) => {
     const history = useHistory()
@@ -14,33 +15,33 @@ const Register: React.FC<{ onRegisterComplete: () => void }> = ({ onRegisterComp
     const [error, setError] = useState<string | null>(null)
 
     const handleRegister = async () => {
-        setError(null)
+        setError(null);
 
         // Validaciones básicas
         if (!username || !password || !confirmPassword) {
-            setError("Por favor, completa todos los campos")
-            return
+            setError("Por favor, completa todos los campos");
+            return;
         }
 
         if (password !== confirmPassword) {
-            setError("Las contraseñas no coinciden")
-            return
+            setError("Las contraseñas no coinciden");
+            return;
         }
 
         try {
-            console.log("Datos de registro:", { username, password })
-            // Aquí llamarías a tu servicio de registro
-            // const data = await register(username, email, password);
-            // onRegisterComplete(); // Notifica al componente padre que el registro se completó
+            const response = await axios.post('http://localhost:8080/api/auth/register', {
+                username,
+                password,
+                phoneNumber: "" // Puedes añadir un campo para el número de teléfono si lo necesitas
+            });
 
-            // Simulación temporal
-            setTimeout(() => {
-                onRegisterComplete()
-            }, 1000)
+            // Guardar el token y redirigir
+            localStorage.setItem('token', response.data.token);
+            onRegisterComplete();
         } catch (err: any) {
-            setError(err.response?.data?.error || err.message || "Error al crear la cuenta")
+            setError(err.response?.data?.error || err.message || "Error al crear la cuenta");
         }
-    }
+    };
 
     const goBack = () => {
         history.goBack() // Navega hacia atrás en el historial
