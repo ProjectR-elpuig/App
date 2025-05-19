@@ -9,7 +9,6 @@ import "./register.css"
 const Register: React.FC<{ onRegisterComplete: () => void }> = ({ onRegisterComplete }) => {
     const history = useHistory()
     const [username, setUsername] = useState("")
-    const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
     const [error, setError] = useState<string | null>(null)
@@ -18,7 +17,7 @@ const Register: React.FC<{ onRegisterComplete: () => void }> = ({ onRegisterComp
         setError(null)
 
         // Validaciones básicas
-        if (!username || !email || !password || !confirmPassword) {
+        if (!username || !password || !confirmPassword) {
             setError("Por favor, completa todos los campos")
             return
         }
@@ -29,7 +28,7 @@ const Register: React.FC<{ onRegisterComplete: () => void }> = ({ onRegisterComp
         }
 
         try {
-            console.log("Datos de registro:", { username, email, password })
+            console.log("Datos de registro:", { username, password })
             // Aquí llamarías a tu servicio de registro
             // const data = await register(username, email, password);
             // onRegisterComplete(); // Notifica al componente padre que el registro se completó
@@ -63,15 +62,6 @@ const Register: React.FC<{ onRegisterComplete: () => void }> = ({ onRegisterComp
                                 placeholder="Username"
                                 className="custom-input"
                                 onIonChange={(e) => setUsername(e.detail.value!)}
-                            />
-
-                            <h3>Email</h3>
-                            <IonInput
-                                type="email"
-                                value={email}
-                                placeholder="Email"
-                                className="custom-input"
-                                onIonChange={(e) => setEmail(e.detail.value!)}
                             />
 
                             <h3>Password</h3>
