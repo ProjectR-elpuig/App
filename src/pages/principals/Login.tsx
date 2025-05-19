@@ -2,7 +2,7 @@ import type React from "react"
 import { useState } from "react"
 import { IonContent, IonPage, IonInput, IonButton, IonText, IonRouterLink } from "@ionic/react"
 import "./Login.css"
-import { login } from '../../services/authService'; // Importa el servicio de autenticación
+import { loginService } from '../../services/authService'; // Importa el servicio de autenticación
 import { useAuth } from '../../context/AuthContext';
 
 const Login:  React.FC<{ changeToRegister: () => void }> = ({ changeToRegister }) => {
@@ -14,8 +14,9 @@ const Login:  React.FC<{ changeToRegister: () => void }> = ({ changeToRegister }
   const handleLogin = async () => {
     setError(null);
     try {
-      const data = await login(username, password); // Llama al servicio de login
-      await login(username, data.token); // Usa el contexto para guardar los datos
+      const data = await loginService(username, password); // Llama al servicio de login
+      console.log('User:', data?.usuario?.citizenId, JSON.stringify(data));
+      await login(data?.usuario?.citizenId, data.token); // Usa el contexto para guardar los datos
     } catch (err: any) {
       setError(err.response?.data?.error || err.message || 'Error al iniciar sesión');
     }

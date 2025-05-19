@@ -2,13 +2,13 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Storage } from '@ionic/storage';
 
 interface UserData {
-    username: string;
+    citizenid: string;
     token: string;
 }
 
 interface AuthContextType {
     user: UserData | null;
-    login: (username: string, token: string) => Promise<void>;
+    login: (citizenid: string, token: string) => Promise<void>;
     logout: () => Promise<void>;
     isAuthenticated: boolean;
 }
@@ -35,8 +35,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         initStorage();
     }, []);
 
-    const login = async (username: string, token: string) => {
-        const userData = { username, token };
+    // Cambiamos el parámetro username por citizenid
+    const login = async (citizenid: string, token: string) => {
+        const userData = { citizenid, token };  // Usamos citizenid en el objeto
         setUser(userData);
         if (store) {
             await store.set('user', userData);

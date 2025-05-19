@@ -6,7 +6,7 @@ export interface LoginResponse {
   token: string;
 }
 
-export const login = async (username: string, password: string): Promise<LoginResponse> => {
+export const loginService = async (username: string, password: string): Promise<LoginResponse> => {
   try {
     console.log('Intentando iniciar sesión con:', { username, password });
     const response = await axios.post(`${API_URL}/login`, { 
