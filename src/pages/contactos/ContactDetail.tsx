@@ -11,7 +11,7 @@ interface Contact {
   contactid: number;
   name: string;
   phoneNumber?: string;
-  img?: string; // Asumiendo que es base64
+  img?: string;
 }
 
 const ContactDetail: React.FC = () => {
@@ -47,7 +47,7 @@ const ContactDetail: React.FC = () => {
           name: response.data.name,
           phoneNumber: response.data.contacto?.phoneNumber ?? 'Número no disponible', // Usamos operador de coalescencia
           img: response.data.contacto?.img
-            ? `data:image/jpeg;base64,${response.data.contacto.img}` // Formato para imágenes base64
+            ? `${response.data.contacto.img}` // Formato para imágenes base64
             : '/imgs/default-avatar.jpg' // Imagen por defecto
         };
 

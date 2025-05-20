@@ -20,6 +20,7 @@ interface Contact {
   contactid?: number
   name: string
   phoneNumber: string
+  img?: string
 }
 
 const AddOrEditContact: React.FC = () => {
@@ -49,7 +50,10 @@ const AddOrEditContact: React.FC = () => {
 
           setFormData({
             name: response.data.name,
-            phoneNumber: response.data.contacto.phoneNumber
+            phoneNumber: response.data.contacto.phoneNumber,
+            img: response.data.contacto?.img
+              ? response.data.contacto.img
+              : "https://i.gyazo.com/17f37bb6fd035c2055614479d36c7de2.jpg"
           })
 
         } catch (err: any) {
@@ -64,7 +68,6 @@ const AddOrEditContact: React.FC = () => {
     }
 
     // Intentar obtener datos de la navegación primero
-    console.log("location.state", JSON.stringify(location.state));
     if (location.state?.contact) {
       console.log("Entro aqui", id);
       setFormData(location.state.contact)
@@ -157,8 +160,11 @@ const AddOrEditContact: React.FC = () => {
         <div className={styles.profilePhotoContainer}>
           <div className={styles.profilePhoto}>
             <img
-              src="https://i.gyazo.com/17f37bb6fd035c2055614479d36c7de2.jpg"
+              src={`data:image/jpeg;base64,${formData.img}` || 'https://i.gyazo.com/17f37bb6fd035c2055614479d36c7de2.jpg'}
               alt="Foto Perfil"
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = 'https://i.gyazo.com/17f37bb6fd035c2055614479d36c7de2.jpg';
+              }}
             />
           </div>
         </div>
