@@ -25,6 +25,7 @@ import {
 } from "ionicons/icons"
 import styles from "./SettingsPage.module.css"
 import { useAuth } from '../../context/AuthContext';
+import { personCircleOutline } from 'ionicons/icons';
 
 
 const SettingsPage: React.FC = () => {
@@ -66,6 +67,13 @@ const SettingsPage: React.FC = () => {
 
       <IonContent className={styles.content}>
         <IonList lines="none" className={styles.settingsList}>
+
+          {/* Perfil */}
+          <IonItem button onClick={() => history.push('/settings/profile')} className={styles.settingsItem}>
+            <IonIcon icon={personCircleOutline} slot="start" className={styles.itemIcon} />
+            <p className={styles.itemLabel}>Mi perfil</p>
+          </IonItem>
+
           {/* Notifications */}
           <IonItem className={styles.settingsItem}>
             <IonIcon icon={moonOutline} slot="start" className={styles.itemIcon} />

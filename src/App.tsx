@@ -38,6 +38,7 @@ import SettingsPage from "./pages/settings/SettingsPage"
 import BlockedContactsPage from "./pages/settings/BlockedContactsPage"
 import SettingsHelpPage from "./pages/settings/SettingsHelpPage"
 import ChangePasswordPage from "./pages/settings/ChangePasswordPage"
+import ProfilePage from './pages/settings/ProfilePage';
 
 // Librerias
 import { Swiper, SwiperSlide } from "swiper/react"
@@ -116,6 +117,7 @@ const MainApp: React.FC = () => {
     "/register",
     "/contactos/agregar",
     "/contactos/perfil/:id",
+    "/settings/profile",
     "/settings/blockedcontacts",
     "/settings/changepassword",
     "/chats/chatcontact",
@@ -181,16 +183,19 @@ const MainApp: React.FC = () => {
         </Route> */}
 
           {/* Settings */}
-          <Route path="/settings">
+          <Route exact path="/settings">
             <SettingsPage />
           </Route>
-          <Route path="/settings/blockedcontacts">
+          <Route exact path="/settings/profile">
+            <ProfilePage />
+          </Route>
+          <Route exact path="/settings/blockedcontacts">
             <BlockedContactsPage />
           </Route>
-          <Route path="/settings/help">
+          <Route exact path="/settings/help">
             <SettingsHelpPage />
           </Route>
-          <Route path="/settings/changepassword">
+          <Route exact path="/settings/changepassword">
             <ChangePasswordPage />
           </Route>
 
