@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import {
   IonPage,
   IonHeader,
@@ -10,7 +10,7 @@ import {
   IonIcon,
 } from "@ionic/react"
 import { arrowBack, trash } from "ionicons/icons"
-import { useHistory, useParams } from "react-router-dom"
+import { useHistory, useParams, useLocation } from "react-router-dom"
 import styles from "./AddOrEditContact.module.css"
 import axios from "axios"
 import { useAuth } from "../../context/AuthContext"
@@ -25,6 +25,7 @@ interface Contact {
 const AddOrEditContact: React.FC = () => {
   const { id } = useParams<{ id: string }>()
   const history = useHistory()
+  const location = useLocation()
   const { user } = useAuth()
   const [formData, setFormData] = useState<Contact>({
     name: "",
@@ -32,6 +33,47 @@ const AddOrEditContact: React.FC = () => {
   })
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const [initialLoad, setInitialLoad] = useState(true)
+
+  // Cargar datos del contacto si estamos en modo edición
+  useEffect(() => {
+    const loadContactData = async () => {
+      if (id) {
+        try {
+          setLoading(true)
+          const response = await axios.get(`${API_CONFIG.BASE_URL}/contacts/${id}`, {
+            headers: {
+              Authorization: `Bearer ${user?.token}`
+            }
+          })
+
+          setFormData({
+            name: response.data.name,
+            phoneNumber: response.data.contacto.phoneNumber
+          })
+
+        } catch (err: any) {
+          setError(err.response?.data?.message || 'Error al cargar contacto')
+        } finally {
+          setLoading(false)
+          setInitialLoad(false)
+        }
+      } else {
+        setInitialLoad(false)
+      }
+    }
+
+    // Intentar obtener datos de la navegación primero
+    console.log("location.state", JSON.stringify(location.state));
+    if (location.state?.contact) {
+      console.log("Entro aqui", id);
+      setFormData(location.state.contact)
+      console.log("FormData", JSON.stringify(formData));
+      setInitialLoad(false)
+    } else {
+      loadContactData()
+    }
+  }, [id, user?.token])
 
   const handleChange = (field: keyof Contact, value: string) => {
     setFormData({
@@ -45,23 +87,32 @@ const AddOrEditContact: React.FC = () => {
     setError(null)
 
     try {
-      if (!user?.token) {
+      if (!user?.token || !user?.citizenid) {
         throw new Error("No autenticado")
       }
 
-      await axios.post(`${API_CONFIG.BASE_URL}/contacts`,
-        {
-          citizenId: user.citizenid,
-          name: formData.name,
-          phoneNumber: formData.phoneNumber
-        },
-        {
+      const payload = {
+        citizenId: user.citizenid,
+        name: formData.name,
+        phoneNumber: formData.phoneNumber
+      }
+
+      // Determinar si es creación o edición
+      if (id) {
+        await axios.put(`${API_CONFIG.BASE_URL}/contacts/${id}`, payload, {
           headers: {
             Authorization: `Bearer ${user.token}`,
             "Content-Type": "application/json"
           }
-        }
-      )
+        })
+      } else {
+        await axios.post(`${API_CONFIG.BASE_URL}/contacts`, payload, {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+            "Content-Type": "application/json"
+          }
+        })
+      }
 
       history.push("/contactos")
     } catch (err: any) {
@@ -73,6 +124,16 @@ const AddOrEditContact: React.FC = () => {
 
   const handleCancel = () => {
     history.goBack()
+  }
+
+  if (initialLoad) {
+    return (
+      <IonPage>
+        <IonContent className={styles.loadingContainer}>
+          <p>Cargando datos del contacto...</p>
+        </IonContent>
+      </IonPage>
+    )
   }
 
   return (

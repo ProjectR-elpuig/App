@@ -72,7 +72,14 @@ const ContactDetail: React.FC = () => {
   }
 
   const onEdit = (): void => {
-    history.push(`/contactos/perfil/${contactid}/edit`);
+    history.push(`/contactos/perfil/${contactid}/edit`, {
+      contact: {
+        name: contact.name,
+        phoneNumber: contact.phoneNumber,
+        contactid: contact.contactid,
+        img: contact.img
+      }
+    });
   }
 
   if (loading) {
