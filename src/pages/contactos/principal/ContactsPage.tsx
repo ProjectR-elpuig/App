@@ -16,6 +16,7 @@ import {
 } from "@ionic/react";
 import { personAddSharp } from "ionicons/icons";
 import { useHistory } from 'react-router-dom';
+import { useIonViewWillEnter } from '@ionic/react';
 import axios from 'axios';
 import styles from './contactpage.module.css';
 import { useAuth } from '../../../context/AuthContext'; // Importa el contexto de autenticación
@@ -32,44 +33,53 @@ const ContactsPage: React.FC = () => {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { user } = useAuth(); // Obtiene el usuario del contexto
+  const { user } = useAuth();
   const history = useHistory();
 
-  useEffect(() => {
-    const fetchContacts = async () => {
-      try {
-        if (!user?.token) {
-          setError('No autenticado');
-          return;
-        }
+  // Función para obtener los contactos
+  const fetchContacts = async () => {
+    try {
+      setLoading(true);
+      setError(null);
 
-        const response = await axios.get(
-          `http://192.168.27.27:8080/api/contacts/citizen/${user?.citizenid}`,
-          {
-            headers: {
-              Authorization: `Bearer ${user.token}`
-            }
-          }
-        );
-
-        const formattedContacts = response.data.map((contact: any) => ({
-          contactid: contact.contactid,
-          name: contact.name,
-          phoneNumber: contact.contacto?.phoneNumber,
-          img: contact.contacto?.img
-        }));
-
-        setContacts(formattedContacts);
-        console.log("Contactos formateados:", formattedContacts);
-      } catch (err: any) {
-        setError(err.response?.data?.message || 'Error al obtener contactos');
-      } finally {
-        setLoading(false);
+      if (!user?.token) {
+        setError('No autenticado');
+        return;
       }
-    };
 
+      const response = await axios.get(
+        `http://192.168.27.27:8080/api/contacts/citizen/${user?.citizenid}`,
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`
+          }
+        }
+      );
+
+      const formattedContacts = response.data.map((contact: any) => ({
+        contactid: contact.contactid,
+        name: contact.name,
+        phoneNumber: contact.contacto?.phoneNumber,
+        img: contact.contacto?.img
+      }));
+
+      setContacts(formattedContacts);
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'Error al obtener contactos');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Se ejecuta al montar y cuando cambia el token
+  useEffect(() => {
     fetchContacts();
-  }, [user?.token]); // Se ejecuta cuando cambia el token
+  }, [user?.token]);
+
+  // Se ejecuta cada vez que la página se muestra
+  useIonViewWillEnter(() => {
+    fetchContacts();
+  });
 
   const handleRedirect = (id: number) => {
     history.push(`/contactos/perfil/${id}`);
@@ -131,7 +141,7 @@ const ContactsPage: React.FC = () => {
                 />
               </IonAvatar>
               <IonLabel className={styles.textUser}>
-                <h2>{contact.name} | {contact.phoneNumber}</h2>
+                <h2>{contact.name}</h2>
               </IonLabel>
             </IonItem>
           ))}
