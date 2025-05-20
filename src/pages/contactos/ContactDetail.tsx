@@ -29,7 +29,7 @@ const ContactDetail: React.FC = () => {
         }
 
         const response = await axios.get(
-          `http://192.168.27.62:8080/api/contacts/${contactid}`,
+          `http://192.168.27.27:8080/api/contacts/${contactid}`,
           {
             headers: {
               Authorization: `Bearer ${user.token}`

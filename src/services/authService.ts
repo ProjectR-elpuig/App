@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://192.168.27.62:8080/api/auth'; // Nueva URL base del backend
+const API_URL = 'http://192.168.27.27:8080/api/auth'; // Nueva URL base del backend
 
 export interface LoginResponse {
   token: string;
