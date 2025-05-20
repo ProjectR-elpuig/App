@@ -1,5 +1,5 @@
 .page {
-    background: #1f52b5;
+    --background: #1f52b5;
 }
 
 .headerToolbar {
@@ -79,42 +79,36 @@
     border: 2px solid white;
 }
 
-.formContainer {
-    padding: 0 16px;
+/* ProfilePage.module.css */
+.infoSection {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 16px;
+    padding: 20px;
+    margin: 20px 0;
 }
 
-.inputGroup {
-    margin-bottom: 16px;
-}
-
-.inputLabel {
+.infoTitle {
     color: white;
-    font-family: "Jersey25", sans-serif;
-    margin-bottom: 8px;
-    display: block;
+    font-family: 'Jersey10', sans-serif;
+    font-size: 1.3rem;
+    margin: 0 0 16px 0;
 }
 
-.inputField {
-    --background: white;
-    --color: black;
-    --padding-start: 16px;
-    --padding-end: 16px;
-    border-radius: 8px;
-    font-family: "Jersey25", sans-serif;
-}
-
-.saveButton {
-    --background: white;
-    --color: #1f52b5;
-    margin-top: 24px;
-    font-family: "Jersey25", sans-serif;
-}
-
-.infoText {
+.phoneNumber {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
     color: white;
-    font-family: 'Jersey25', sans-serif;
-    margin-top: 8px;
-    padding: 12px; /* Para mantener la alineación visual */
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.1); /* Opcional: fondo similar al input */
+    font-size: 1.3rem;
+    font-family: 'Jersey10', sans-serif;
+}
+
+.phoneNumber ion-icon {
+    font-size: 20px;
+}
+
+.infoSection>.phoneNumber:not(:last-child) {
+    margin-bottom: 1.5rem;
+    /* Ajusta este valor según necesites */
 }

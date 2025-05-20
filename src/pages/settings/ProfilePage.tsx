@@ -12,7 +12,7 @@ import {
     IonAvatar,
     IonText
 } from '@ionic/react';
-import { arrowBack, camera, trash } from 'ionicons/icons';
+import { arrowBack, camera, trash, call, person } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import axios from 'axios';
@@ -172,18 +172,18 @@ const ProfilePage: React.FC = () => {
                     </div>
                 </div>
 
-                <div className={styles.formContainer}>
-                    <div className={styles.inputGroup}>
-                        <IonLabel className={styles.inputLabel}>Nombre de usuario</IonLabel>
-                        <IonText className={styles.infoText}>{profile.username}</IonText>
+                <div className={styles.infoSection}>
+                    <h2 className={styles.infoTitle}>Información de usuario</h2>
+
+                    <div className={styles.phoneNumber}>
+                        <IonIcon icon={person} />
+                        <span>{profile.username}</span>
                     </div>
 
-                    <div className={styles.inputGroup}>
-                        <IonLabel className={styles.inputLabel}>Número de teléfono</IonLabel>
-                        <IonText className={styles.infoText}>{profile.phoneNumber}</IonText>
+                    <div className={styles.phoneNumber}>
+                        <IonIcon icon={call} />
+                        <span>{profile.phoneNumber}</span>
                     </div>
-
-                    {error && <IonText color="danger">{error}</IonText>}
                 </div>
             </IonContent>
         </IonPage>
