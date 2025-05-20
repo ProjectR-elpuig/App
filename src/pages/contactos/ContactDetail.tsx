@@ -5,6 +5,7 @@ import { arrowBack, pencil, chatbubbleEllipses, call, ban, trash } from "ionicon
 import axios from 'axios';
 import styles from "./ContactDetail.module.css";
 import { useAuth } from "../../context/AuthContext";
+import { API_CONFIG } from '../../config';
 
 interface Contact {
   contactid: number;
@@ -29,7 +30,7 @@ const ContactDetail: React.FC = () => {
         }
 
         const response = await axios.get(
-          `http://192.168.27.27:8080/api/contacts/${contactid}`,
+          `${API_CONFIG.BASE_URL}/contacts/${contactid}`,
           {
             headers: {
               Authorization: `Bearer ${user.token}`

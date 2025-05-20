@@ -1,6 +1,5 @@
 import axios from 'axios';
-
-const API_URL = 'http://192.168.27.27:8080/api/auth'; // Nueva URL base del backend
+import { API_CONFIG } from '../config';
 
 export interface LoginResponse {
   token: string;
@@ -9,7 +8,7 @@ export interface LoginResponse {
 export const loginService = async (username: string, password: string): Promise<LoginResponse> => {
   try {
     console.log('Intentando iniciar sesión con:', { username, password });
-    const response = await axios.post(`${API_URL}/login`, { 
+    const response = await axios.post(`${API_CONFIG.BASE_URL}/auth/login`, { 
       username, 
       password 
     }, {
@@ -26,7 +25,7 @@ export const loginService = async (username: string, password: string): Promise<
 
 export const register = async (username: string, password: string): Promise<LoginResponse> => {
   try {
-    const response = await axios.post(`${API_URL}/register`, { 
+    const response = await axios.post(`${API_CONFIG.BASE_URL}/register`, { 
       username, 
       password 
     }, {

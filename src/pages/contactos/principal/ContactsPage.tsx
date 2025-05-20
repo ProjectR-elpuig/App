@@ -19,7 +19,8 @@ import { useHistory } from 'react-router-dom';
 import { useIonViewWillEnter } from '@ionic/react';
 import axios from 'axios';
 import styles from './contactpage.module.css';
-import { useAuth } from '../../../context/AuthContext'; // Importa el contexto de autenticación
+import { useAuth } from '../../../context/AuthContext';
+import { API_CONFIG } from '../../../config';
 
 interface Contact {
   contactid: number;
@@ -48,7 +49,7 @@ const ContactsPage: React.FC = () => {
       }
 
       const response = await axios.get(
-        `http://192.168.27.27:8080/api/contacts/citizen/${user?.citizenid}`,
+        `${API_CONFIG.BASE_URL}/contacts/citizen/${user?.citizenid}`,
         {
           headers: {
             Authorization: `Bearer ${user.token}`

@@ -14,6 +14,7 @@ import { useHistory, useParams } from "react-router-dom"
 import styles from "./AddOrEditContact.module.css"
 import axios from "axios"
 import { useAuth } from "../../context/AuthContext"
+import { API_CONFIG } from '../../config';
 
 interface Contact {
   contactid?: number
@@ -48,7 +49,7 @@ const AddOrEditContact: React.FC = () => {
         throw new Error("No autenticado")
       }
 
-      await axios.post("http://192.168.27.27:8080/api/contacts",
+      await axios.post(`${API_CONFIG.BASE_URL}/contacts`,
         {
           citizenId: user.citizenid,
           name: formData.name,

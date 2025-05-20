@@ -4,6 +4,7 @@ import { IonContent, IonPage, IonInput, IonButton, IonText } from "@ionic/react"
 import { useHistory } from "react-router-dom"
 import "./register.css"
 import axios from "axios"
+import { API_CONFIG } from '../../config';
 
 const Register: React.FC<{ changeToLogin: () => void }> = ({ changeToLogin }) => {
     const history = useHistory()
@@ -27,7 +28,7 @@ const Register: React.FC<{ changeToLogin: () => void }> = ({ changeToLogin }) =>
         }
 
         try {
-            const response = await axios.post('http://192.168.27.27:8080/api/auth/register', {
+            const response = await axios.post(`${API_CONFIG.BASE_URL}/auth/register`, {
                 username,
                 password,
                 phoneNumber: "" // Puedes añadir un campo para el número de teléfono si lo necesitas
