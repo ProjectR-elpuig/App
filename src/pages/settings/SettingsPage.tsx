@@ -46,8 +46,7 @@ const SettingsPage: React.FC = () => {
   };
 
   const handleChangePassword = () => {
-    // setIsAuthenticated(false);
-    // history.push(`/settings/changepassword`);
+    history.push(`/settings/changepassword`);
   };
 
   return (

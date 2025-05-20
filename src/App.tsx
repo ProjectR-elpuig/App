@@ -1,3 +1,5 @@
+"use client"
+
 import type React from "react"
 import { useState } from "react"
 import { Redirect, Route, useLocation } from "react-router-dom"
@@ -17,8 +19,8 @@ import Login from "./pages/principals/Login"
 import Register from "./pages/register/register"
 
 // Auth
-import { AuthProvider } from './context/AuthContext';
-import { useAuth } from './context/AuthContext';
+import { AuthProvider } from "./context/AuthContext"
+import { useAuth } from "./context/AuthContext"
 
 // Paginas de TABS
 // CONTACTOS
@@ -30,15 +32,12 @@ import AddContactPage from "./pages/contactos/AddOrEditContact"
 import ChatList from "./pages/chats/ChatList"
 import ChatContact from "./pages/chats/ChatContact"
 
-// HISTORIAL
-import HistoryPage from "./pages/history/HistoryPage"
-
 // SETTINGS
 import SettingsPage from "./pages/settings/SettingsPage"
 import BlockedContactsPage from "./pages/settings/BlockedContactsPage"
 import SettingsHelpPage from "./pages/settings/SettingsHelpPage"
 import ChangePasswordPage from "./pages/settings/ChangePasswordPage"
-import ProfilePage from './pages/settings/ProfilePage';
+import ProfilePage from "./pages/settings/ProfilePage"
 
 // Librerias
 import { Swiper, SwiperSlide } from "swiper/react"
@@ -102,13 +101,13 @@ const App: React.FC = () => {
         {/* )} */}
       </AuthProvider>
     </IonApp>
-  );
+  )
 }
 
 const MainApp: React.FC = () => {
-  const location = useLocation();
-  const { isAuthenticated, user } = useAuth();
-  const [isRegister, setIsRegister] = useState(false);
+  const location = useLocation()
+  const { isAuthenticated, user } = useAuth()
+  const [isRegister, setIsRegister] = useState(false)
 
   // Definir rutas donde NO se debe mostrar la barra de navegación
   const hiddenTabBarRoutes = [
@@ -129,118 +128,118 @@ const MainApp: React.FC = () => {
 
   console.log("isAuthenticated", isAuthenticated)
 
-  return !isAuthenticated ?
+  return !isAuthenticated ? (
     !isRegister ? (
       <Login changeToRegister={() => setIsRegister(true)} />
     ) : (
       <Register changeToLogin={() => setIsRegister(false)} />
     )
-    : (
-      <IonTabs>
-        <IonRouterOutlet>
-          {/* Contactos */}
-          <Route exact path="/contactos">
-            <ContactsPage />
-          </Route>
-          <Route exact path="/contactos/agregar">
-            <AddContactPage />
-          </Route>
-          <Route exact path="/contactos/perfil/:id/edit">
-            <AddContactPage />
-          </Route>
-          <Route exact path="/contactos/perfil/:id">
-            <ContactDetail />
-          </Route>
+  ) : (
+    <IonTabs>
+      <IonRouterOutlet>
+        {/* Contactos */}
+        <Route exact path="/contactos">
+          <ContactsPage />
+        </Route>
+        <Route exact path="/contactos/agregar">
+          <AddContactPage />
+        </Route>
+        <Route exact path="/contactos/perfil/:id/edit">
+          <AddContactPage />
+        </Route>
+        <Route exact path="/contactos/perfil/:id">
+          <ContactDetail />
+        </Route>
 
-          {/* Chats */}
-          <Route exact path="/chats">
-            <ChatList />
-          </Route>
-          <Route exact path="/chats/chatcontact">
-            <ChatContact />
-          </Route>
-          <Route exact path="/chats/agregar">
-            <ChatList />
-          </Route>
-          <Route exact path="/chats/chat/:id">
-            <ChatList />
-          </Route>
-          <Route exact path="/chats/chat/:id/perfil">
-            <ChatList />
-          </Route>
+        {/* Chats */}
+        <Route exact path="/chats">
+          <ChatList />
+        </Route>
+        <Route exact path="/chats/chatcontact">
+          <ChatContact />
+        </Route>
+        <Route exact path="/chats/agregar">
+          <ChatList />
+        </Route>
+        <Route exact path="/chats/chat/:id">
+          <ChatList />
+        </Route>
+        <Route exact path="/chats/chat/:id/perfil">
+          <ChatList />
+        </Route>
 
-          {/* Eventos */}
-          {/* <Route path="/eventos">
+        {/* Eventos */}
+        {/* <Route path="/eventos">
           <EventosMain />
         </Route>
         <Route path="/eventos/add">
           <EventosAdd />
         </Route> */}
 
-          {/* History */}
-          {/* <Route path="/historial">
+        {/* History */}
+        {/* <Route path="/historial">
           <HistoryPage />
         </Route> */}
 
-          {/* Settings */}
-          <Route exact path="/settings">
+        {/* Settings */}
+        <Route exact path="/settings">
+          <SettingsPage />
+        </Route>
+        <Route exact path="/settings/profile">
+          <ProfilePage />
+        </Route>
+        <Route exact path="/settings/blockedcontacts">
+          <BlockedContactsPage />
+        </Route>
+        <Route exact path="/settings/help">
+          <SettingsHelpPage />
+        </Route>
+        <Route exact path="/settings/changepassword">
+          <ChangePasswordPage />
+        </Route>
+
+        {/* DEFAULT */}
+        <Route exact path="/">
+          <Redirect to="/contactos" />
+        </Route>
+
+        <Swiper
+          modules={[Keyboard, Mousewheel]}
+          spaceBetween={50}
+          slidesPerView={1}
+          keyboard={{ enabled: true }}
+          mousewheel={{ forceToAxis: true }}
+        >
+          <SwiperSlide>
+            <ContactsPage />
+          </SwiperSlide>
+          <SwiperSlide>
+            <ChatList />
+          </SwiperSlide>
+          <SwiperSlide>
             <SettingsPage />
-          </Route>
-          <Route exact path="/settings/profile">
-            <ProfilePage />
-          </Route>
-          <Route exact path="/settings/blockedcontacts">
-            <BlockedContactsPage />
-          </Route>
-          <Route exact path="/settings/help">
-            <SettingsHelpPage />
-          </Route>
-          <Route exact path="/settings/changepassword">
-            <ChangePasswordPage />
-          </Route>
+          </SwiperSlide>
+        </Swiper>
+      </IonRouterOutlet>
 
-          {/* DEFAULT */}
-          <Route exact path="/">
-            <Redirect to="/contactos" />
-          </Route>
-
-          <Swiper
-            modules={[Keyboard, Mousewheel]}
-            spaceBetween={50}
-            slidesPerView={1}
-            keyboard={{ enabled: true }}
-            mousewheel={{ forceToAxis: true }}
-          >
-            <SwiperSlide>
-              <ContactsPage />
-            </SwiperSlide>
-            <SwiperSlide>
-              <ChatList />
-            </SwiperSlide>
-            <SwiperSlide>
-              <SettingsPage />
-            </SwiperSlide>
-          </Swiper>
-        </IonRouterOutlet>
-
-        {/* Solo muestra la barra si no está en una ruta oculta */}
-        {!shouldHideTabBar && (
-          <IonTabBar slot="bottom" className="custom-tab-bar">
-            <IonTabButton tab="contactos" href="/contactos">
-              <IonLabel>Contacts</IonLabel>
-              <IonIcon
-                aria-hidden="true"
-                src={location.pathname.startsWith("/contactos") ? "/tab/icons/people-sel.svg" : "/tab/icons/people.svg"}
-              />
-            </IonTabButton>
-            <IonTabButton tab="chats" href="/chats">
-              <IonLabel>Chats</IonLabel>
-              <IonIcon
-                aria-hidden="true"
-                src={location.pathname.startsWith("/chats") ? "/tab/icons/chat-sel.svg" : "/tab/icons/chat.svg"}
-              />
-            </IonTabButton>
-            {/* <IonTabButton tab="eventos" href="/eventos">
+      {/* Solo muestra la barra si no está en una ruta oculta */}
+      {!shouldHideTabBar && (
+        <IonTabBar slot="bottom" className="custom-tab-bar">
+          <IonTabButton tab="contactos" href="/contactos">
+            <IonLabel>Contacts</IonLabel>
+            <IonIcon
+              aria-hidden="true"
+              src={location.pathname.startsWith("/contactos") ? "/tab/icons/people-sel.svg" : "/tab/icons/people.svg"}
+            />
+          </IonTabButton>
+          <IonTabButton tab="chats" href="/chats">
+            <IonLabel>Chats</IonLabel>
+            <IonIcon
+              aria-hidden="true"
+              src={location.pathname.startsWith("/chats") ? "/tab/icons/chat-sel.svg" : "/tab/icons/chat.svg"}
+            />
+          </IonTabButton>
+          {/* <IonTabButton tab="eventos" href="/eventos">
             <IonLabel>Events</IonLabel>
             <IonIcon aria-hidden="true" src={location.pathname.startsWith("/eventos") ? "/tab/icons/calendar-sel.svg" : "/tab/icons/calendar.svg"} />
           </IonTabButton>
@@ -248,19 +247,19 @@ const MainApp: React.FC = () => {
             <IonLabel>History</IonLabel>
             <IonIcon aria-hidden="true" src={location.pathname.startsWith("/historial") ? "/tab/icons/history-sel.svg" : "/tab/icons/history.svg"} />
           </IonTabButton> */}
-            <IonTabButton tab="settings" href="/settings">
-              <IonLabel>Settings</IonLabel>
-              <IonIcon
-                aria-hidden="true"
-                src={
-                  location.pathname.startsWith("/settings") ? "/tab/icons/settings-sel.svg" : "/tab/icons/settings.svg"
-                }
-              />
-            </IonTabButton>
-          </IonTabBar>
-        )}
-      </IonTabs>
-    )
+          <IonTabButton tab="settings" href="/settings">
+            <IonLabel>Settings</IonLabel>
+            <IonIcon
+              aria-hidden="true"
+              src={
+                location.pathname.startsWith("/settings") ? "/tab/icons/settings-sel.svg" : "/tab/icons/settings.svg"
+              }
+            />
+          </IonTabButton>
+        </IonTabBar>
+      )}
+    </IonTabs>
+  )
 }
 
 export default App
