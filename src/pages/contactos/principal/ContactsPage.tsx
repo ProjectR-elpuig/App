@@ -44,7 +44,7 @@ const ContactsPage: React.FC = () => {
         }
 
         const response = await axios.get(
-          `http://localhost:8080/api/contacts/citizen/${user?.citizenid}`,
+          `http://192.168.27.62:8080/api/contacts/citizen/${user?.citizenid}`,
           {
             headers: {
               Authorization: `Bearer ${user.token}`

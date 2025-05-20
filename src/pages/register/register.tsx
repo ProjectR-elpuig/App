@@ -27,7 +27,7 @@ const Register: React.FC<{ changeToLogin: () => void }> = ({ changeToLogin }) =>
         }
 
         try {
-            const response = await axios.post('http://localhost:8080/api/auth/register', {
+            const response = await axios.post('http://192.168.27.62:8080/api/auth/register', {
                 username,
                 password,
                 phoneNumber: "" // Puedes añadir un campo para el número de teléfono si lo necesitas
