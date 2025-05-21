@@ -119,7 +119,7 @@ const MainApp: React.FC = () => {
     "/settings/profile",
     "/settings/blockedcontacts",
     "/settings/changepassword",
-    "/chats/chatcontact",
+    "/chats/chat/:id",
   ]
 
   const shouldHideTabBar = hiddenTabBarRoutes.some((route) =>
@@ -155,14 +155,11 @@ const MainApp: React.FC = () => {
         <Route exact path="/chats">
           <ChatList />
         </Route>
-        <Route exact path="/chats/chatcontact">
-          <ChatContact />
-        </Route>
         <Route exact path="/chats/agregar">
           <ChatList />
         </Route>
         <Route exact path="/chats/chat/:id">
-          <ChatList />
+          <ChatContact />
         </Route>
         <Route exact path="/chats/chat/:id/perfil">
           <ChatList />
