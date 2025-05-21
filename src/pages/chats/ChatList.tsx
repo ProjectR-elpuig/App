@@ -136,8 +136,8 @@ const ChatList: React.FC = () => {
                 />
               </IonAvatar>
               <IonLabel className={styles.textUser}>
-                <h2>{contact.name}</h2>
-                <p>{contact.lastMsg ? contact.lastMsg : "Last message"}</p>
+                <h2>{contact.name} - {contact.contactid}</h2>
+                <p>{contact.lastMsg ? contact.lastMsg : "Last message not found"}</p>
               </IonLabel>
             </IonItem>
           ))}
