@@ -54,7 +54,7 @@ const ChatList: React.FC = () => {
       }
 
       const response = await axios.get(
-        `${API_CONFIG.BASE_URL}/contacts/citizen/${user?.citizenid}`,
+        `${API_CONFIG.BASE_URL}/contacts/chats`,
         {
           headers: {
             Authorization: `Bearer ${user.token}`
