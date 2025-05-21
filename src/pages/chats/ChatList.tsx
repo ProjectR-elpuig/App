@@ -13,53 +13,91 @@ import {
   IonIcon,
   IonFooter,
   IonFab,
-  IonFabButton
+  IonFabButton,
+  IonLoading
 } from "@ionic/react"
 import {
   chatboxOutline
 } from "ionicons/icons"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { useIonViewWillEnter } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
 import styles from "./ChatList.module.css"
+import axios from 'axios';
+import { useAuth } from '../../context/AuthContext';
+import { API_CONFIG } from '../../config';
 
-const contacts = [
-  { id: 1, name: "Haylie Baptista", lastMsg: "¿Nos vemos mañana?" },
-  { id: 2, name: "Talan Bergson", lastMsg: "¡Gracias por tu ayuda!" },
-  { id: 3, name: "Emerson Geidt", lastMsg: "Te llamo más tarde." },
-  { id: 4, name: "Lindsey Kenter", lastMsg: "No puedo ahora, luego hablamos." },
-  { id: 5, name: "Maria Schleifer", lastMsg: "¿Cómo va todo?" },
-  { id: 6, name: "Jakob Passaquindici Arcand", lastMsg: "Estoy en camino." },
-  { id: 7, name: "Aspen Rhiel Madsen", lastMsg: "¿Qué planes para el fin de semana?" },
-  { id: 8, name: "Marley Ekstrom Bothman", lastMsg: "Todo bien, ¿y tú?" },
-  { id: 9, name: "Justin Workman", lastMsg: "Necesito que me confirmes, porfa." },
-  { id: 10, name: "Alfonso Korsgaard", lastMsg: "Luego te cuento los detalles." },
-  { id: 11, name: "Tatiana Lipshutz", lastMsg: "¿Quedamos para comer?" },
-  { id: 12, name: "Carlos Mendoza", lastMsg: "¡Ya está listo!" },
-  { id: 13, name: "Samantha Lee", lastMsg: "¿Me envías el archivo?" },
-  { id: 14, name: "Miguel Torres", lastMsg: "Hoy no puedo, lo siento." },
-  { id: 15, name: "Valeria Soto", lastMsg: "¡Qué emoción verte pronto!" },
-  { id: 16, name: "Pedro Díaz", lastMsg: "Reunión a las 3 p.m., ¿te va bien?" },
-  { id: 17, name: "Lucía Fernández", lastMsg: "Nos vemos en el parque." },
-  { id: 18, name: "Mateo Gómez", lastMsg: "Avísame cuando llegues." },
-  { id: 19, name: "Sofía Romero", lastMsg: "No te preocupes, todo bien." },
-  { id: 20, name: "Javier Ramírez", lastMsg: "¿Dónde nos encontramos?" }
-];
+interface Contact {
+  contactid: number;
+  name: string;
+  phoneNumber?: string;
+  img?: string;
+}
 
 const ChatList: React.FC = () => {
-  const history = useHistory();
   const [searchText, setSearchText] = useState("");
+  const [contacts, setContacts] = useState<Contact[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const { user } = useAuth();
+  const history = useHistory();
+
+  // Función para obtener los contactos
+  const fetchContacts = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      if (!user?.token) {
+        setError('No autenticado');
+        return;
+      }
+
+      const response = await axios.get(
+        `${API_CONFIG.BASE_URL}/contacts/citizen/${user?.citizenid}`,
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`
+          }
+        }
+      );
+
+      const formattedContacts = response.data.map((contact: any) => ({
+        contactid: contact.contactid,
+        name: contact.name,
+        phoneNumber: contact.contacto?.phoneNumber,
+        img: contact.contacto?.img
+      }));
+
+      setContacts(formattedContacts);
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'Error al obtener contactos');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Se ejecuta al montar y cuando cambia el token
+  useEffect(() => {
+    fetchContacts();
+  }, [user?.token]);
+
+  // Se ejecuta cada vez que la página se muestra
+  useIonViewWillEnter(() => {
+    fetchContacts();
+  });
 
   const handleCreateChat = () => {
     history.push("/chats/addchat")
   };
 
+  const handleChat = (id: number) => {
+    history.push(`/chats/chat/${id}`)
+  }
+
   const filteredContacts = contacts.filter(contact =>
     contact.name.toLowerCase().includes(searchText.toLowerCase())
   );
-
-  const handleChat = () => { 
-    history.push("/chats/chatcontact")
-  }
 
   return (
     <IonPage>
@@ -73,15 +111,29 @@ const ChatList: React.FC = () => {
       </IonHeader>
 
       <IonContent fullscreen>
+        <IonLoading isOpen={loading} message="Cargando contactos..." />
+
+        {error && (
+          <div className={styles.errorContainer}>
+            <p className={styles.errorText}>{error}</p>
+          </div>
+        )}
+
         <div className={styles.searchContainer}>
           <IonSearchbar placeholder="Buscar..." className={styles.customSearchbar} animated={true} value={searchText} onIonInput={(e) => setSearchText(e.detail.value!)} />
         </div>
 
         <IonList>
           {filteredContacts.map((contact, i) => (
-            <IonItem onClick={handleChat} key={i} className={styles.chatItem}>
+            <IonItem onClick={() => handleChat(contact.contactid)} key={contact.contactid} className={styles.chatItem}>
               <IonAvatar slot="start" className={styles.avatar}>
-                <img src={`https://randomuser.me/api/portraits/${i % 2 === 0 ? "men" : "women"}/${i}.jpg`} alt={contact.name} />
+                <img
+                  src={`data:image/jpeg;base64,${contact.img}`}
+                  alt={contact.name}
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = 'https://i.gyazo.com/17f37bb6fd035c2055614479d36c7de2.jpg';
+                  }}
+                />
               </IonAvatar>
               <IonLabel className={styles.textUser}>
                 <h2>{contact.name}</h2>
@@ -90,7 +142,7 @@ const ChatList: React.FC = () => {
             </IonItem>
           ))}
         </IonList>
-        
+
         {/* Floating Action Button */}
         <IonFab vertical="bottom" horizontal="end" slot="fixed">
           <IonFabButton onClick={handleCreateChat} className={styles.fabButton}>
