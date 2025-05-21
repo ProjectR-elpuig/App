@@ -82,6 +82,25 @@ const ContactDetail: React.FC = () => {
     });
   }
 
+  const handleDelete = async () => {
+    if (window.confirm('¿Estás seguro de eliminar este contacto?')) {
+      try {
+        if (!user?.token) throw new Error('No autenticado');
+
+        await axios.delete(
+          `${API_CONFIG.BASE_URL}/contacts/${contactid}`,
+          { headers: { Authorization: `Bearer ${user.token}` } }
+        );
+
+        history.push("/contactos");
+      } catch (err: any) {
+        // Mostrar mensaje específico del backend
+        setError(err.response?.data || 'Error al eliminar el contacto');
+      }
+    }
+  };
+
+
   if (loading) {
     return <IonLoading isOpen={true} message="Cargando contacto..." />;
   }
@@ -148,7 +167,7 @@ const ContactDetail: React.FC = () => {
                 <IonIcon icon={ban} />
                 <span>Bloquear contacto</span>
               </button>
-              <button className={styles.deleteButton}>
+              <button className={styles.deleteButton} onClick={handleDelete}>
                 <IonIcon icon={trash} />
                 <span>Eliminar contacto</span>
               </button>
