@@ -89,7 +89,7 @@ const ChatContact: React.FC = () => {
   }
 
   const handleCancel = () => {
-    history.goBack();
+    history.push("/chats")
   }
 
   return (

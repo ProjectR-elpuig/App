@@ -121,6 +121,7 @@ const MainApp: React.FC = () => {
     "/settings/blockedcontacts",
     "/settings/changepassword",
     "/chats/chat/:id",
+    "/chats/contactlists"
   ]
 
   const shouldHideTabBar = hiddenTabBarRoutes.some((route) =>
