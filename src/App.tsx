@@ -31,6 +31,7 @@ import AddContactPage from "./pages/contactos/AddOrEditContact"
 // CHATS
 import ChatList from "./pages/chats/ChatList"
 import ChatContact from "./pages/chats/ChatContact"
+import ContactLists from "./pages/chats/ContactLists"
 
 // SETTINGS
 import SettingsPage from "./pages/settings/SettingsPage"
@@ -154,6 +155,9 @@ const MainApp: React.FC = () => {
         {/* Chats */}
         <Route exact path="/chats">
           <ChatList />
+        </Route>
+        <Route exact path="/chats/contactlists">
+          <ContactLists/>        
         </Route>
         <Route exact path="/chats/agregar">
           <ChatList />

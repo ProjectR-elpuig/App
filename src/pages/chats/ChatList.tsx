@@ -88,7 +88,7 @@ const ChatList: React.FC = () => {
   });
 
   const handleCreateChat = () => {
-    history.push("/chats/addchat")
+      history.push("/chats/contactlists");
   };
 
   const handleChat = (id: number) => {
