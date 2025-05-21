@@ -46,10 +46,11 @@ const ContactDetail: React.FC = () => {
         const formattedContact = {
           contactid: response.data.contactid,
           name: response.data.name,
-          phoneNumber: response.data.contacto?.phoneNumber ?? 'Número no disponible', // Usamos operador de coalescencia
+          phoneNumber: response.data.contacto?.phoneNumber ?? 'Número no disponible',
           img: response.data.contacto?.img
-            ? `${response.data.contacto.img}` // Formato para imágenes base64
-            : '/imgs/default-avatar.jpg' // Imagen por defecto
+            ? `${response.data.contacto.img}`
+            : '/imgs/default-avatar.jpg',
+          isBlocked: response.data.isBlocked // Añadir esta línea
         };
 
         if (!response.data) {
