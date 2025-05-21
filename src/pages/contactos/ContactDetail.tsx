@@ -12,7 +12,8 @@ interface Contact {
   name: string;
   phoneNumber?: string;
   img?: string;
-  isBlocked?: boolean; // Nuevo campo
+  isBlocked?: boolean;
+  isChatting?: boolean;
 }
 
 const ContactDetail: React.FC = () => {
@@ -116,6 +117,23 @@ const ContactDetail: React.FC = () => {
     }
   };
 
+  const handleStartChat = async () => {
+    try {
+      if (!user?.token) throw new Error('No autenticado');
+
+      await axios.put(
+        `${API_CONFIG.BASE_URL}/contacts/${contactid}/start-chat`,
+        {},
+        { headers: { Authorization: `Bearer ${user.token}` } }
+      );
+
+      // Redirigir a la página de chat
+      history.push(`/chats/chat/${contactid}`);
+    } catch (err: any) {
+      setError(err.response?.data || 'Error al iniciar el chat');
+    }
+  };
+
 
   if (loading) {
     return <IonLoading isOpen={true} message="Cargando contacto..." />;
@@ -165,7 +183,7 @@ const ContactDetail: React.FC = () => {
 
             <h1 className={styles.name}>{contact.name}</h1>
 
-            <button className={styles.messageButton}>
+            <button className={styles.messageButton} onClick={handleStartChat}>
               <IonIcon icon={chatbubbleEllipses} />
               <span>Mensaje</span>
             </button>
