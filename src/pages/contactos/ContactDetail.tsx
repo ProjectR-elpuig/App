@@ -12,6 +12,7 @@ interface Contact {
   name: string;
   phoneNumber?: string;
   img?: string;
+  isBlocked?: boolean; // Nuevo campo
 }
 
 const ContactDetail: React.FC = () => {
@@ -94,9 +95,23 @@ const ContactDetail: React.FC = () => {
 
         history.push("/contactos");
       } catch (err: any) {
-        // Mostrar mensaje específico del backend
         setError(err.response?.data || 'Error al eliminar el contacto');
       }
+    }
+  };
+
+  const handleBlock = async () => {
+    try {
+      if (!user?.token) throw new Error('No autenticado');
+
+      await axios.put(
+        `${API_CONFIG.BASE_URL}/contacts/${contactid}/block`,
+        {},
+        { headers: { Authorization: `Bearer ${user.token}` } }
+      );
+      setContact(prev => prev ? { ...prev, isBlocked: !prev.isBlocked } : null);
+    } catch (err: any) {
+      setError(err.response?.data || 'Error al bloquear el contacto');
     }
   };
 
@@ -163,9 +178,9 @@ const ContactDetail: React.FC = () => {
             </div>
 
             <div className={styles.actionButtons}>
-              <button className={styles.blockButton}>
+              <button className={styles.blockButton} onClick={handleBlock}>
                 <IonIcon icon={ban} />
-                <span>Bloquear contacto</span>
+                <span>{contact.isBlocked ? "Desbloquear contacto" : "Bloquear contacto"}</span>
               </button>
               <button className={styles.deleteButton} onClick={handleDelete}>
                 <IonIcon icon={trash} />

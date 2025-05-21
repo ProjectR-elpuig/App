@@ -80,3 +80,8 @@
   --background: transparent;
 }
 
+.unblockButton {
+  margin-left: auto;
+  --background: rgba(204, 86, 86, 0.2);
+  --background-hover: rgba(204, 86, 86, 0.3);
+}

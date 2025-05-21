@@ -34,7 +34,7 @@ import ChatContact from "./pages/chats/ChatContact"
 
 // SETTINGS
 import SettingsPage from "./pages/settings/SettingsPage"
-import BlockedContactsPage from "./pages/settings/BlockedContactsPage"
+import BlockedContactsPage from "./pages/settings/blockedContactList/BlockedContactsPage"
 import SettingsHelpPage from "./pages/settings/SettingsHelpPage"
 import ChangePasswordPage from "./pages/settings/ChangePasswordPage"
 import ProfilePage from "./pages/settings/ProfilePage"
