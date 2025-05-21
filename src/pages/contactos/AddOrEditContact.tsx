@@ -201,7 +201,6 @@ const AddOrEditContact: React.FC = () => {
           </IonButton>
 
           <div className={styles.cancelButton} onClick={handleCancel}>
-            <IonIcon icon={trash} />
             <span>Cancelar</span>
           </div>
         </div>
