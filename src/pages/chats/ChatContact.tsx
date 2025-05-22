@@ -19,6 +19,8 @@ import styles from "./ChatContact.module.css";
 import { useAuth } from "../../context/AuthContext";
 import axios from "axios";
 import { API_CONFIG } from '../../config';
+import { connectToChat, disconnectChat, sendMessage } from '../../services/chatService';
+
 
 interface Message {
   id: number;
@@ -88,29 +90,17 @@ const ChatContact: React.FC = () => {
 
   // Configurar WebSocket
   useEffect(() => {
-    if (!contact?.phoneNumber || !user) return;
-
-    const websocket = new WebSocket(`ws://192.168.240.27:8080/ws-chat?token=${user.token}`);
-
-    websocket.onopen = () => {
-      const subscriptionMessage = {
-        type: "SUBSCRIBE",
-        destination: `/topic/messages/${contactid}`
-      };
-      websocket.send(JSON.stringify(subscriptionMessage));
-    };
-
-    websocket.onmessage = (message) => {
-      const newMessage = JSON.parse(message.data);
-      setMessages(prev => [...prev, newMessage]);
-    };
-
-    setWs(websocket);
+    if (user && contactid && contact?.phoneNumber) {
+      connectToChat(user.token, contactid, (msg) => {
+        setMessages(prev => [...prev, msg]);
+      });
+    }
 
     return () => {
-      websocket.close();
+      disconnectChat();
     };
-  }, [contact?.phoneNumber, user, contactid]);
+  }, [contactid, user?.token, contact?.phoneNumber]);
+
 
   const handleSendMessage = async () => {
 
@@ -119,18 +109,9 @@ const ChatContact: React.FC = () => {
 
     try {
       // Enviar mensaje a través de WebSocket
-      if (ws) {
-        const messagePayload = {
-          content: newMessage,
-          receiverPhone: contact.phoneNumber
-        };
+      sendMessage(contactid, newMessage, contact?.phoneNumber || "null");
+      setNewMessage("");
 
-        ws.send(JSON.stringify({
-          type: "SEND",
-          destination: `/app/send-message/${contactid}`,
-          content: JSON.stringify(messagePayload)
-        }));
-      }
 
       // Limpiar input
       setNewMessage("");
