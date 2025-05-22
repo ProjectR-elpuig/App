@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import type React from "react"
 import {
   IonContent,
   IonHeader,
@@ -10,150 +10,201 @@ import {
   IonInput,
   IonFooter,
   IonAvatar,
-  IonLoading,
-  IonText
-} from "@ionic/react";
-import { arrowBack, send } from "ionicons/icons";
-import { useHistory, useParams } from "react-router-dom";
-import styles from "./ChatContact.module.css";
+} from "@ionic/react"
+import { arrowBack, wifiOutline, camera, happy, send } from "ionicons/icons"
+import { useState, useRef, useEffect } from "react"
+import styles from "./ChatContact.module.css"
+import { useHistory, useParams } from "react-router-dom"
+import axios from 'axios';
 import { useAuth } from "../../context/AuthContext";
-import axios from "axios";
 import { API_CONFIG } from '../../config';
-import { connectToChat, disconnectChat, sendMessage } from '../../services/chatService';
-
 
 interface Message {
-  id: number;
-  content: string;
-  senderPhone: string;
-  createdAt: Date;
-  read: boolean;
+  id: number
+  text: string
+  image?: string
+  sent: boolean
+  timestamp: Date
 }
 
 interface Contact {
   contactid: number;
   name: string;
-  phoneNumber?: string;
+  phoneNumber: string;
   img?: string;
   isBlocked?: boolean;
+  isChatting?: boolean;
 }
 
 const ChatContact: React.FC = () => {
   const { id: contactid } = useParams<{ id: string }>();
-  const history = useHistory();
+  const [newMessage, setNewMessage] = useState<string>("")
+  const [messages, setMessages] = useState<Message[]>([])
+  const history = useHistory()
+  const contentRef = useRef<HTMLIonContentElement>(null)
+
   const { user } = useAuth();
   const [contact, setContact] = useState<Contact | null>(null);
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [newMessage, setNewMessage] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [ws, setWs] = useState<WebSocket | null>(null);
-  const contentRef = useRef<HTMLIonContentElement>(null);
 
-  // Cargar contacto y mensajes
-  useEffect(() => {
-    const loadData = async () => {
-      try {
-        setLoading(true);
-
-        console.log('contactid', contactid);
-
-        // Cargar datos del contacto
-        const contactResponse = await axios.get(`${API_CONFIG.BASE_URL}/contacts/${contactid}`, {
-          headers: {
-            Authorization: `Bearer ${user?.token}`
-          }
-        });
-
-        setContact(contactResponse.data);
-
-        // Cargar historial de mensajes
-        const messagesResponse = await axios.get(
-          `${API_CONFIG.BASE_URL}/messages/conversation/${contactid}`,
-          {
-            headers: {
-              Authorization: `Bearer ${user?.token}`
-            }
-          }
-        );
-
-        setMessages(messagesResponse.data);
-      } catch (err: any) {
-        setError(err.response?.data?.message || 'Error al cargar la conversación');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (user?.token) loadData();
-  }, [contactid, user?.token]);
-
-  // Configurar WebSocket
-  useEffect(() => {
-    if (user && contactid && contact?.phoneNumber) {
-      connectToChat(user.token, contactid, (msg) => {
-        setMessages(prev => [...prev, msg]);
-      });
-    }
-
-    return () => {
-      disconnectChat();
-    };
-  }, [contactid, user?.token, contact?.phoneNumber]);
-
-
-  const handleSendMessage = async () => {
-
-    console.log('Enter pressed', !newMessage.trim() || !contact?.phoneNumber || !user);
-    // if (!newMessage.trim() || !contact?.phoneNumber || !user) return;
-
+  const fetchContact = async () => {
     try {
-      // Enviar mensaje a través de WebSocket
-      sendMessage(contactid, newMessage, contact?.phoneNumber || "null");
-      setNewMessage("");
+      if (!user?.token) {
+        throw new Error('No autenticado');
+      }
 
+      const response = await axios.get(
+        `${API_CONFIG.BASE_URL}/contacts/${contactid}`,
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`
+          }
+        }
+      );
 
-      // Limpiar input
-      setNewMessage("");
-    } catch (err) {
-      setError('Error al enviar el mensaje');
+      // En tu código donde procesas la respuesta
+      console.log('Respuesta de la API:', response.data);
+
+      // Formatea el objeto individual (no uses map)
+      const formattedContact = {
+        contactid: response.data.contactid,
+        name: response.data.name,
+        phoneNumber: response.data.contacto?.phoneNumber ?? 'Número no disponible',
+        img: response.data.contacto?.img
+          ? `${response.data.contacto.img}`
+          : '/imgs/default-avatar.jpg',
+        isBlocked: response.data.isBlocked // Añadir esta línea
+      };
+
+      if (!response.data) {
+        throw new Error('Contacto no encontrado');
+      }
+
+      console.log("Contacto formateado:", formattedContact);
+      setContact(formattedContact);
+    } catch (err: any) {
+      setError(err.message || 'Error al cargar el contacto');
+    } finally {
+      setLoading(false);
     }
   };
+
+  const fetchMessages = async () => {
+    try {
+      if (!user?.token) {
+        throw new Error('No autenticado');
+      }
+
+      const response = await axios.get(
+        `${API_CONFIG.BASE_URL}/messages/conversation/${contactid}`,
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`
+          }
+        }
+      );
+
+
+      // En tu código donde procesas la respuesta
+      console.log('Respuesta de la API Mensajes:', contact?.phoneNumber, response.data);
+
+      // Aqui se deberia de meter los mensajes en el chat
+      const formattedMessages = response.data.map((message: any) => ({
+        id: message.id,
+        text: message.content,
+        sent: message.receiverPhone == contact?.phoneNumber,
+        timestamp: new Date(message.createdAt),
+      }));
+
+      setMessages(formattedMessages);
+      console.log("Mensajes formateados:", JSON.stringify(messages));
+
+    } catch (err: any) {
+      setError(err.message || 'Error al cargar el contacto');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Intervalo para actualizar los mensajes cada 2 segundos (MALA PRÁCTICA)
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     if (contact?.phoneNumber === undefined) fetchContact();
+  //     fetchMessages();
+  //   }, 2000);
+  //   return () => clearInterval(intervalId);
+  // }, []);
+
+  // Scrolea hacia abajo cuando se recibe un nuevo mensaje
+  useEffect(() => {
+    if (contentRef.current) {
+      contentRef.current.scrollToBottom(300)
+    }
+  }, [messages])
+
+  useEffect(() => {
+    // Carga el contacto al iniciar el chat
+    fetchContact();
+    // Recibe mensajes del chat
+    fetchMessages();
+  }, [contactid, user?.token, contact?.phoneNumber]);
+
+  // Envia mensajes al la API
+  const sendMessageToApi = async (message: Message) => {
+    try {
+      if (!user?.token) throw new Error('No autenticado');
+
+      const payload = {
+        receiverPhone: contact?.phoneNumber,
+        content: message.text
+      };
+
+      const response = await axios.post(`${API_CONFIG.BASE_URL}/messages/send/${contactid}`, payload, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+          "Content-Type": "application/json"
+        }
+      });
+
+      console.log("Mensaje enviado a la API:", JSON.stringify(payload));
+      console.log("respuesta de la API del mensaje:", JSON.stringify(response.data));
+
+
+    } catch (err: any) {
+      setError(err.response?.data || 'Error al enviar el mensaje');
+    }
+  }
+
+  const handleSendMessage = () => {
+    if (newMessage.trim() === "") return
+
+    const newMsg: Message = {
+      id: messages.length + 1,
+      text: newMessage,
+      sent: true,
+      timestamp: new Date(),
+    }
+    sendMessageToApi(newMsg)
+
+    setMessages([...messages, newMsg])
+    setNewMessage("")
+  }
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
-      handleSendMessage();
+      handleSendMessage()
     }
-  };
-
-  const handleCancel = () => {
-    history.goBack();
-  };
-
-  // Scroll automático al final
-  useEffect(() => {
-    if (contentRef.current) {
-      contentRef.current.scrollToBottom(300);
-    }
-  }, [messages]);
-
-  if (loading) {
-    return <IonLoading isOpen={true} message="Cargando conversación..." />;
   }
 
-  if (error) {
-    return (
-      <IonPage>
-        <IonContent className={styles.errorContainer}>
-          <IonText color="danger">{error}</IonText>
-          <IonButton onClick={handleCancel}>Volver</IonButton>
-        </IonContent>
-      </IonPage>
-    );
+  const handleCancel = () => {
+    history.push("/chats");
   }
 
   return (
     <IonPage className={styles.page}>
+
+      {/* Header */}
       <IonHeader className="ion-no-border">
         <IonToolbar className={styles.toolbar}>
           <IonButtons slot="start">
@@ -161,15 +212,9 @@ const ChatContact: React.FC = () => {
               <IonIcon icon={arrowBack} slot="icon-only" />
             </IonButton>
           </IonButtons>
-
-          <div className={styles.contactHeader}>
-            <IonAvatar className={styles.contactAvatar}>
-              <img
-                src={contact?.img ? `data:image/jpeg;base64,${contact.img}` : 'https://i.gyazo.com/17f37bb6fd035c2055614479d36c7de2.jpg'}
-                alt={contact?.name}
-              />
-            </IonAvatar>
-            <h2 className={styles.contactName}>{contact?.name}</h2>
+          <div className={styles.logoContainer}>
+            <h1>V-LINK {contact?.name}</h1>
+            <img src="./imgs/LogoTopBar.png" alt="" />
           </div>
         </IonToolbar>
       </IonHeader>
@@ -179,14 +224,19 @@ const ChatContact: React.FC = () => {
           {messages.map((message) => (
             <div
               key={message.id}
-              className={`${styles.messageWrapper} ${message.senderPhone === user?.citizenid ? styles.sent : styles.received
-                }`}
+              className={`${styles.messageWrapper} ${message.sent ? styles.sent : styles.received}`}
             >
               <div className={styles.messageBubble}>
-                <p className={styles.messageText}>{message.content}</p>
-                <span className={styles.messageTime}>
-                  {new Date(message.createdAt).toLocaleTimeString()}
-                </span>
+                {message.text && <p className={styles.messageText}>{message.text}</p>}
+                {message.image && (
+                  <div className={styles.imageContainer}>
+                    <img
+                      src={"imgs/LogoTopBar.png"}
+                      alt="Message attachment"
+                      className={styles.messageImage}
+                    />
+                  </div>
+                )}
               </div>
             </div>
           ))}
@@ -195,24 +245,26 @@ const ChatContact: React.FC = () => {
 
       <IonFooter className={styles.chatFooter}>
         <div className={styles.inputContainer}>
+          <button className={styles.cameraButton}>
+            <IonIcon icon={camera} />
+          </button>
           <IonInput
-            placeholder="Escribe un mensaje..."
+            placeholder="message"
             value={newMessage}
             onIonChange={(e) => setNewMessage(e.detail.value || "")}
             onKeyPress={handleKeyPress}
             className={styles.messageInput}
           />
-          <button
-            className={styles.sendButton}
-            onClick={handleSendMessage}
-            disabled={!newMessage.trim()}
-          >
+          <button className={styles.emojiButton}>
+            <IonIcon icon={happy} />
+          </button>
+          <button className={styles.sendButton} onClick={handleSendMessage}>
             <IonIcon icon={send} />
           </button>
         </div>
       </IonFooter>
     </IonPage>
-  );
-};
+  )
+}
 
-export default ChatContact;
+export default ChatContact
