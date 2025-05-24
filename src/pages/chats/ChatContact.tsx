@@ -18,6 +18,7 @@ import { useHistory, useParams } from "react-router-dom"
 import axios from 'axios';
 import { useAuth } from "../../context/AuthContext";
 import { API_CONFIG } from '../../config';
+import { useWebSocket } from '../../hooks/useWebSocket';
 
 interface Message {
   id: number
@@ -89,6 +90,25 @@ const ChatContact: React.FC = () => {
       setLoading(false);
     }
   };
+
+  const { connect } = useWebSocket((message: any) => {
+    const newMessage = {
+      id: message.id,
+      text: message.content,
+      sent: message.senderPhone === user?.phoneNumber, // ✅ Compara con el remitente
+      timestamp: new Date(message.createdAt)
+    };
+    setMessages(prev => [...prev, newMessage]); // ✅ Actualiza el estado
+  });
+
+
+  useEffect(() => {
+    const client = connect();
+    return () => {
+      if (client) client.deactivate();
+    }
+  }, [user?.phoneNumber, contact?.phoneNumber]);
+
 
   const fetchMessages = async () => {
     try {
@@ -185,10 +205,9 @@ const ChatContact: React.FC = () => {
       sent: true,
       timestamp: new Date(),
     }
-    sendMessageToApi(newMsg)
 
-    setMessages([...messages, newMsg])
-    setNewMessage("")
+    sendMessageToApi(newMsg);
+    setNewMessage("");
   }
 
   const handleKeyPress = (e: React.KeyboardEvent) => {

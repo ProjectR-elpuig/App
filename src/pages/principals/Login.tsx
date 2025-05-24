@@ -5,7 +5,7 @@ import "./Login.css"
 import { loginService } from '../../services/authService'; // Importa el servicio de autenticación
 import { useAuth } from '../../context/AuthContext';
 
-const Login:  React.FC<{ changeToRegister: () => void }> = ({ changeToRegister }) => {
+const Login: React.FC<{ changeToRegister: () => void }> = ({ changeToRegister }) => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState<string | null>(null) // Para mostrar errores
@@ -16,7 +16,7 @@ const Login:  React.FC<{ changeToRegister: () => void }> = ({ changeToRegister }
     try {
       const data = await loginService(username, password); // Llama al servicio de login
       console.log('User:', data?.usuario?.citizenId, JSON.stringify(data));
-      await login(data?.usuario?.citizenId, data.token); // Usa el contexto para guardar los datos
+      await login(data.usuario.citizenId, data.token, data.usuario.phoneNumber); // Usa el contexto para guardar los datos
     } catch (err: any) {
       setError(err.response?.data?.error || err.message || 'Error al iniciar sesión');
     }
