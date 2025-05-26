@@ -9,16 +9,16 @@ import {
   IonPage,
   IonInput,
   IonFooter,
-  IonAvatar,
 } from "@ionic/react"
-import { arrowBack, wifiOutline, camera, happy, send } from "ionicons/icons"
+import { arrowBack, camera, happy, send } from "ionicons/icons"
 import { useState, useRef, useEffect } from "react"
 import styles from "./ChatContact.module.css"
 import { useHistory, useParams } from "react-router-dom"
-import axios from 'axios';
+import SockJS from "sockjs-client"
+import { Client } from "@stomp/stompjs"
 import { useAuth } from "../../context/AuthContext";
 import { API_CONFIG } from '../../config';
-import { useWebSocket } from '../../hooks/useWebSocket';
+import axios from "axios"
 
 interface Message {
   id: number
@@ -26,6 +26,8 @@ interface Message {
   image?: string
   sent: boolean
   timestamp: Date
+  sender?: string // Añadir campo sender
+  type?: string // Añadir campo type
 }
 
 interface Contact {
@@ -48,6 +50,10 @@ const ChatContact: React.FC = () => {
   const [contact, setContact] = useState<Contact | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const [stompClient, setStompClient] = useState<Client | null>(null)
+  const chatId = "12";
+
 
   const fetchContact = async () => {
     try {
@@ -91,25 +97,6 @@ const ChatContact: React.FC = () => {
     }
   };
 
-  const { connect } = useWebSocket((message: any) => {
-    const newMessage = {
-      id: message.id,
-      text: message.content,
-      sent: message.senderPhone === user?.phoneNumber, // ✅ Compara con el remitente
-      timestamp: new Date(message.createdAt)
-    };
-    setMessages(prev => [...prev, newMessage]); // ✅ Actualiza el estado
-  });
-
-
-  useEffect(() => {
-    const client = connect();
-    return () => {
-      if (client) client.deactivate();
-    }
-  }, [user?.phoneNumber, contact?.phoneNumber]);
-
-
   const fetchMessages = async () => {
     try {
       if (!user?.token) {
@@ -146,6 +133,56 @@ const ChatContact: React.FC = () => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    // Configurar conexión WebSocket
+    const socket = new SockJS('http://192.168.240.28:8080/ws')
+    const client = new Client({
+      webSocketFactory: () => socket,
+      reconnectDelay: 5000,
+      debug: (str) => console.log(str),
+    })
+
+    client.onConnect = () => {
+      // Suscribirse al chat específico
+      client.subscribe(`/topic/chat.${chatId}`, (message) => {
+        const receivedMessage = JSON.parse(message.body)
+        const msgOld = newMessage;
+        handleReceivedMessage(receivedMessage)
+        setNewMessage(msgOld);
+      })
+
+      // Notificar al servidor sobre la conexión
+      client.publish({
+        destination: "/app/chat.addUser",
+        body: JSON.stringify({
+          sender: user?.citizenid,
+          type: 'JOIN',
+          chatId: chatId
+        })
+      })
+    }
+
+    client.activate()
+    setStompClient(client)
+
+    return () => {
+      client.deactivate()
+    }
+  }, [chatId, user?.citizenid])
+
+  const handleReceivedMessage = (message: any) => {
+    const newMsg: Message = {
+      id: messages.length + 1,
+      text: message.content,
+      sent: message.sender === user?.citizenid,
+      timestamp: new Date(),
+      sender: message.sender,
+      type: message.type
+    }
+
+    setMessages(prev => [...prev, newMsg])
+  }
 
   // Intervalo para actualizar los mensajes cada 2 segundos (MALA PRÁCTICA)
   // useEffect(() => {
@@ -196,18 +233,24 @@ const ChatContact: React.FC = () => {
     }
   }
 
-  const handleSendMessage = () => {
-    if (newMessage.trim() === "") return
+   const handleSendMessage = () => {
+    if (!newMessage.trim() || !stompClient) return
 
-    const newMsg: Message = {
-      id: messages.length + 1,
-      text: newMessage,
-      sent: true,
-      timestamp: new Date(),
+    // Crear mensaje tipo CHAT
+    const chatMessage = {
+      sender: user?.citizenid,
+      content: newMessage,
+      type: 'CHAT',
+      chatId: chatId
     }
 
-    sendMessageToApi(newMsg);
-    setNewMessage("");
+    // Enviar mensaje a través de WebSocket
+    stompClient.publish({
+      destination: "/app/chat.sendMessage",
+      body: JSON.stringify(chatMessage)
+    })
+
+    setNewMessage("")
   }
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -246,6 +289,7 @@ const ChatContact: React.FC = () => {
               className={`${styles.messageWrapper} ${message.sent ? styles.sent : styles.received}`}
             >
               <div className={styles.messageBubble}>
+                {message.sender && <small>{message.sender}</small>}
                 {message.text && <p className={styles.messageText}>{message.text}</p>}
                 {message.image && (
                   <div className={styles.imageContainer}>
