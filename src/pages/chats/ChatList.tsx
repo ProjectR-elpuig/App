@@ -77,6 +77,12 @@ const ChatList: React.FC = () => {
         lastMsgDate: contact.lastMessageDate
       }));
 
+      formattedContacts.sort((a: Contact, b: Contact) => {
+        const dateA = a.lastMsgDate ? new Date(a.lastMsgDate).getTime() : 0;
+        const dateB = b.lastMsgDate ? new Date(b.lastMsgDate).getTime() : 0;
+        return dateB - dateA; // Orden descendente
+      });
+
       setContacts(formattedContacts);
     } catch (err: any) {
       setError(err.response?.data?.message || 'Error al obtener contactos');
@@ -164,13 +170,20 @@ const ChatList: React.FC = () => {
                 />
               </IonAvatar>
               <IonLabel className={styles.textUser}>
-                <h2>{contact.name}</h2>
-                <p>{contact.lastMsg || "No messages yet"}</p>
-                {contact.lastMsgDate && (
-                  <p className={styles.timestamp}>
-                    {new Date(contact.lastMsgDate).toLocaleTimeString()}
-                  </p>
-                )}
+                <div className={styles.messageContainer}>
+                  <div className={styles.messageInfo}>
+                    <h2>{contact.name}</h2>
+                    <p className={styles.lastMessage}>{contact.lastMsg || "No messages yet"}</p>
+                  </div>
+                  {contact.lastMsgDate && (
+                    <p className={styles.timestamp}>
+                      {new Date(contact.lastMsgDate).toLocaleTimeString('es-ES', {
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      })}
+                    </p>
+                  )}
+                </div>
               </IonLabel>
             </IonItem>
           ))}
