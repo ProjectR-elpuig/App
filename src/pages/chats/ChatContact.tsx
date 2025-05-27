@@ -26,8 +26,8 @@ interface Message {
   image?: string
   sent: boolean
   timestamp: Date
-  sender?: string // Añadir campo sender
-  type?: string // Añadir campo type
+  sender?: string
+  type?: string
 }
 
 interface Contact {
@@ -112,7 +112,6 @@ const ChatContact: React.FC = () => {
         }
       );
 
-
       // En tu código donde procesas la respuesta
       console.log('Respuesta de la API Mensajes:', contact?.phoneNumber, response.data);
 
@@ -120,7 +119,7 @@ const ChatContact: React.FC = () => {
       const formattedMessages = response.data.map((message: any) => ({
         id: message.id,
         text: message.content,
-        sent: message.receiverPhone == contact?.phoneNumber,
+        sent: message.senderPhone == user.phoneNumber,
         timestamp: new Date(message.createdAt),
       }));
 
@@ -267,13 +266,13 @@ const ChatContact: React.FC = () => {
   }, [messages])
 
   // Envia mensajes al la API
-  const sendMessageToApi = async (message: Message) => {
+  const sendMessageToApi = async (message: any) => {
     try {
       if (!user?.token) throw new Error('No autenticado');
 
       const payload = {
         receiverPhone: contact?.phoneNumber,
-        content: message.text
+        content: message.content
       };
 
       const response = await axios.post(`${API_CONFIG.BASE_URL}/messages/send/${contactid}`, payload, {
@@ -308,6 +307,7 @@ const ChatContact: React.FC = () => {
       destination: "/app/chat.sendMessage",
       body: JSON.stringify(chatMessage)
     })
+    sendMessageToApi(chatMessage)
 
     setNewMessage("")
   }
@@ -359,7 +359,6 @@ const ChatContact: React.FC = () => {
               className={`${styles.messageWrapper} ${message.sent ? styles.sent : styles.received}`}
             >
               <div className={styles.messageBubble}>
-                {message.sender && <small>{message.sender}</small>}
                 {message.text && <p className={styles.messageText}>{message.text}</p>}
                 {message.image && (
                   <div className={styles.imageContainer}>
