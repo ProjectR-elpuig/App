@@ -53,6 +53,41 @@ const ChatList: React.FC = () => {
     return text.substring(0, maxLength) + "...";
   };
 
+  const formatMessageDate = (dateString: string): string => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInMs = now.getTime() - date.getTime();
+    const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+
+    // Mismo día
+    if (diffInDays === 0) {
+      return date.toLocaleTimeString('es-ES', {
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    }
+
+    // Ayer
+    if (diffInDays === 1) {
+      return 'Ayer';
+    }
+
+    // Últimos 7 días
+    if (diffInDays < 7) {
+      return `Hace ${diffInDays} días`;
+    }
+
+    // Hasta 4 semanas
+    if (diffInDays < 28) {
+      const weeks = Math.floor(diffInDays / 7);
+      return weeks === 1 ? 'Hace 1 semana' : `Hace ${weeks} semanas`;
+    }
+
+    // Meses
+    const months = Math.floor(diffInDays / 30);
+    return months === 1 ? 'Hace 1 mes' : `Hace ${months} meses`;
+  };
+
   // Función para obtener los contactos
   const fetchContacts = async () => {
     try {
@@ -184,10 +219,7 @@ const ChatList: React.FC = () => {
                   </div>
                   {contact.lastMsgDate && (
                     <p className={styles.timestamp}>
-                      {new Date(contact.lastMsgDate).toLocaleTimeString('es-ES', {
-                        hour: '2-digit',
-                        minute: '2-digit'
-                      })}
+                      {formatMessageDate(contact.lastMsgDate)}
                     </p>
                   )}
                 </div>
