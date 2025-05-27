@@ -105,3 +105,9 @@
   --background: #929292 !important;
   color: white !important;
 }
+
+.timestamp {
+  font-size: 0.4rem;
+  color: #666;
+  margin-top: 4px;
+}

@@ -26,12 +26,16 @@ import styles from "./ChatList.module.css"
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 import { API_CONFIG } from '../../config';
+import { Client } from '@stomp/stompjs';
+import SockJS from "sockjs-client";
 
 interface Contact {
   contactid: number;
   name: string;
   phoneNumber?: string;
   img?: string;
+  lastMsg?: string;
+  lastMsgDate?: string;
 }
 
 const ChatList: React.FC = () => {
@@ -41,6 +45,8 @@ const ChatList: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const { user } = useAuth();
   const history = useHistory();
+
+  const [stompClient, setStompClient] = useState<Client | null>(null);
 
   // Función para obtener los contactos
   const fetchContacts = async () => {
@@ -65,8 +71,10 @@ const ChatList: React.FC = () => {
       const formattedContacts = response.data.map((contact: any) => ({
         contactid: contact.contactid,
         name: contact.name,
-        phoneNumber: contact.contacto?.phoneNumber,
-        img: contact.contacto?.img
+        phoneNumber: contact.phoneNumber,
+        img: contact.img,
+        lastMsg: contact.lastMessage,
+        lastMsgDate: contact.lastMessageDate
       }));
 
       setContacts(formattedContacts);
@@ -79,7 +87,27 @@ const ChatList: React.FC = () => {
 
   // Se ejecuta al montar y cuando cambia el token
   useEffect(() => {
-    fetchContacts();
+    // Configurar cliente WebSocket
+    const socket = new SockJS(`${API_CONFIG.BASE_URL_WS}`);
+    const client = new Client({
+      webSocketFactory: () => socket,
+      connectHeaders: {
+        Authorization: `Bearer ${user?.token}`
+      },
+      onConnect: () => {
+        client.subscribe('/topic/newContact', () => {
+          fetchContacts(); // Actualiza la lista cuando llega un nuevo contacto
+        });
+      },
+      reconnectDelay: 5000,
+    });
+
+    client.activate();
+    setStompClient(client);
+
+    return () => {
+      client.deactivate(); // Limpiar al desmontar
+    };
   }, [user?.token]);
 
   // Se ejecuta cada vez que la página se muestra
@@ -88,7 +116,7 @@ const ChatList: React.FC = () => {
   });
 
   const handleCreateChat = () => {
-      history.push("/chats/contactlists");
+    history.push("/chats/contactlists");
   };
 
   const handleChat = (id: number) => {
@@ -136,8 +164,13 @@ const ChatList: React.FC = () => {
                 />
               </IonAvatar>
               <IonLabel className={styles.textUser}>
-                <h2>{contact.name} - {contact.contactid}</h2>
-                <p>{contact.lastMsg ? contact.lastMsg : "Last message not found"}</p>
+                <h2>{contact.name}</h2>
+                <p>{contact.lastMsg || "No messages yet"}</p>
+                {contact.lastMsgDate && (
+                  <p className={styles.timestamp}>
+                    {new Date(contact.lastMsgDate).toLocaleTimeString()}
+                  </p>
+                )}
               </IonLabel>
             </IonItem>
           ))}
