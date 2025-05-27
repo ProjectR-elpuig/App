@@ -52,7 +52,7 @@ const ChatContact: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   const [stompClient, setStompClient] = useState<Client | null>(null)
-  const chatId = "12";
+  const [chatId, setChatId] = useState<string | null>(null);
 
 
   const fetchContact = async () => {
@@ -134,9 +134,52 @@ const ChatContact: React.FC = () => {
     }
   };
 
+  const fetchChat = async () => {
+    try {
+      if (!user?.token) {
+        throw new Error('No autenticado');
+      }
+
+      const response = await axios.get(
+        `${API_CONFIG.BASE_URL}/chat/websocket/${contactid}`,
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`
+          }
+        }
+      );
+
+      // En tu código donde procesas la respuesta
+      console.log('Respuesta de la API sobre LA ID DEL CHAT:', response.data);
+      setChatId(response.data.id);
+      if (!response.data) {
+        throw new Error('Chat no encontrado');
+      }
+    } catch (err: any) {
+      setError(err.message || 'Error al cargar el contacto');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
   useEffect(() => {
+    const initializeChat = async () => {
+      // Carga el contacto al iniciar el chat
+      await fetchContact();
+      // Recibe mensajes del chat
+      await fetchMessages();
+      // Carga la ID del chat
+      await fetchChat();
+    };
+    initializeChat();
+  }, [user?.token, contactid])
+
+  useEffect(() => {
+    if (!chatId) return; // No configurar WebSocket hasta tener chatId
+
     // Configurar conexión WebSocket
-    const socket = new SockJS('http://192.168.240.28:8080/ws')
+    const socket = new SockJS(`${API_CONFIG.BASE_URL_WS}`)
     const client = new Client({
       webSocketFactory: () => socket,
       reconnectDelay: 5000,
@@ -147,10 +190,12 @@ const ChatContact: React.FC = () => {
       // Suscribirse al chat específico
       client.subscribe(`/topic/chat.${chatId}`, (message) => {
         const receivedMessage = JSON.parse(message.body)
-        const msgOld = newMessage;
-        handleReceivedMessage(receivedMessage)
-        setNewMessage(msgOld);
+        console.log("Mensaje recibido:", JSON.stringify(receivedMessage));
+        // const msgOld = newMessage;
+        if (receivedMessage.type === 'CHAT') handleReceivedMessage(receivedMessage);
+        // setNewMessage(msgOld);
       })
+      console.log("Conectado al WebSocket y suscrito al chat:", chatId)
 
       // Notificar al servidor sobre la conexión
       client.publish({
@@ -163,12 +208,42 @@ const ChatContact: React.FC = () => {
       })
     }
 
+    client.onDisconnect = () => {
+      console.log("Desconectado del WebSocket")
+    }
+
+    const sendLeaveMessage = async () => {
+      if (client.connected) {
+        await client.publish({
+          destination: "/app/chat.disconnect",
+          body: JSON.stringify({
+            sender: user?.citizenid,
+            type: 'LEAVE',
+            chatId: chatId
+          })
+        });
+        await new Promise(resolve => setTimeout(resolve, 500)); // Esperar 500ms
+      }
+    };
+
+    const cleanup = async () => {
+      await sendLeaveMessage();
+      client.deactivate();
+    };
+
     client.activate()
     setStompClient(client)
 
     return () => {
-      client.deactivate()
+      // socket.close()
+      console.log("Limpiando recursos del WebSocket")
+      cleanup();
+      // handleUnload();
+      // window.removeEventListener('beforeunload', handleUnload);
+      // client.unsubscribe(`/topic/chat.${chatId}`)
+      // client.deactivate()
     }
+
   }, [chatId, user?.citizenid])
 
   const handleReceivedMessage = (message: any) => {
@@ -184,28 +259,12 @@ const ChatContact: React.FC = () => {
     setMessages(prev => [...prev, newMsg])
   }
 
-  // Intervalo para actualizar los mensajes cada 2 segundos (MALA PRÁCTICA)
-  // useEffect(() => {
-  //   const intervalId = setInterval(() => {
-  //     if (contact?.phoneNumber === undefined) fetchContact();
-  //     fetchMessages();
-  //   }, 2000);
-  //   return () => clearInterval(intervalId);
-  // }, []);
-
   // Scrolea hacia abajo cuando se recibe un nuevo mensaje
   useEffect(() => {
     if (contentRef.current) {
       contentRef.current.scrollToBottom(300)
     }
   }, [messages])
-
-  useEffect(() => {
-    // Carga el contacto al iniciar el chat
-    fetchContact();
-    // Recibe mensajes del chat
-    fetchMessages();
-  }, [contactid, user?.token, contact?.phoneNumber]);
 
   // Envia mensajes al la API
   const sendMessageToApi = async (message: Message) => {
@@ -233,7 +292,7 @@ const ChatContact: React.FC = () => {
     }
   }
 
-   const handleSendMessage = () => {
+  const handleSendMessage = () => {
     if (!newMessage.trim() || !stompClient) return
 
     // Crear mensaje tipo CHAT
@@ -259,7 +318,18 @@ const ChatContact: React.FC = () => {
     }
   }
 
-  const handleCancel = () => {
+  const handleCancel = async () => {
+    console.log("Cancelando el chat y desconectando WebSocket", stompClient?.connected)
+    if (stompClient?.connected) {
+      await stompClient.publish({
+        destination: "/app/chat.disconnect",
+        body: JSON.stringify({
+          sender: user?.citizenid,
+          type: 'LEAVE',
+          chatId: chatId
+        })
+      });
+    }
     history.push("/chats");
   }
 
@@ -285,7 +355,7 @@ const ChatContact: React.FC = () => {
         <div className={styles.messagesContainer}>
           {messages.map((message) => (
             <div
-              key={message.id}
+              key={Math.random().toString(36).substring(2, 15)} // Genera un ID único para cada mensaje
               className={`${styles.messageWrapper} ${message.sent ? styles.sent : styles.received}`}
             >
               <div className={styles.messageBubble}>
