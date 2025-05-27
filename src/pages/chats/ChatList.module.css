@@ -106,8 +106,30 @@
   color: white !important;
 }
 
-.timestamp {
-  font-size: 0.4rem;
+.messageContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.messageInfo {
+  flex: 1;
+  min-width: 0; /* Permite que el texto se trunque correctamente */
+}
+
+.lastMessage {
+  margin: 4px 0;
   color: #666;
-  margin-top: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.timestamp {
+  color: #666;
+  font-size: 0.8rem;
+  margin: 0;
+  padding-left: 12px;
+  white-space: nowrap;
 }

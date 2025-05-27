@@ -48,6 +48,11 @@ const ChatList: React.FC = () => {
 
   const [stompClient, setStompClient] = useState<Client | null>(null);
 
+  const truncateText = (text: string, maxLength: number = 50) => {
+    if (text.length <= maxLength) return text;
+    return text.substring(0, maxLength) + "...";
+  };
+
   // Función para obtener los contactos
   const fetchContacts = async () => {
     try {
@@ -173,7 +178,9 @@ const ChatList: React.FC = () => {
                 <div className={styles.messageContainer}>
                   <div className={styles.messageInfo}>
                     <h2>{contact.name}</h2>
-                    <p className={styles.lastMessage}>{contact.lastMsg || "No messages yet"}</p>
+                    <p className={styles.lastMessage}>
+                      {contact.lastMsg ? truncateText(contact.lastMsg) : "No messages yet"}
+                    </p>
                   </div>
                   {contact.lastMsgDate && (
                     <p className={styles.timestamp}>
