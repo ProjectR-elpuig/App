@@ -57,12 +57,14 @@ const ContactsPage: React.FC = () => {
         }
       );
 
-      const formattedContacts = response.data.map((contact: any) => ({
-        contactid: contact.contactid,
-        name: contact.name,
-        phoneNumber: contact.contacto?.phoneNumber,
-        img: contact.contacto?.img
-      }));
+      const formattedContacts = response.data
+        .filter((contact: any) => contact.name !== contact.contacto?.phoneNumber) // Filtra primero
+        .map((contact: any) => ({
+          contactid: contact.contactid,
+          name: contact.name,
+          phoneNumber: contact.contacto?.phoneNumber,
+          img: contact.contacto?.img
+        }));
 
       setContacts(formattedContacts);
     } catch (err: any) {
