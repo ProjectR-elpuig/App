@@ -54,7 +54,7 @@ const ContactsPage: React.FC = () => {
           headers: {
             Authorization: `Bearer ${user.token}`
           }
-        }
+        } 
       );
 
       const formattedContacts = response.data

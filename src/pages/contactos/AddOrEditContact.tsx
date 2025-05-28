@@ -69,9 +69,7 @@ const AddOrEditContact: React.FC = () => {
 
     // Intentar obtener datos de la navegación primero
     if (location.state?.contact) {
-      console.log("Entro aqui", id);
       setFormData(location.state.contact)
-      console.log("FormData", JSON.stringify(formData));
       setInitialLoad(false)
     } else {
       loadContactData()
@@ -100,15 +98,35 @@ const AddOrEditContact: React.FC = () => {
         phoneNumber: formData.phoneNumber
       }
 
+      const response = await axios.get(`${API_CONFIG.BASE_URL}/contacts/citizen/${user.citizenid}/${payload.phoneNumber}`, {
+        headers: {
+          Authorization: `Bearer ${user?.token}`
+        }
+      });
+
+      var idCreated = null;
+      if (response.data && response.data.name == response.data.contacto.phoneNumber) idCreated = response.data.contactid
+
       // Determinar si es creación o edición
-      if (id) {
-        await axios.put(`${API_CONFIG.BASE_URL}/contacts/${id}`, payload, {
+      if (id || idCreated) {
+        await axios.put(`${API_CONFIG.BASE_URL}/contacts/${id || idCreated}`, payload, {
           headers: {
             Authorization: `Bearer ${user.token}`,
             "Content-Type": "application/json"
           }
         })
       } else {
+
+        const response = await axios.get(`${API_CONFIG.BASE_URL}/contacts/phoneNumber/${payload.phoneNumber}`, {
+          headers: {
+            Authorization: `Bearer ${user?.token}`
+          }
+        });
+
+        if (!response.data.found) {
+          return setError("Numero de teléfono no encontrado.")
+        }
+
         await axios.post(`${API_CONFIG.BASE_URL}/contacts`, payload, {
           headers: {
             Authorization: `Bearer ${user.token}`,
