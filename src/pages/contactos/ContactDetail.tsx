@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
-import { IonPage, IonHeader, IonToolbar, IonButtons, IonButton, IonIcon, IonContent, IonLoading, IonText } from "@ionic/react";
+import { IonPage, IonHeader, IonToolbar, IonButtons, IonButton, IonIcon, IonContent, IonLoading, IonText, HrefProps } from "@ionic/react";
 import { arrowBack, pencil, chatbubbleEllipses, call, ban, trash } from "ionicons/icons";
 import axios from 'axios';
 import styles from "./ContactDetail.module.css";
@@ -16,7 +16,15 @@ interface Contact {
   isChatting?: boolean;
 }
 
-const ContactDetail: React.FC = () => {
+interface Props {
+  hideMessageButton?: boolean;
+  customBackRoute?: string; // Nueva prop
+}
+
+const ContactDetail: React.FC<Props> = ({
+  hideMessageButton = false,
+  customBackRoute
+}) => {
   const { id: contactid } = useParams<{ id: string }>();
   const history = useHistory();
   const { user } = useAuth();
@@ -71,7 +79,7 @@ const ContactDetail: React.FC = () => {
   }, [contactid, user?.token]);
 
   const onBack = (): void => {
-    history.push("/contactos");
+    history.push(customBackRoute || "/contactos"); // Usa customBackRoute si existe
   }
 
   const onEdit = (): void => {
@@ -183,10 +191,12 @@ const ContactDetail: React.FC = () => {
 
             <h1 className={styles.name}>{contact.name}</h1>
 
-            <button className={styles.messageButton} onClick={handleStartChat}>
-              <IonIcon icon={chatbubbleEllipses} />
-              <span>Mensaje</span>
-            </button>
+            {!hideMessageButton && (
+              <button className={styles.messageButton} onClick={handleStartChat}>
+                <IonIcon icon={chatbubbleEllipses} />
+                <span>Mensaje</span>
+              </button>
+            )}
 
             <div className={styles.infoSection}>
               <h2 className={styles.infoTitle}>Información de contacto</h2>

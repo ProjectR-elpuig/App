@@ -76,6 +76,7 @@ import "@ionic/react/css/palettes/dark.system.css"
 
 /* Theme variables */
 import "./theme/variables.css"
+import ContactDetailChatView from "./pages/chats/ContactDetailChatView"
 
 setupIonicReact()
 
@@ -158,13 +159,16 @@ const MainApp: React.FC = () => {
           <ChatList />
         </Route>
         <Route exact path="/chats/contactlists">
-          <ContactLists/>        
+          <ContactLists />
         </Route>
         <Route exact path="/chats/agregar">
           <ChatList />
         </Route>
         <Route exact path="/chats/chat/:id">
           <ChatContact />
+        </Route>
+        <Route exact path="/contactos/perfil/:id/chat-view">
+          <ContactDetailChatView />
         </Route>
         <Route exact path="/chats/chat/:id/perfil">
           <ChatList />

@@ -79,9 +79,9 @@ const ChatContact: React.FC = () => {
         name: response.data.name,
         phoneNumber: response.data.contacto?.phoneNumber ?? 'Número no disponible',
         img: response.data.contacto?.img
-          ? `${response.data.contacto.img}`
-          : '/imgs/default-avatar.jpg',
-        isBlocked: response.data.isBlocked // Añadir esta línea
+          ? `data:image/jpeg;base64,${response.data.contacto.img}` // Agregar prefijo
+          : '/imgs/default-avatar.jpg', // Verifica que esta ruta sea correcta
+        isBlocked: response.data.isBlocked
       };
 
       if (!response.data) {
@@ -344,9 +344,12 @@ const ChatContact: React.FC = () => {
               <IonIcon icon={arrowBack} slot="icon-only" />
             </IonButton>
           </IonButtons>
-          <div className={styles.logoContainer}>
-            <h1>V-LINK {contact?.name}</h1>
-            <img src="./imgs/LogoTopBar.png" alt="" />
+          <div
+            className={styles.contactHeader}
+            // /chats/chat/:id/perfil/contact
+            onClick={() => history.push(`/contactos/perfil/${contactid}/chat-view`)}>
+            <img src={contact?.img} className={styles.contactAvatar} />
+            <h1>{contact?.name}</h1>
           </div>
         </IonToolbar>
       </IonHeader>
