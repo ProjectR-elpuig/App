@@ -88,6 +88,78 @@ const ChatList: React.FC = () => {
     return months === 1 ? 'Hace 1 mes' : `Hace ${months} meses`;
   };
 
+  useEffect(() => {
+    if (contacts.length <= 0) return;
+    const socket = new SockJS(`${API_CONFIG.BASE_URL_WS}`)
+    const client = new Client({
+      webSocketFactory: () => socket,
+      reconnectDelay: 5000,
+      debug: (str) => console.log(str),
+    })
+
+    client.onConnect = () => {
+      // Suscribirse al chat específico
+      client.subscribe(`/topic/user.${user?.phoneNumber}`, (message) => {
+        const receivedMessage = JSON.parse(message.body)
+        console.log(`Mensaje recibido en user.${user?.phoneNumber}:`, JSON.stringify(receivedMessage));
+
+        const { content, receiverPhoneNumber } = receivedMessage;
+
+        setContacts((prevContacts) => {
+          const index = prevContacts.findIndex(c => c.phoneNumber === receiverPhoneNumber);
+          if (index === -1) {
+            // Si no se encuentra el contacto, recargar la lista
+            fetchContacts();
+            return prevContacts;
+          }
+
+          // Clonar contactos para evitar mutación directa
+          const updatedContacts = [...prevContacts];
+          const contact = updatedContacts[index];
+
+          updatedContacts[index] = {
+            ...contact,
+            lastMsg: content,
+            lastMsgDate: new Date().toISOString()
+          };
+
+          // Reordenar por fecha
+          updatedContacts.sort((a, b) => {
+            const dateA = a.lastMsgDate ? new Date(a.lastMsgDate).getTime() : 0;
+            const dateB = b.lastMsgDate ? new Date(b.lastMsgDate).getTime() : 0;
+            return dateB - dateA;
+          });
+
+          return updatedContacts;
+        });
+
+      })
+      console.log("Conectado al WebSocket y suscrito a user.", user?.phoneNumber)
+    }
+
+    client.onDisconnect = () => {
+      console.log("Desconectado del WebSocket de user.", user?.phoneNumber)
+    }
+
+    const cleanup = async () => {
+      client.deactivate();
+    };
+
+    client.activate()
+    setStompClient(client)
+
+    return () => {
+      // socket.close()
+      console.log("Limpiando recursos del WebSocket de user.", user?.phoneNumber)
+      cleanup();
+      // handleUnload();
+      // window.removeEventListener('beforeunload', handleUnload);
+      // client.unsubscribe(`/topic/chat.${chatId}`)
+      // client.deactivate()
+    }
+
+  }, [contacts, user?.citizenid])
+
   // Función para obtener los contactos
   const fetchContacts = async () => {
     try {
@@ -131,30 +203,30 @@ const ChatList: React.FC = () => {
     }
   };
 
-  // Se ejecuta al montar y cuando cambia el token
-  useEffect(() => {
-    // Configurar cliente WebSocket
-    const socket = new SockJS(`${API_CONFIG.BASE_URL_WS}`);
-    const client = new Client({
-      webSocketFactory: () => socket,
-      connectHeaders: {
-        Authorization: `Bearer ${user?.token}`
-      },
-      onConnect: () => {
-        client.subscribe('/topic/newContact', () => {
-          fetchContacts(); // Actualiza la lista cuando llega un nuevo contacto
-        });
-      },
-      reconnectDelay: 5000,
-    });
+  // // Se ejecuta al montar y cuando cambia el token
+  // useEffect(() => {
+  //   // Configurar cliente WebSocket
+  //   const socket = new SockJS(`${API_CONFIG.BASE_URL_WS}`);
+  //   const client = new Client({
+  //     webSocketFactory: () => socket,
+  //     connectHeaders: {
+  //       Authorization: `Bearer ${user?.token}`
+  //     },
+  //     onConnect: () => {
+  //       client.subscribe('/topic/newContact', () => {
+  //         fetchContacts(); // Actualiza la lista cuando llega un nuevo contacto
+  //       });
+  //     },
+  //     reconnectDelay: 5000,
+  //   });
 
-    client.activate();
-    setStompClient(client);
+  //   client.activate();
+  //   setStompClient(client);
 
-    return () => {
-      client.deactivate(); // Limpiar al desmontar
-    };
-  }, [user?.token]);
+  //   return () => {
+  //     client.deactivate(); // Limpiar al desmontar
+  //   };
+  // }, [user?.token]);
 
   // Se ejecuta cada vez que la página se muestra
   useIonViewWillEnter(() => {

@@ -196,14 +196,18 @@ const ChatContact: React.FC = () => {
       })
       console.log("Conectado al WebSocket y suscrito al chat:", chatId)
 
+      // Mensaje a enviar
+      const joinMessage = {
+        type: 'JOIN',
+        senderCitizenId: user?.citizenid,
+        chatId: chatId,
+        receiverPhoneNumber: contact?.phoneNumber
+      }
+
       // Notificar al servidor sobre la conexión
       client.publish({
         destination: "/app/chat.addUser",
-        body: JSON.stringify({
-          sender: user?.citizenid,
-          type: 'JOIN',
-          chatId: chatId
-        })
+        body: JSON.stringify(joinMessage)
       })
     }
 
@@ -216,7 +220,8 @@ const ChatContact: React.FC = () => {
         await client.publish({
           destination: "/app/chat.disconnect",
           body: JSON.stringify({
-            sender: user?.citizenid,
+            senderCitizenId: user?.citizenid,
+            receiverPhoneNumber: contact?.phoneNumber,
             type: 'LEAVE',
             chatId: chatId
           })
@@ -249,9 +254,9 @@ const ChatContact: React.FC = () => {
     const newMsg: Message = {
       id: messages.length + 1,
       text: message.content,
-      sent: message.sender === user?.citizenid,
+      sent: message.senderCitizenId === user?.citizenid,
       timestamp: new Date(),
-      sender: message.sender,
+      sender: message.senderCitizenId,
       type: message.type
     }
 
@@ -296,7 +301,8 @@ const ChatContact: React.FC = () => {
 
     // Crear mensaje tipo CHAT
     const chatMessage = {
-      sender: user?.citizenid,
+      senderCitizenId: user?.citizenid,
+      receiverPhoneNumber: contact?.phoneNumber,
       content: newMessage,
       type: 'CHAT',
       chatId: chatId
@@ -318,13 +324,15 @@ const ChatContact: React.FC = () => {
     }
   }
 
+
   const handleCancel = async () => {
     console.log("Cancelando el chat y desconectando WebSocket", stompClient?.connected)
     if (stompClient?.connected) {
       await stompClient.publish({
         destination: "/app/chat.disconnect",
         body: JSON.stringify({
-          sender: user?.citizenid,
+          senderCitizenId: user?.citizenid,
+          receiverPhoneNumber: contact?.phoneNumber,
           type: 'LEAVE',
           chatId: chatId
         })
@@ -402,4 +410,4 @@ const ChatContact: React.FC = () => {
   )
 }
 
-export default ChatContact
+export default ChatContact;
