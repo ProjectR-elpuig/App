@@ -115,6 +115,12 @@
   font-size: 14px;
 }
 
+.create-account a {
+  color: white;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 .account-actions {
   display: flex;
   flex-direction: column;
