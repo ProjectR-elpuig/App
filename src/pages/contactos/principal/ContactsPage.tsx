@@ -108,7 +108,7 @@ const ContactsPage: React.FC = () => {
       </IonHeader>
 
       <IonContent fullscreen>
-        <IonLoading isOpen={loading} message="Cargando contactos..." />
+        <IonLoading isOpen={loading} message="Loading contacts..." />
 
         {error && (
           <div className={styles.errorContainer}>
@@ -118,7 +118,7 @@ const ContactsPage: React.FC = () => {
 
         <div className={styles.searchContainer}>
           <IonSearchbar
-            placeholder="Buscar..."
+            placeholder="Search..."
             className={styles.customSearchbar}
             animated={true}
             value={searchText}

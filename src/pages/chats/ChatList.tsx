@@ -69,23 +69,23 @@ const ChatList: React.FC = () => {
 
     // Ayer
     if (diffInDays === 1) {
-      return 'Ayer';
+      return 'Yesterday';
     }
 
     // Últimos 7 días
     if (diffInDays < 7) {
-      return `Hace ${diffInDays} días`;
+      return `${diffInDays} days ago`;
     }
 
     // Hasta 4 semanas
     if (diffInDays < 28) {
       const weeks = Math.floor(diffInDays / 7);
-      return weeks === 1 ? 'Hace 1 semana' : `Hace ${weeks} semanas`;
+      return weeks === 1 ? '1 week ago' : `${weeks} weeks ago`;
     }
 
     // Meses
     const months = Math.floor(diffInDays / 30);
-    return months === 1 ? 'Hace 1 mes' : `Hace ${months} meses`;
+    return months === 1 ? '1 month ago' : `${months} months ago`;
   };
 
   useEffect(() => {
@@ -101,7 +101,7 @@ const ChatList: React.FC = () => {
       // Suscribirse al chat específico
       client.subscribe(`/topic/user.${user?.phoneNumber}`, (message) => {
         const receivedMessage = JSON.parse(message.body)
-        console.log(`Mensaje recibido en user.${user?.phoneNumber}:`, JSON.stringify(receivedMessage));
+        // console.log(`Mensaje recibido en user.${user?.phoneNumber}:`, JSON.stringify(receivedMessage));
 
         const { content, receiverPhoneNumber } = receivedMessage;
 
@@ -134,11 +134,11 @@ const ChatList: React.FC = () => {
         });
 
       })
-      console.log("Conectado al WebSocket y suscrito a user.", user?.phoneNumber)
+      // console.log("Conectado al WebSocket y suscrito a user.", user?.phoneNumber)
     }
 
     client.onDisconnect = () => {
-      console.log("Desconectado del WebSocket de user.", user?.phoneNumber)
+      // console.log("Desconectado del WebSocket de user.", user?.phoneNumber)
     }
 
     const cleanup = async () => {
@@ -150,7 +150,7 @@ const ChatList: React.FC = () => {
 
     return () => {
       // socket.close()
-      console.log("Limpiando recursos del WebSocket de user.", user?.phoneNumber)
+      // console.log("Limpiando recursos del WebSocket de user.", user?.phoneNumber)
       cleanup();
       // handleUnload();
       // window.removeEventListener('beforeunload', handleUnload);
@@ -257,7 +257,7 @@ const ChatList: React.FC = () => {
       </IonHeader>
 
       <IonContent fullscreen>
-        <IonLoading isOpen={loading} message="Cargando contactos..." />
+        <IonLoading isOpen={loading} message="Loading contacts..." />
 
         {error && (
           <div className={styles.errorContainer}>

@@ -129,7 +129,7 @@ const MainApp: React.FC = () => {
     new RegExp(`^${route.replace(/:[^\s/]+/g, ".*")}$`).test(location.pathname),
   )
 
-  console.log("isAuthenticated", isAuthenticated)
+  // console.log("isAuthenticated", isAuthenticated)
 
   return !isAuthenticated ? (
     !isRegister ? (

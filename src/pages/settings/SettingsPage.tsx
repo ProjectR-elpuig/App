@@ -70,15 +70,15 @@ const SettingsPage: React.FC = () => {
           {/* Perfil */}
           <IonItem button onClick={() => history.push('/settings/profile')} className={styles.settingsItem}>
             <IonIcon icon={personCircleOutline} slot="start" className={styles.itemIcon} />
-            <p className={styles.itemLabel}>Mi perfil</p>
+            <p className={styles.itemLabel}>My profile</p>
           </IonItem>
 
           {/* Notifications */}
-          <IonItem className={styles.settingsItem}>
+          {/* <IonItem className={styles.settingsItem}>
             <IonIcon icon={moonOutline} slot="start" className={styles.itemIcon} />
             <p className={styles.itemLabel}>Change keyboard theme</p>
             <IonToggle slot="end" className={styles.toggle} />
-          </IonItem>
+          </IonItem> */}
 
           {/* Dark Mode */}
           <IonItem button onClick={handleBlockedContacts} className={styles.settingsItem}>

@@ -49,7 +49,7 @@ const ContactDetail: React.FC<Props> = ({
         );
 
         // En tu código donde procesas la respuesta
-        console.log('Respuesta de la API:', response.data);
+        // console.log('Respuesta de la API:', response.data);
 
         // Formatea el objeto individual (no uses map)
         const formattedContact = {
@@ -66,7 +66,7 @@ const ContactDetail: React.FC<Props> = ({
           throw new Error('Contacto no encontrado');
         }
 
-        console.log("Contacto formateado:", formattedContact);
+        // console.log("Contacto formateado:", formattedContact);
         setContact(formattedContact);
       } catch (err: any) {
         setError(err.message || 'Error al cargar el contacto');
@@ -144,7 +144,7 @@ const ContactDetail: React.FC<Props> = ({
 
 
   if (loading) {
-    return <IonLoading isOpen={true} message="Cargando contacto..." />;
+    return <IonLoading isOpen={true} message="Loading contact..." />;
   }
 
   if (error) {

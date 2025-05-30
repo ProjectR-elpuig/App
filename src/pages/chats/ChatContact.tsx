@@ -71,7 +71,7 @@ const ChatContact: React.FC = () => {
       );
 
       // En tu código donde procesas la respuesta
-      console.log('Respuesta de la API:', response.data);
+      // console.log('Respuesta de la API:', response.data);
 
       // Formatea el objeto individual (no uses map)
       const formattedContact = {
@@ -88,7 +88,7 @@ const ChatContact: React.FC = () => {
         throw new Error('Contacto no encontrado');
       }
 
-      console.log("Contacto formateado:", formattedContact);
+      // console.log("Contacto formateado:", formattedContact);
       setContact(formattedContact);
     } catch (err: any) {
       setError(err.message || 'Error al cargar el contacto');
@@ -113,7 +113,7 @@ const ChatContact: React.FC = () => {
       );
 
       // En tu código donde procesas la respuesta
-      console.log('Respuesta de la API Mensajes:', contact?.phoneNumber, response.data);
+      // console.log('Respuesta de la API Mensajes:', contact?.phoneNumber, response.data);
 
       // Aqui se deberia de meter los mensajes en el chat
       const formattedMessages = response.data.map((message: any) => ({
@@ -124,7 +124,7 @@ const ChatContact: React.FC = () => {
       }));
 
       setMessages(formattedMessages);
-      console.log("Mensajes formateados:", JSON.stringify(messages));
+      // console.log("Mensajes formateados:", JSON.stringify(messages));
 
     } catch (err: any) {
       setError(err.message || 'Error al cargar el contacto');
@@ -149,7 +149,7 @@ const ChatContact: React.FC = () => {
       );
 
       // En tu código donde procesas la respuesta
-      console.log('Respuesta de la API sobre LA ID DEL CHAT:', response.data);
+      // console.log('Respuesta de la API sobre LA ID DEL CHAT:', response.data);
       setChatId(response.data.id);
       if (!response.data) {
         throw new Error('Chat no encontrado');
@@ -189,12 +189,12 @@ const ChatContact: React.FC = () => {
       // Suscribirse al chat específico
       client.subscribe(`/topic/chat.${chatId}`, (message) => {
         const receivedMessage = JSON.parse(message.body)
-        console.log("Mensaje recibido:", JSON.stringify(receivedMessage));
+        // console.log("Mensaje recibido:", JSON.stringify(receivedMessage));
         // const msgOld = newMessage;
         if (receivedMessage.type === 'CHAT') handleReceivedMessage(receivedMessage);
         // setNewMessage(msgOld);
       })
-      console.log("Conectado al WebSocket y suscrito al chat:", chatId)
+      // console.log("Conectado al WebSocket y suscrito al chat:", chatId)
 
       // Mensaje a enviar
       const joinMessage = {
@@ -212,7 +212,7 @@ const ChatContact: React.FC = () => {
     }
 
     client.onDisconnect = () => {
-      console.log("Desconectado del WebSocket")
+      // console.log("Desconectado del WebSocket")
     }
 
     const sendLeaveMessage = async () => {
@@ -240,7 +240,7 @@ const ChatContact: React.FC = () => {
 
     return () => {
       // socket.close()
-      console.log("Limpiando recursos del WebSocket")
+      // console.log("Limpiando recursos del WebSocket")
       cleanup();
       // handleUnload();
       // window.removeEventListener('beforeunload', handleUnload);
@@ -287,8 +287,8 @@ const ChatContact: React.FC = () => {
         }
       });
 
-      console.log("Mensaje enviado a la API:", JSON.stringify(payload));
-      console.log("respuesta de la API del mensaje:", JSON.stringify(response.data));
+      // console.log("Mensaje enviado a la API:", JSON.stringify(payload));
+      // console.log("respuesta de la API del mensaje:", JSON.stringify(response.data));
 
 
     } catch (err: any) {
@@ -326,7 +326,7 @@ const ChatContact: React.FC = () => {
 
 
   const handleCancel = async () => {
-    console.log("Cancelando el chat y desconectando WebSocket", stompClient?.connected)
+    // console.log("Cancelando el chat y desconectando WebSocket", stompClient?.connected)
     if (stompClient?.connected) {
       await stompClient.publish({
         destination: "/app/chat.disconnect",

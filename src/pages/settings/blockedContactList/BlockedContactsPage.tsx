@@ -86,7 +86,7 @@ const BlockedContactsPage: React.FC = () => {
     return (
       <IonPage>
         <IonContent className="ion-padding">
-          Cargando contactos bloqueados...
+          Loading blocked contacts...
         </IonContent>
       </IonPage>
     );

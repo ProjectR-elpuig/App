@@ -41,7 +41,6 @@ const SettingsHelpPage: React.FC = () => {
               <li>Search contacts.</li>
               <li>Add/Edit/Del contact.</li>
               <li>Block contact.</li>
-              <li>Change profile icon.</li>
             </ul>
           </section>
 
@@ -49,35 +48,37 @@ const SettingsHelpPage: React.FC = () => {
             <h3>Chats:</h3>
             <ul>
               <li>Search chats.</li>
-              <li>Create/Delete chat.</li>
-              <li>Send message/photo/emojis.</li>
+              <li>Create/Close chat.</li>
+              <li>Send message/emojis.</li>
               <li>Change notification.</li>
-              <li>Add chat to favorite.</li>
+              {/* <li>Add chat to favorite.</li> */}
             </ul>
           </section>
 
-          <section className={styles.helpSection}>
+          {/* <section className={styles.helpSection}>
             <h3>Events:</h3>
             <ul>
               <li>View daily event/s.</li>
               <li>Create new event.</li>
               <li>Show all calendar events.</li>
             </ul>
-          </section>
+          </section> */}
 
-          <section className={styles.helpSection}>
+          {/* <section className={styles.helpSection}>
             <h3>History:</h3>
             <ul>
               <li>View call history, from FiveM app.</li>
             </ul>
-          </section>
+          </section> */}
 
           <section className={styles.helpSection}>
             <h3>Settings:</h3>
             <ul>
-              <li>Change keyboard theme. (light/black)</li>
+              <li>Change/Del profile picture and show my profine.</li>
               <li>Show blocked contacts.</li>
               <li>Show this guide. (help guide)</li>
+              <li>Change password.</li>
+              <li>Logout.</li>
             </ul>
           </section>
         </div>

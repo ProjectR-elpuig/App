@@ -14,7 +14,7 @@ export const loginService = async (
   password: string
 ): Promise<LoginResponse> => {
   try {
-    console.log("Intentando iniciar sesión con:", { username, password });
+    // console.log("Intentando iniciar sesión con:", { username, password });
     const response = await axios.post(
       `${API_CONFIG.BASE_URL}/auth/login`,
       {

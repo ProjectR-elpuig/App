@@ -151,7 +151,7 @@ const AddOrEditContact: React.FC = () => {
     return (
       <IonPage>
         <IonContent className={styles.loadingContainer}>
-          <p>Cargando datos del contacto...</p>
+          <p>Loading contact...</p>
         </IonContent>
       </IonPage>
     )

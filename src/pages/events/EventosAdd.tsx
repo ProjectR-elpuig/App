@@ -23,20 +23,20 @@ const EventosAdd: React.FC = () => {
 
   const handleCreateEvent = () => {
     // Aquí iría la lógica para crear el evento
-    console.log('Creating event:', { title, description, date, image });
+    // console.log('Creating event:', { title, description, date, image });
     history.goBack();
     // Redirigir a la página de eventos o mostrar un mensaje de éxito
   };
 
   const handleChooseDate = () => {
     // Aquí iría la lógica para abrir un selector de fecha
-    console.log('Opening date picker');
+    // console.log('Opening date picker');
     history.goBack();
   };
 
   const handleChooseImage = () => {
     // Aquí iría la lógica para abrir un selector de imagen
-    console.log('Opening image picker');
+    // console.log('Opening image picker');
     history.goBack();
   };
 

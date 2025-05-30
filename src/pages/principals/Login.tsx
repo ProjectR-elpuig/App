@@ -15,7 +15,7 @@ const Login: React.FC<{ changeToRegister: () => void }> = ({ changeToRegister })
     setError(null);
     try {
       const data = await loginService(username, password); // Llama al servicio de login
-      console.log('User:', data?.usuario?.citizenId, JSON.stringify(data));
+      // console.log('User:', data?.usuario?.citizenId, JSON.stringify(data));
       await login(data.usuario.citizenId, data.token, data.usuario.phoneNumber); // Usa el contexto para guardar los datos
     } catch (err: any) {
       setError(err.response?.data?.error || err.message || 'Error al iniciar sesión');

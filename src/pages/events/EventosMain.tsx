@@ -28,7 +28,7 @@ const EventosMain: React.FC = () => {
 
   const handleDateChange = (date: Date) => {
     setSelectedDate(date);
-    console.log("Fecha seleccionada:", date);
+    // console.log("Fecha seleccionada:", date);
   };
 
   const handleAddEvent = () => {

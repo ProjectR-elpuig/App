@@ -125,7 +125,7 @@ const ProfilePage: React.FC = () => {
         return (
             <IonPage>
                 <IonContent className={styles.page}>
-                    <IonText>Cargando perfil...</IonText>
+                    <IonText>Loading profile...</IonText>
                 </IonContent>
             </IonPage>
         );
