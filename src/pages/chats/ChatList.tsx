@@ -109,7 +109,7 @@ const ChatList: React.FC = () => {
           const index = prevContacts.findIndex(c => c.phoneNumber === receiverPhoneNumber);
           if (index === -1) {
             // Si no se encuentra el contacto, recargar la lista
-            fetchContacts();
+            fetchContacts(true);
             return prevContacts;
           }
 
@@ -161,9 +161,11 @@ const ChatList: React.FC = () => {
   }, [contacts, user?.citizenid])
 
   // Función para obtener los contactos
-  const fetchContacts = async () => {
+  const fetchContacts = async (background: boolean = false) => {
     try {
-      setLoading(true);
+      if (!background) {
+        setLoading(true);
+      }
       setError(null);
 
       if (!user?.token) {
