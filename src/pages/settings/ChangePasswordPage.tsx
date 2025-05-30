@@ -1,5 +1,5 @@
 import type React from "react"
-import { IonContent, IonHeader, IonToolbar, IonButtons, IonButton, IonIcon, IonPage, IonInput } from "@ionic/react"
+import { IonContent, IonHeader, IonToolbar, IonText, IonButtons, IonButton, IonIcon, IonPage, IonInput } from "@ionic/react"
 import { arrowBack } from "ionicons/icons"
 import { useState } from "react"
 import { useHistory } from "react-router-dom"
@@ -9,6 +9,7 @@ import { useAuth } from "../../context/AuthContext"
 import { API_CONFIG } from '../../config'
 
 const ChangePasswordPage: React.FC = () => {
+  const [error, setError] = useState<string | null>(null)
   const [newPassword, setNewPassword] = useState<string>("")
   const [confirmPassword, setConfirmPassword] = useState<string>("")
   const [currentPassword, setCurrentPassword] = useState<string>("")
@@ -18,17 +19,17 @@ const ChangePasswordPage: React.FC = () => {
 
   const handleChangePassword = async () => {
     if (!currentPassword) {
-      alert("Please enter your current password")
+      setError("Please enter your current password")
       return
     }
 
     if (newPassword !== confirmPassword) {
-      alert("The new passwords do not match")
+      setError("The new passwords do not match")
       return
     }
 
     if (newPassword.length < 6) {
-      alert("The password must be at least 6 characters long")
+      setError("The password must be at least 6 characters long")
       return
     }
 
@@ -51,7 +52,6 @@ const ChangePasswordPage: React.FC = () => {
       )
 
       if (response.status === 200) {
-        alert("Password updated successfully!")
         history.push("/settings")
       }
     } catch (error: any) {
@@ -76,7 +76,7 @@ const ChangePasswordPage: React.FC = () => {
         errorMessage = "No response received from server"
       }
 
-      alert(errorMessage)
+      setError(errorMessage)
     } finally {
       setIsLoading(false)
     }
@@ -141,10 +141,16 @@ const ChangePasswordPage: React.FC = () => {
             />
           </div>
 
+          {error && (
+            <IonText color="danger" className="error-text">
+              {error}
+            </IonText>
+          )}
+
           <div className={styles.buttonContainer}>
-            <IonButton 
-              expand="block" 
-              onClick={handleChangePassword} 
+            <IonButton
+              expand="block"
+              onClick={handleChangePassword}
               disabled={isLoading}
               className={styles.changePasswordButton}
             >
