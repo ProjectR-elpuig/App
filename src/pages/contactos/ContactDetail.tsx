@@ -201,7 +201,7 @@ const ContactDetail: React.FC<Props> = ({
 
             <h1 className={styles.name}>{contact.name}</h1>
 
-            {!hideMessageButton && (
+            {!contact.isBlocked && !hideMessageButton && (
               <button className={styles.messageButton} onClick={handleStartChat}>
                 <IonIcon icon={chatbubbleEllipses} />
                 <span>Message</span>
@@ -219,7 +219,7 @@ const ContactDetail: React.FC<Props> = ({
             <div className={styles.actionButtons}>
               <button className={styles.blockButton} onClick={handleBlock}>
                 <IonIcon icon={ban} />
-                <span>{contact.isBlocked ? "Unblock contact" : "Block contact" + contact.isChatting}</span>
+                <span>{contact.isBlocked ? "Unblock contact" : "Block contact"}</span>
               </button>
               {contact.isChatting && (
                 <button className={styles.blockButton} onClick={handleChatting}>

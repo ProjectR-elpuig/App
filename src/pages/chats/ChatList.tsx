@@ -14,7 +14,8 @@ import {
   IonFooter,
   IonFab,
   IonFabButton,
-  IonLoading
+  IonLoading,
+  IonToast
 } from "@ionic/react"
 import {
   chatboxOutline
@@ -36,6 +37,7 @@ interface Contact {
   img?: string;
   lastMsg?: string;
   lastMsgDate?: string;
+  blocked?: boolean;
 }
 
 const ChatList: React.FC = () => {
@@ -47,6 +49,9 @@ const ChatList: React.FC = () => {
   const history = useHistory();
 
   const [stompClient, setStompClient] = useState<Client | null>(null);
+
+  const [showBlockedToast, setShowBlockedToast] = useState(false);
+  const [blockedContactName, setBlockedContactName] = useState("");
 
   const truncateText = (text: string, maxLength: number = 50) => {
     if (text.length <= maxLength) return text;
@@ -186,13 +191,16 @@ const ChatList: React.FC = () => {
         }
       );
 
+      console.log("Contacts fetched:", JSON.stringify(response.data));
+
       const formattedContacts = response.data.map((contact: any) => ({
         contactid: contact.contactid,
         name: contact.name,
         phoneNumber: contact.phoneNumber,
         img: contact.img,
         lastMsg: contact.lastMessage,
-        lastMsgDate: contact.lastMessageDate
+        lastMsgDate: contact.lastMessageDate,
+        blocked: contact.blocked || false
       }));
 
       formattedContacts.sort((a: Contact, b: Contact) => {
@@ -219,6 +227,13 @@ const ChatList: React.FC = () => {
   };
 
   const handleChat = (id: number) => {
+    const contact = contacts.find(c => c.contactid === id);
+    if (contact?.blocked) {
+      setBlockedContactName(contact.name);
+      setShowBlockedToast(true);
+      return;
+    }
+    setShowBlockedToast(false);
     history.push(`/chats/chat/${id}`)
   }
 
@@ -238,6 +253,14 @@ const ChatList: React.FC = () => {
       </IonHeader>
 
       <IonContent fullscreen>
+        <IonToast
+          isOpen={showBlockedToast}
+          onDidDismiss={() => setShowBlockedToast(false)}
+          message={`Cannot chat with ${blockedContactName}. This contact is blocked.`}
+          duration={3000}
+          color="danger"
+          position="top"
+        />
         <IonLoading isOpen={loading} message="Loading contacts..." />
 
         {error && (
@@ -267,10 +290,10 @@ const ChatList: React.FC = () => {
                   <div className={styles.messageInfo}>
                     <h2>{contact.name}</h2>
                     <p className={styles.lastMessage}>
-                      {contact.lastMsg ? truncateText(contact.lastMsg) : "No messages yet"}
+                      {contact.blocked ? "Blocked Contact" : contact.lastMsg ? truncateText(contact.lastMsg) : "No messages yet"}
                     </p>
                   </div>
-                  {contact.lastMsgDate && (
+                  {!contact.blocked && contact.lastMsgDate && (
                     <p className={styles.timestamp}>
                       {formatMessageDate(contact.lastMsgDate)}
                     </p>

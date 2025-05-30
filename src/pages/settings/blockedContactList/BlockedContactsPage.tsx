@@ -142,14 +142,14 @@ const BlockedContactsPage: React.FC = () => {
               </IonAvatar>
               <IonLabel className={styles.textUser}>
                 <h2>{contact.name}</h2>
-                <p>{contact.isBlocked ? "Bloqueado" : "No bloqueado"}</p>
+                <p>{contact.isBlocked ? "Blocked" : ""}</p>
               </IonLabel>
               <IonButton
                 color="danger"
                 onClick={() => handleUnblock(contact.contactid)}
               >
                 <IonIcon icon={ban} slot="start" />
-                Desbloquear
+                Unblock
               </IonButton>
             </IonItem>
           ))}
