@@ -204,6 +204,9 @@ const ChatList: React.FC = () => {
       }));
 
       formattedContacts.sort((a: Contact, b: Contact) => {
+        if (a.blocked && !b.blocked) return 1;
+        if (!a.blocked && b.blocked) return -1;
+
         const dateA = a.lastMsgDate ? new Date(a.lastMsgDate).getTime() : 0;
         const dateB = b.lastMsgDate ? new Date(b.lastMsgDate).getTime() : 0;
         return dateB - dateA; // Orden descendente
