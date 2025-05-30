@@ -55,7 +55,8 @@ const ContactDetail: React.FC<Props> = ({
           img: response.data.contacto?.img
             ? `${response.data.contacto.img}`
             : '/imgs/default-avatar.jpg',
-          isBlocked: response.data.isBlocked
+          isBlocked: response.data.isBlocked,
+          isChatting: response.data.isChatting
         };
 
         if (!response.data) {
@@ -117,6 +118,21 @@ const ContactDetail: React.FC<Props> = ({
       setContact(prev => prev ? { ...prev, isBlocked: !prev.isBlocked } : null);
     } catch (err: any) {
       setError(err.response?.data || 'Error blocking contact');
+    }
+  };
+
+  const handleChatting = async () => {
+    try {
+      if (!user?.token) throw new Error('Not authenticated');
+
+      await axios.put(
+        `${API_CONFIG.BASE_URL}/contacts/${contactid}/chatting`,
+        {},
+        { headers: { Authorization: `Bearer ${user.token}` } }
+      );
+      setContact(prev => prev ? { ...prev, isChatting: !prev.isChatting } : null);
+    } catch (err: any) {
+      setError(err.response?.data || 'Error closing chat');
     }
   };
 
@@ -203,8 +219,14 @@ const ContactDetail: React.FC<Props> = ({
             <div className={styles.actionButtons}>
               <button className={styles.blockButton} onClick={handleBlock}>
                 <IonIcon icon={ban} />
-                <span>{contact.isBlocked ? "Unblock contact" : "Block contact"}</span>
+                <span>{contact.isBlocked ? "Unblock contact" : "Block contact" + contact.isChatting}</span>
               </button>
+              {contact.isChatting && (
+                <button className={styles.blockButton} onClick={handleChatting}>
+                  <IonIcon icon={chatbubbleEllipses} />
+                  <span>{contact.isChatting && "Close chat"}</span>
+                </button>
+              )}
               <button className={styles.deleteButton} onClick={handleDelete}>
                 <IonIcon icon={trash} />
                 <span>Delete contact</span>
