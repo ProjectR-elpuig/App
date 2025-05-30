@@ -24,3 +24,6 @@ V-Link es una aplicación móvil de comunicación desarrollada con Ionic React q
 ```bash
 git clone https://github.com/tu-usuario/projectr-elpuig-vlink-app.git
 cd projectr-elpuig-vlink-app
+npm i
+ionic serve --external
+```
