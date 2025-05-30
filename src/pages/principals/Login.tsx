@@ -87,7 +87,7 @@ const Login: React.FC<{ changeToRegister: () => void }> = ({ changeToRegister })
             )}
 
             <div className="account-actions">
-              <p className="create-account">¿Aún no tienes cuenta? <a onClick={changeToRegister}>Crear cuenta</a></p>
+                <p className="create-account">Don't have an account yet? <a onClick={changeToRegister}>Create account</a></p>
               {/* <IonButton expand="block" className="register-button" onClick={changeToRegister}>
                 REGISTER
               </IonButton> */}

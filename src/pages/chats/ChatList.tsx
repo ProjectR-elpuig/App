@@ -266,7 +266,7 @@ const ChatList: React.FC = () => {
         )}
 
         <div className={styles.searchContainer}>
-          <IonSearchbar placeholder="Buscar..." className={styles.customSearchbar} animated={true} value={searchText} onIonInput={(e) => setSearchText(e.detail.value!)} />
+          <IonSearchbar placeholder="Search..." className={styles.customSearchbar} animated={true} value={searchText} onIonInput={(e) => setSearchText(e.detail.value!)} />
         </div>
 
         <IonList>

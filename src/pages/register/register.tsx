@@ -95,9 +95,9 @@ const Register: React.FC<{ changeToLogin: () => void }> = ({ changeToLogin }) =>
                         )}
 
                         <p className="login-link">
-                            ¿Ya tienes una cuenta?{" "}
+                            Already have an account?{" "}
                             <a onClick={goBack}>
-                                Iniciar sesión
+                                Log in
                             </a>
                         </p>
                     </div>
