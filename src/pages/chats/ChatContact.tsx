@@ -53,6 +53,7 @@ const ChatContact: React.FC = () => {
 
   const [stompClient, setStompClient] = useState<Client | null>(null)
   const [chatId, setChatId] = useState<string | null>(null);
+  const inputRef = useRef<HTMLIonInputElement>(null);
 
 
   const fetchContact = async () => {
@@ -251,6 +252,8 @@ const ChatContact: React.FC = () => {
   }, [chatId, user?.citizenid])
 
   const handleReceivedMessage = (message: any) => {
+    const currentInputValue = inputRef.current?.value?.toString() || '';
+
     const newMsg: Message = {
       id: messages.length + 1,
       text: message.content,
@@ -261,6 +264,7 @@ const ChatContact: React.FC = () => {
     }
 
     setMessages(prev => [...prev, newMsg])
+    setNewMessage(currentInputValue);
   }
 
   // Scrolea hacia abajo cuando se recibe un nuevo mensaje
@@ -392,10 +396,12 @@ const ChatContact: React.FC = () => {
             <IonIcon icon={camera} />
           </button>
           <IonInput
+            ref={inputRef}
             placeholder="message"
             value={newMessage}
             onIonChange={(e) => setNewMessage(e.detail.value || "")}
-            onKeyPress={handleKeyPress}
+            // onKeyDown={handleKeyPress}
+            onKeyUp={handleKeyPress}
             className={styles.messageInput}
           />
           <button className={styles.emojiButton}>
