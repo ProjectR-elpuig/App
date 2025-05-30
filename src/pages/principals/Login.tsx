@@ -1,20 +1,28 @@
 import type React from "react"
-import { useState } from "react"
+import { useState, useRef } from "react"
 import { IonContent, IonPage, IonInput, IonButton, IonText, IonRouterLink } from "@ionic/react"
 import "./Login.css"
 import { loginService } from '../../services/authService'; // Importa el servicio de autenticación
 import { useAuth } from '../../context/AuthContext';
+import { u } from "framer-motion/dist/types.d-B50aGbjN";
 
 const Login: React.FC<{ changeToRegister: () => void }> = ({ changeToRegister }) => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState<string | null>(null) // Para mostrar errores
+
+  const usernameRef = useRef<HTMLIonInputElement>(null);
+  const passwordRef = useRef<HTMLIonInputElement>(null);
   const { login } = useAuth();
 
   const handleLogin = async () => {
     setError(null);
+
+    const currentUsername = usernameRef.current?.value?.toString() || "";
+    const currentPassword = passwordRef.current?.value?.toString() || "";
+
     try {
-      const data = await loginService(username, password); // Llama al servicio de login
+      const data = await loginService(currentUsername, currentPassword); // Llama al servicio de login
       // console.log('User:', data?.usuario?.citizenId, JSON.stringify(data));
       await login(data.usuario.citizenId, data.token, data.usuario.phoneNumber); // Usa el contexto para guardar los datos
     } catch (err: any) {
@@ -62,6 +70,7 @@ const Login: React.FC<{ changeToRegister: () => void }> = ({ changeToRegister })
               <IonInput
                 type="text"
                 value={username}
+                ref={usernameRef}
                 placeholder="Username"
                 className="custom-input"
                 onIonChange={(e) => setUsername(e.detail.value!)}
@@ -70,6 +79,7 @@ const Login: React.FC<{ changeToRegister: () => void }> = ({ changeToRegister })
               <IonInput
                 type="password"
                 value={password}
+                ref={passwordRef}
                 placeholder="Password"
                 className="custom-input"
                 onIonChange={(e) => setPassword(e.detail.value!)}
@@ -87,7 +97,7 @@ const Login: React.FC<{ changeToRegister: () => void }> = ({ changeToRegister })
             )}
 
             <div className="account-actions">
-                <p className="create-account">Don't have an account yet? <a onClick={changeToRegister}>Create account</a></p>
+              <p className="create-account">Don't have an account yet? <a onClick={changeToRegister}>Create account</a></p>
               {/* <IonButton expand="block" className="register-button" onClick={changeToRegister}>
                 REGISTER
               </IonButton> */}
