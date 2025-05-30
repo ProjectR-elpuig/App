@@ -173,7 +173,7 @@ const ProfilePage: React.FC = () => {
                 </div>
 
                 <div className={styles.infoSection}>
-                    <h2 className={styles.infoTitle}>Información de usuario</h2>
+                    <h2 className={styles.infoTitle}>My profile</h2>
 
                     <div className={styles.phoneNumber}>
                         <IonIcon icon={person} />

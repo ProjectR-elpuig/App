@@ -199,7 +199,7 @@ const ContactDetail: React.FC<Props> = ({
             )}
 
             <div className={styles.infoSection}>
-              <h2 className={styles.infoTitle}>Información de contacto</h2>
+              <h2 className={styles.infoTitle}>Contact info</h2>
               <div className={styles.phoneNumber}>
                 <IonIcon icon={call} />
                 <span>{contact.phoneNumber}</span>
