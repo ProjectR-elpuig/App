@@ -85,7 +85,6 @@ const SettingsHelpPage: React.FC = () => {
 
         {/* Footer */}
         <div className={styles.helpFooter}>
-          <p>This is raw app example</p>
           <img src="/imgs/LogoTopBar.png" alt="V-Link Logo" className={styles.topbarLogo} />
         </div>
       </IonContent>
