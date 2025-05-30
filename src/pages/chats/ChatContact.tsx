@@ -397,7 +397,7 @@ const ChatContact: React.FC = () => {
           </button>
           <IonInput
             ref={inputRef}
-            placeholder="message"
+            placeholder="Write a message..."
             value={newMessage}
             onIonChange={(e) => setNewMessage(e.detail.value || "")}
             // onKeyDown={handleKeyPress}

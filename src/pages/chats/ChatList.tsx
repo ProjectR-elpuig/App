@@ -57,36 +57,40 @@ const ChatList: React.FC = () => {
     const date = new Date(dateString);
     const now = new Date();
     const diffInMs = now.getTime() - date.getTime();
-    const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+    const diffInSeconds = Math.floor(diffInMs / 1000);
+    const diffInMinutes = Math.floor(diffInSeconds / 60);
+    const diffInHours = Math.floor(diffInMinutes / 60);
+    const diffInDays = Math.floor(diffInHours / 24);
 
-    // Mismo día
-    if (diffInDays === 0) {
-      return date.toLocaleTimeString('es-ES', {
-        hour: '2-digit',
-        minute: '2-digit'
-      });
+    if (diffInSeconds < 60) {
+      return "Just now";
     }
 
-    // Ayer
+    if (diffInMinutes < 60) {
+      return `About ${diffInMinutes} minute${diffInMinutes > 1 ? 's' : ''} ago`;
+    }
+
+    if (diffInHours < 24) {
+      return `About ${diffInHours} hour${diffInHours > 1 ? 's' : ''} ago`;
+    }
+
     if (diffInDays === 1) {
       return 'Yesterday';
     }
 
-    // Últimos 7 días
     if (diffInDays < 7) {
-      return `${diffInDays} days ago`;
+      return `About ${diffInDays} day${diffInDays > 1 ? 's' : ''} ago`;
     }
 
-    // Hasta 4 semanas
     if (diffInDays < 28) {
       const weeks = Math.floor(diffInDays / 7);
-      return weeks === 1 ? '1 week ago' : `${weeks} weeks ago`;
+      return weeks === 1 ? 'About 1 week ago' : `About ${weeks} weeks ago`;
     }
 
-    // Meses
     const months = Math.floor(diffInDays / 30);
-    return months === 1 ? '1 month ago' : `${months} months ago`;
+    return months === 1 ? 'About 1 month ago' : `About ${months} months ago`;
   };
+
 
   useEffect(() => {
     if (contacts.length <= 0) return;
@@ -169,7 +173,7 @@ const ChatList: React.FC = () => {
       setError(null);
 
       if (!user?.token) {
-        setError('No autenticado');
+        setError('Not authenticated');
         return;
       }
 
@@ -199,36 +203,11 @@ const ChatList: React.FC = () => {
 
       setContacts(formattedContacts);
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Error al obtener contactos');
+      setError(err.response?.data?.message || 'Error fetching contacts');
     } finally {
       setLoading(false);
     }
   };
-
-  // // Se ejecuta al montar y cuando cambia el token
-  // useEffect(() => {
-  //   // Configurar cliente WebSocket
-  //   const socket = new SockJS(`${API_CONFIG.BASE_URL_WS}`);
-  //   const client = new Client({
-  //     webSocketFactory: () => socket,
-  //     connectHeaders: {
-  //       Authorization: `Bearer ${user?.token}`
-  //     },
-  //     onConnect: () => {
-  //       client.subscribe('/topic/newContact', () => {
-  //         fetchContacts(); // Actualiza la lista cuando llega un nuevo contacto
-  //       });
-  //     },
-  //     reconnectDelay: 5000,
-  //   });
-
-  //   client.activate();
-  //   setStompClient(client);
-
-  //   return () => {
-  //     client.deactivate(); // Limpiar al desmontar
-  //   };
-  // }, [user?.token]);
 
   // Se ejecuta cada vez que la página se muestra
   useIonViewWillEnter(() => {
