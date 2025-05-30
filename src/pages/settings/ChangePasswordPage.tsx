@@ -18,17 +18,17 @@ const ChangePasswordPage: React.FC = () => {
 
   const handleChangePassword = async () => {
     if (!currentPassword) {
-      alert("Por favor ingresa tu contraseña actual")
+      alert("Please enter your current password")
       return
     }
 
     if (newPassword !== confirmPassword) {
-      alert("Las nuevas contraseñas no coinciden")
+      alert("The new passwords do not match")
       return
     }
 
     if (newPassword.length < 6) {
-      alert("La contraseña debe tener al menos 6 caracteres")
+      alert("The password must be at least 6 characters long")
       return
     }
 
@@ -51,29 +51,29 @@ const ChangePasswordPage: React.FC = () => {
       )
 
       if (response.status === 200) {
-        alert("¡Contraseña actualizada correctamente!")
+        alert("Password updated successfully!")
         history.push("/settings")
       }
     } catch (error: any) {
-      console.error("Error cambiando contraseña:", error)
+      console.error("Error changing password:", error)
 
-      let errorMessage = "Error al cambiar la contraseña"
+      let errorMessage = "Error changing password"
       if (error.response) {
         switch (error.response.status) {
           case 400:
-            errorMessage = error.response.data || "Datos inválidos"
+            errorMessage = error.response.data || "Invalid data"
             break
           case 401:
-            errorMessage = "No autorizado - Token inválido"
+            errorMessage = "Unauthorized - Invalid token"
             break
           case 404:
-            errorMessage = "Endpoint no encontrado"
+            errorMessage = "Endpoint not found"
             break
           default:
-            errorMessage = `Error del servidor (${error.response.status})`
+            errorMessage = `Server error (${error.response.status})`
         }
       } else if (error.request) {
-        errorMessage = "No se recibió respuesta del servidor"
+        errorMessage = "No response received from server"
       }
 
       alert(errorMessage)
@@ -87,7 +87,7 @@ const ChangePasswordPage: React.FC = () => {
   }
 
   return (
-    <IonPage>
+    <IonPage className={styles.page}>
       <IonHeader className="ion-no-border">
         <IonToolbar color="primary" className={styles.headerToolbar}>
           <IonButtons slot="start">
@@ -102,17 +102,17 @@ const ChangePasswordPage: React.FC = () => {
         </IonToolbar>
       </IonHeader>
 
-      <IonContent fullscreen>
-        <div className={styles.pageTitle}>
-          <h2>Cambiar Contraseña</h2>
-        </div>
+      <div className={styles.titleContainer}>
+        <h2 className={styles.title}>Change Password</h2>
+      </div>
 
+      <IonContent className={styles.content}>
         <div className={styles.formContainer}>
           <div className={styles.inputGroup}>
-            <label className={styles.inputLabel}>Contraseña Actual</label>
+            <p className={styles.inputLabel}>Current Password</p>
             <IonInput
               type="password"
-              placeholder="Ingresa tu contraseña actual"
+              placeholder="Enter your current password"
               value={currentPassword}
               onIonChange={(e) => setCurrentPassword(e.detail.value || "")}
               className={styles.passwordInput}
@@ -120,10 +120,10 @@ const ChangePasswordPage: React.FC = () => {
           </div>
 
           <div className={styles.inputGroup}>
-            <label className={styles.inputLabel}>Nueva Contraseña</label>
+            <p className={styles.inputLabel}>New Password</p>
             <IonInput
               type="password"
-              placeholder="Ingresa nueva contraseña"
+              placeholder="Enter new password"
               value={newPassword}
               onIonChange={(e) => setNewPassword(e.detail.value || "")}
               className={styles.passwordInput}
@@ -131,23 +131,26 @@ const ChangePasswordPage: React.FC = () => {
           </div>
 
           <div className={styles.inputGroup}>
-            <label className={styles.inputLabel}>Confirmar Nueva Contraseña</label>
+            <p className={styles.inputLabel}>Confirm New Password</p>
             <IonInput
               type="password"
-              placeholder="Confirma tu nueva contraseña"
+              placeholder="Confirm your new password"
               value={confirmPassword}
               onIonChange={(e) => setConfirmPassword(e.detail.value || "")}
               className={styles.passwordInput}
             />
           </div>
 
-          <button
-            className={styles.changePasswordButton}
-            onClick={handleChangePassword}
-            disabled={isLoading}
-          >
-            {isLoading ? "Procesando..." : "Cambiar Contraseña"}
-          </button>
+          <div className={styles.buttonContainer}>
+            <IonButton 
+              expand="block" 
+              onClick={handleChangePassword} 
+              disabled={isLoading}
+              className={styles.changePasswordButton}
+            >
+              {isLoading ? "Processing..." : "Change Password"}
+            </IonButton>
+          </div>
         </div>
       </IonContent>
     </IonPage>
