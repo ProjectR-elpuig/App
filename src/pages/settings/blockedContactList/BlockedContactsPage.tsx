@@ -12,6 +12,7 @@ import {
   IonIcon,
   IonPage,
 } from "@ionic/react";
+import { useIonViewWillEnter } from '@ionic/react';
 import { arrowBack, ban } from "ionicons/icons";
 import { useHistory } from "react-router-dom";
 import styles from "./BlockedContactsPage.module.css";
@@ -36,34 +37,38 @@ const BlockedContactsPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchBlockedContacts = async () => {
-      try {
-        if (!user?.token) throw new Error('No autenticado');
+  const fetchBlockedContacts = async () => {
+    try {
+      if (!user?.token) throw new Error('Not authenticated');
 
-        const response = await axios.get(
-          `${API_CONFIG.BASE_URL}/contacts/blocked`,
-          {
-            headers: {
-              Authorization: `Bearer ${user.token}`
-            }
+      const response = await axios.get(
+        `${API_CONFIG.BASE_URL}/contacts/blocked`,
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`
           }
-        );
+        }
+      );
 
-        setBlockedContacts(response.data);
-      } catch (err: any) {
-        setError(err.message || 'Error al cargar contactos bloqueados');
-      } finally {
-        setLoading(false);
-      }
-    };
+      setBlockedContacts(response.data);
+    } catch (err: any) {
+      setError(err.message || 'Error loading blocked contacts');
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchBlockedContacts();
   }, [user?.token]);
 
+  useIonViewWillEnter(() => {
+    fetchBlockedContacts();
+  });
+
   const handleUnblock = async (contactId: number) => {
     try {
-      if (!user?.token) throw new Error('No autenticado');
+      if (!user?.token) throw new Error('Not authenticated');
 
       await axios.put(
         `${API_CONFIG.BASE_URL}/contacts/${contactId}/block`,
@@ -74,7 +79,7 @@ const BlockedContactsPage: React.FC = () => {
       // Actualizar lista local
       setBlockedContacts(prev => prev.filter(c => c.contactid !== contactId));
     } catch (err: any) {
-      setError(err.response?.data || 'Error al desbloquear contacto');
+      setError(err.response?.data || 'Error unblocking contact');
     }
   };
 
@@ -97,7 +102,7 @@ const BlockedContactsPage: React.FC = () => {
       <IonPage>
         <IonContent className="ion-padding">
           <p style={{ color: "red" }}>{error}</p>
-          <IonButton onClick={onBack}>Volver</IonButton>
+          <IonButton onClick={onBack}>Return</IonButton>
         </IonContent>
       </IonPage>
     );
@@ -121,7 +126,7 @@ const BlockedContactsPage: React.FC = () => {
 
       <IonContent fullscreen>
         <div className={styles.pageTitle}>
-          <h2>Contactos bloqueados</h2>
+          <h2>Blocked contacts</h2>
         </div>
 
         <IonList className={styles.contactList}>
@@ -137,7 +142,7 @@ const BlockedContactsPage: React.FC = () => {
               </IonAvatar>
               <IonLabel className={styles.textUser}>
                 <h2>{contact.name}</h2>
-                <p>Estado: {contact.isBlocked ? "Bloqueado" : "No bloqueado"}</p>
+                <p>{contact.isBlocked ? "Bloqueado" : "No bloqueado"}</p>
               </IonLabel>
               <IonButton
                 color="danger"

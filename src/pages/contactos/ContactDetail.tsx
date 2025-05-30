@@ -18,7 +18,7 @@ interface Contact {
 
 interface Props {
   hideMessageButton?: boolean;
-  customBackRoute?: string; // Nueva prop
+  customBackRoute?: string;
 }
 
 const ContactDetail: React.FC<Props> = ({
@@ -36,7 +36,7 @@ const ContactDetail: React.FC<Props> = ({
     const fetchContact = async () => {
       try {
         if (!user?.token) {
-          throw new Error('No autenticado');
+          throw new Error('Not authenticated');
         }
 
         const response = await axios.get(
@@ -48,28 +48,23 @@ const ContactDetail: React.FC<Props> = ({
           }
         );
 
-        // En tu código donde procesas la respuesta
-        // console.log('Respuesta de la API:', response.data);
-
-        // Formatea el objeto individual (no uses map)
         const formattedContact = {
           contactid: response.data.contactid,
           name: response.data.name,
-          phoneNumber: response.data.contacto?.phoneNumber ?? 'Número no disponible',
+          phoneNumber: response.data.contacto?.phoneNumber ?? 'Number not available',
           img: response.data.contacto?.img
             ? `${response.data.contacto.img}`
             : '/imgs/default-avatar.jpg',
-          isBlocked: response.data.isBlocked // Añadir esta línea
+          isBlocked: response.data.isBlocked
         };
 
         if (!response.data) {
-          throw new Error('Contacto no encontrado');
+          throw new Error('Contact not found');
         }
 
-        // console.log("Contacto formateado:", formattedContact);
         setContact(formattedContact);
       } catch (err: any) {
-        setError(err.message || 'Error al cargar el contacto');
+        setError(err.message || 'Error loading contact');
       } finally {
         setLoading(false);
       }
@@ -79,7 +74,7 @@ const ContactDetail: React.FC<Props> = ({
   }, [contactid, user?.token]);
 
   const onBack = (): void => {
-    history.push(customBackRoute || "/contactos"); // Usa customBackRoute si existe
+    history.push(customBackRoute || "/contactos");
   }
 
   const onEdit = (): void => {
@@ -94,9 +89,9 @@ const ContactDetail: React.FC<Props> = ({
   }
 
   const handleDelete = async () => {
-    if (window.confirm('¿Estás seguro de eliminar este contacto?')) {
+    if (window.confirm('Are you sure you want to delete this contact?')) {
       try {
-        if (!user?.token) throw new Error('No autenticado');
+        if (!user?.token) throw new Error('Not authenticated');
 
         await axios.delete(
           `${API_CONFIG.BASE_URL}/contacts/${contactid}`,
@@ -105,14 +100,14 @@ const ContactDetail: React.FC<Props> = ({
 
         history.push("/contactos");
       } catch (err: any) {
-        setError(err.response?.data || 'Error al eliminar el contacto');
+        setError(err.response?.data || 'Error deleting contact');
       }
     }
   };
 
   const handleBlock = async () => {
     try {
-      if (!user?.token) throw new Error('No autenticado');
+      if (!user?.token) throw new Error('Not authenticated');
 
       await axios.put(
         `${API_CONFIG.BASE_URL}/contacts/${contactid}/block`,
@@ -121,13 +116,13 @@ const ContactDetail: React.FC<Props> = ({
       );
       setContact(prev => prev ? { ...prev, isBlocked: !prev.isBlocked } : null);
     } catch (err: any) {
-      setError(err.response?.data || 'Error al bloquear el contacto');
+      setError(err.response?.data || 'Error blocking contact');
     }
   };
 
   const handleStartChat = async () => {
     try {
-      if (!user?.token) throw new Error('No autenticado');
+      if (!user?.token) throw new Error('Not authenticated');
 
       await axios.put(
         `${API_CONFIG.BASE_URL}/contacts/${contactid}/start-chat`,
@@ -135,10 +130,9 @@ const ContactDetail: React.FC<Props> = ({
         { headers: { Authorization: `Bearer ${user.token}` } }
       );
 
-      // Redirigir a la página de chat
       history.push(`/chats/chat/${contactid}`);
     } catch (err: any) {
-      setError(err.response?.data || 'Error al iniciar el chat');
+      setError(err.response?.data || 'Error starting chat');
     }
   };
 
@@ -152,7 +146,7 @@ const ContactDetail: React.FC<Props> = ({
       <IonPage>
         <IonContent className={styles.errorContainer}>
           <IonText color="danger">{error}</IonText>
-          <IonButton onClick={onBack}>Volver a contactos</IonButton>
+          <IonButton onClick={onBack}>Back to contacts</IonButton>
         </IonContent>
       </IonPage>
     );
@@ -178,7 +172,7 @@ const ContactDetail: React.FC<Props> = ({
       <IonContent className={styles.content}>
         {contact && (
           <div className={styles.profileContainer}>
-            {/* Imagen desde base64 */}
+            {/* Image from base64 */}
             <div className={styles.profileImage}>
               <img
                 src={`data:image/jpeg;base64,${contact.img}`}
@@ -194,7 +188,7 @@ const ContactDetail: React.FC<Props> = ({
             {!hideMessageButton && (
               <button className={styles.messageButton} onClick={handleStartChat}>
                 <IonIcon icon={chatbubbleEllipses} />
-                <span>Mensaje</span>
+                <span>Message</span>
               </button>
             )}
 
@@ -209,11 +203,11 @@ const ContactDetail: React.FC<Props> = ({
             <div className={styles.actionButtons}>
               <button className={styles.blockButton} onClick={handleBlock}>
                 <IonIcon icon={ban} />
-                <span>{contact.isBlocked ? "Desbloquear contacto" : "Bloquear contacto"}</span>
+                <span>{contact.isBlocked ? "Unblock contact" : "Block contact"}</span>
               </button>
               <button className={styles.deleteButton} onClick={handleDelete}>
                 <IonIcon icon={trash} />
-                <span>Eliminar contacto</span>
+                <span>Delete contact</span>
               </button>
             </div>
           </div>

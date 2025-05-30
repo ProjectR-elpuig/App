@@ -57,7 +57,7 @@ const AddOrEditContact: React.FC = () => {
           })
 
         } catch (err: any) {
-          setError(err.response?.data?.message || 'Error al cargar contacto')
+            setError(err.response?.data?.message || 'Error loading contact')
         } finally {
           setLoading(false)
           setInitialLoad(false)
@@ -89,7 +89,7 @@ const AddOrEditContact: React.FC = () => {
 
     try {
       if (!user?.token || !user?.citizenid) {
-        throw new Error("No autenticado")
+        throw new Error("Not authenticated")
       }
 
       const payload = {
@@ -124,7 +124,7 @@ const AddOrEditContact: React.FC = () => {
         });
 
         if (!response.data.found) {
-          return setError("Numero de teléfono no encontrado.")
+            return setError("Phone number not found.")
         }
 
         await axios.post(`${API_CONFIG.BASE_URL}/contacts`, payload, {
@@ -176,29 +176,34 @@ const AddOrEditContact: React.FC = () => {
       <IonContent className={styles.content}>
         {/* Imagen fija */}
         <div className={styles.profilePhotoContainer}>
-          <div className={styles.profilePhoto}>
+            <div className={styles.profilePhoto}>
             <img
-              src={`data:image/jpeg;base64,${formData.img}` || 'https://i.gyazo.com/17f37bb6fd035c2055614479d36c7de2.jpg'}
-              alt="Foto Perfil"
+              src={
+              formData.img
+                ? `data:image/jpeg;base64,${formData.img}`
+                : "https://i.gyazo.com/17f37bb6fd035c2055614479d36c7de2.jpg"
+              }
+              alt="Profile Photo"
               onError={(e) => {
-                (e.target as HTMLImageElement).src = 'https://i.gyazo.com/17f37bb6fd035c2055614479d36c7de2.jpg';
+              (e.target as HTMLImageElement).src =
+                "https://i.gyazo.com/17f37bb6fd035c2055614479d36c7de2.jpg";
               }}
             />
-          </div>
+            </div>
         </div>
 
         {/* Campos del formulario */}
         <div className={styles.formFields}>
           <IonInput
             className={styles.input}
-            placeholder="Nombre"
+            placeholder="Name"
             value={formData.name}
             onIonChange={(e) => handleChange("name", e.detail.value!)}
           />
 
           <IonInput
             className={styles.input}
-            placeholder="Número de teléfono"
+            placeholder="Phone number"
             value={formData.phoneNumber}
             onIonChange={(e) => handleChange("phoneNumber", e.detail.value!)}
           />
@@ -215,11 +220,11 @@ const AddOrEditContact: React.FC = () => {
             onClick={handleSave}
             disabled={loading}
           >
-            {loading ? "Guardando..." : (id ? "Editar Contacto" : "Crear Contacto")}
+            {loading ? "Saving..." : (id ? "Edit Contact" : "Create Contact")}
           </IonButton>
 
           <div className={styles.cancelButton} onClick={handleCancel}>
-            <span>Cancelar</span>
+            <span>Cancel</span>
           </div>
         </div>
       </IonContent>

@@ -78,21 +78,21 @@ const ChatContact: React.FC = () => {
       const formattedContact = {
         contactid: response.data.contactid,
         name: response.data.name,
-        phoneNumber: response.data.contacto?.phoneNumber ?? 'Número no disponible',
+        phoneNumber: response.data.contacto?.phoneNumber ?? 'Phone number not available',
         img: response.data.contacto?.img
-          ? `data:image/jpeg;base64,${response.data.contacto.img}` // Agregar prefijo
-          : '/imgs/default-avatar.jpg', // Verifica que esta ruta sea correcta
+          ? `data:image/jpeg;base64,${response.data.contacto.img}`
+          : '/imgs/default-avatar.jpg',
         isBlocked: response.data.isBlocked
       };
 
       if (!response.data) {
-        throw new Error('Contacto no encontrado');
+        throw new Error('Contact not found');
       }
 
       // console.log("Contacto formateado:", formattedContact);
       setContact(formattedContact);
     } catch (err: any) {
-      setError(err.message || 'Error al cargar el contacto');
+      setError(err.message || 'Error loading contact');
     } finally {
       setLoading(false);
     }
@@ -101,7 +101,7 @@ const ChatContact: React.FC = () => {
   const fetchMessages = async () => {
     try {
       if (!user?.token) {
-        throw new Error('No autenticado');
+        throw new Error('Not authenticated');
       }
 
       const response = await axios.get(
@@ -128,7 +128,7 @@ const ChatContact: React.FC = () => {
       // console.log("Mensajes formateados:", JSON.stringify(messages));
 
     } catch (err: any) {
-      setError(err.message || 'Error al cargar el contacto');
+      setError(err.message || 'Error loading messages');
     } finally {
       setLoading(false);
     }
@@ -137,7 +137,7 @@ const ChatContact: React.FC = () => {
   const fetchChat = async () => {
     try {
       if (!user?.token) {
-        throw new Error('No autenticado');
+        throw new Error('Not authenticated');
       }
 
       const response = await axios.get(
@@ -153,10 +153,10 @@ const ChatContact: React.FC = () => {
       // console.log('Respuesta de la API sobre LA ID DEL CHAT:', response.data);
       setChatId(response.data.id);
       if (!response.data) {
-        throw new Error('Chat no encontrado');
+        throw new Error('Chat not found');
       }
     } catch (err: any) {
-      setError(err.message || 'Error al cargar el contacto');
+      setError(err.message || 'Error loading chat');
     } finally {
       setLoading(false);
     }
@@ -277,7 +277,7 @@ const ChatContact: React.FC = () => {
   // Envia mensajes al la API
   const sendMessageToApi = async (message: any) => {
     try {
-      if (!user?.token) throw new Error('No autenticado');
+      if (!user?.token) throw new Error('Not authenticated');
 
       const payload = {
         receiverPhone: contact?.phoneNumber,
@@ -296,7 +296,7 @@ const ChatContact: React.FC = () => {
 
 
     } catch (err: any) {
-      setError(err.response?.data || 'Error al enviar el mensaje');
+      setError(err.response?.data || 'Error sending message');
     }
   }
 
